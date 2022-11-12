@@ -1,0 +1,68 @@
+import asyncstdlib as a
+
+from aiogram import Dispatcher
+from aiogram.types import Message, CallbackQuery
+from aiogram.dispatcher import FSMContext
+from aiogram.utils.exceptions import BadRequest
+from tgbot.keyboards import inline
+from tgbot.misc.states import RequiredChannel
+
+
+async def required_channel(message: Message, state: FSMContext):
+    bot = message.bot
+    decor = bot['decor']
+    buttons = decor.buttons
+    data = bot['db']
+
+    is_sub, channels = await check_sub(message)
+
+    await message.answer('✋ Чтобы продолжить пользоваться ботом, '
+                         'вы должны подписаться на наши каналы',
+                         reply_markup=inline.required_sub(buttons, channels))
+
+
+async def check_sub(message):
+    bot = message.bot
+    data = bot['db']
+
+    channels = [item async for index, item in a.enumerate(await data.get_channels())]
+    channels_links = [item['link'] async for index, item in a.enumerate(await data.get_channels())]
+    for channel in channels:
+        chat_id = channel['channel_id']
+
+        try:
+            user_channel = await bot.get_chat_member(chat_id=f'{chat_id}', user_id=message.from_user.id)
+            if user_channel.status not in ['member', 'administrator', 'creator']:
+                return False, channels_links
+
+        except BadRequest as e:
+            print(chat_id, message.from_user.id, 'user not found')
+            return False, channels_links
+
+    user = await data.get_user(message.from_user.id)
+    if not user['ref'].isdigit() and user['ref'] != 'defolt':
+        await data.increment_subs_ref_commercial(user['ref'], len(channels))
+    return True, channels_links
+
+
+async def check_sub_call(call: CallbackQuery, state: FSMContext):
+    message = call.message
+    bot = message.bot
+    decor = bot['decor']
+    buttons = decor.buttons
+    message.from_user.id = call['from']['id']
+
+    is_sub, channels = await check_sub(message)
+    if is_sub:
+        await message.delete()
+        await message.answer('Спасибо, Вы подписались на все каналы! Продолжайте пользоваться ботом')
+        await state.finish()
+    else:
+        await call.answer('Вы не подписались на все каналы!')
+
+    await bot.answer_callback_query(call.id)
+
+
+def register_channels(dp: Dispatcher):
+    dp.register_callback_query_handler(check_sub_call, text_contains='check_sub_call', state='*')
+    dp.register_message_handler(required_channel, state=RequiredChannel.required_channel)
