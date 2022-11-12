@@ -62,6 +62,7 @@ def main():
     logging.basicConfig(
         level=logging.INFO,
         format=u'%(filename)s:%(lineno)d #%(levelname)-8s [%(asctime)s] - %(name)s - %(message)s',
+        filename="logs.log", filemode="w"
     )
     logger.info("Starting bot")
     config = load_config(".env")
@@ -80,7 +81,6 @@ def main():
     register_all_middlewares(dp, config)
     register_all_filters(dp)
     register_all_handlers(dp)
-
     dp.loop.create_task(mailing_controller(bot, 1))
     dp.loop.create_task(premium_controller(bot, 10))
     scheduler = AsyncIOScheduler()
@@ -88,13 +88,6 @@ def main():
     scheduler.start()
     executor.start_polling(dp)
     return bot
-    # start
-    # try:
-    #
-    # finally:
-    #     dp.storage.close()
-    #     dp.storage.wait_closed()
-    #     bot.session.close()
 
 
 if __name__ == '__main__':
@@ -102,3 +95,5 @@ if __name__ == '__main__':
         bot = main()
     except (KeyboardInterrupt, SystemExit):
         logger.error("Bot stopped!")
+    except Exception as e:
+        logger.exception(e)
