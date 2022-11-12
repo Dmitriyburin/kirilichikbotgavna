@@ -1,8 +1,6 @@
-bot.py:67 #INFO     [2022-11-12 17:21:57,135] - __main__ - Starting bot
-base.py:444 #INFO     [2022-11-12 17:21:57,219] - apscheduler.scheduler - Adding job tentatively -- it will be properly scheduled when the scheduler starts
-base.py:885 #INFO     [2022-11-12 17:21:57,221] - apscheduler.scheduler - Added job "reset_reports" to job store "default"
-base.py:171 #INFO     [2022-11-12 17:21:57,221] - apscheduler.scheduler - Scheduler started
-executor.py:362 #INFO     [2022-11-12 17:21:57,401] - aiogram - Bot: EzTestBot [@VeryMuchSimpleBot]
-dispatcher.py:358 #INFO     [2022-11-12 17:21:57,402] - aiogram.dispatcher.dispatcher - Start polling.
-dispatcher.py:433 #INFO     [2022-11-12 17:22:07,261] - aiogram.dispatcher.dispatcher - Stop polling...
-executor.py:329 #WARNING  [2022-11-12 17:22:07,261] - aiogram - Goodbye!
+bot.py:67 #INFO     [2022-11-12 17:25:06,840] - __main__ - Starting bot
+base.py:444 #INFO     [2022-11-12 17:25:06,938] - apscheduler.scheduler - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+base.py:885 #INFO     [2022-11-12 17:25:06,941] - apscheduler.scheduler - Added job "reset_reports" to job store "default"
+base.py:171 #INFO     [2022-11-12 17:25:06,941] - apscheduler.scheduler - Scheduler started
+executor.py:362 #INFO     [2022-11-12 17:25:07,114] - aiogram - Bot: EzTestBot [@VeryMuchSimpleBot]
+dispatcher.py:358 #INFO     [2022-11-12 17:25:07,114] - aiogram.dispatcher.dispatcher - Start polling.
