@@ -26,7 +26,7 @@ class Database:
 
     async def add_user(self, user_id, ref, lang='ru', ref_commercial=False):
         if ref_commercial:
-            await self.ref_links.update_one({'link': ref_commercial}, {'$inc': {'users': 1}})
+            await self.ref_links.update_one({'link': ref_commercial}, {'$inc': {'users': 1, 'transitions': 1}})
         await self.users.insert_one({'user_id': user_id, 'ref': ref, 'lang': lang})
 
     async def get_user(self, user_id):
@@ -52,10 +52,21 @@ class Database:
 
     async def edit_user_anonchat_profile(self, user_id, gender, age, ref_commercial=None):
         if ref_commercial:
+            ref = await self.get_ref(ref_commercial)
+            average_age = (ref['anonchat_users'] * ref['average_age'] + age) // (ref['anonchat_users'] + 1)
+            print(ref['anonchat_users'], ref['average_age'])
             if gender == 'male':
-                await self.ref_links.update_one({'link': ref_commercial}, {'$inc': {'male': 1}})
+                await self.ref_links.update_one({'link': ref_commercial}, {'$inc': {'male': 1}}, upsert=False)
+                await self.ref_links.update_one({'link': ref_commercial}, {'$set': {'average_age': average_age}},
+                                                upsert=False)
+
             elif gender == 'female':
-                await self.ref_links.update_one({'link': ref_commercial}, {'$inc': {'female': 1}})
+                await self.ref_links.update_one({'link': ref_commercial},
+                                                {'$inc': {'female': 1}}, upsert=False)
+                await self.ref_links.update_one({'link': ref_commercial}, {'$set': {'average_age': average_age}},
+                                                upsert=False)
+
+            await self.ref_links.update_one({'link': ref_commercial}, {'$inc': {'anonchat_users': 1}}, upsert=False)
 
         await self.anonchat_users.update_one({'user_id': user_id}, {'$set': {'gender': gender, 'age': int(age)}},
                                              upsert=False)
@@ -191,6 +202,10 @@ class Database:
         return {'total': (await self.messages.find_one({'type': 'total'}))['messages'],
                 'today': (await self.messages.find_one({'type': 'today'}))['messages']}
 
+    async def add_messages(self):
+        self.messages.insert_one({'type': 'total', 'messages': 0})
+        self.messages.insert_one({'type': 'today', 'messages': 0})
+
     async def del_today_messages(self):
         await self.messages.update_one({'type': 'today'}, {'$set': {'messages': 0}}, upsert=False)
 
@@ -244,9 +259,20 @@ class Database:
         last_dialogs = user['last_dialogs']
         return [i for i in last_dialogs[1:]]
 
-    async def add_ref(self, link):
+    async def add_ref(self, link, price):
         await self.ref_links.insert_one({'link': link, 'users': 0, 'anonchat_users': 0, 'male': 0, 'female': 0,
-                                         'subs': 0})
+                                         'average_age': 0, 'transitions': 0,
+                                         'donaters': 0, 'all_price': 0})
+
+    async def increment_ref_transition(self, link):
+        await self.ref_links.update_one({'link': link},
+                                        {'$inc': {'transitions': 1}},
+                                        upsert=False)
+
+    async def add_ref_donater(self, link, price):
+        await self.ref_links.update_one({'link': link},
+                                        {'$inc': {'donaters': 1, 'all_price': price}},
+                                        upsert=False)
 
     async def get_refs(self):
         return self.ref_links.find({})
@@ -294,7 +320,8 @@ class Database:
 
 async def main():
     database = Database('mongodb://localhost:27017')
-    await database.edit_premium(865351408, True, 2)
+    ref = await database.get_ref('https://t.me/verymuchsimplebot?start=MjkzNjc5Mw')
+    print(ref['users'])
 
 
 if __name__ == '__main__':

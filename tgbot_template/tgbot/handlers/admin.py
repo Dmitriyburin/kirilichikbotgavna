@@ -9,6 +9,8 @@ from aiogram.dispatcher import FSMContext
 from aiogram.utils.deep_linking import get_start_link, decode_payload
 from tgbot.misc.states import AddChannel, DeleteChannel, AddRef, DeleteRef
 
+from tgbot_template.tgbot.misc.states import StatsRef
+
 
 async def admin_main(message: Message):
     bot = message.bot
@@ -117,13 +119,26 @@ async def stats(message: Message):
                                                messages_stats['today']))
 
 
-async def add_ref(message: Message):
+async def add_ref_start(message: Message):
     bot = message.bot
     data = bot['db']
 
+    await message.answer(f'Введите число - цену реферальной ссылки (в рублях)')
+    await AddRef.price.set()
+
+
+async def add_ref(message: Message, state: FSMContext):
+    bot = message.bot
+    data = bot['db']
+
+    price = message.text.replace(' ', '')
+    if not price.isdigit():
+        await message.answer('В цене должны присутствовать только цифры, попробуйте еще раз /add_ref')
+        return
     link = await get_start_link(str(random.randint(10000, 10000000)), encode=True)
     await message.answer(f'Реферальная ссылка добавлена: <code>{link}</code>')
-    await data.add_ref(link)
+    await data.add_ref(link, int(price))
+    await state.finish()
 
 
 async def get_refs(message: Message):
@@ -141,7 +156,7 @@ async def get_refs(message: Message):
 
 async def ref_stats_start(message: Message):
     await message.answer('Скиньте реферальную ссылку, статистику которой хотите получить')
-    await AddRef.ref.set()
+    await StatsRef.ref.set()
 
 
 async def ref_stats(message: Message, state: FSMContext):
@@ -152,9 +167,14 @@ async def ref_stats(message: Message, state: FSMContext):
 
     ref = await data.get_ref(message.text)
     if ref:
-        await message.answer(texts['link_stats'].format(ref['users'], ref['anonchat_users'], ref['male'], ref['female'],
-                                                        'later', 'later', 'later', 'later', 'later', 'later',
-                                                        'later', ))
+        price_user = round(ref['users'] / ref['price'], 3)
+        price_reg = round(ref['anonchat_users'] / ref['price'], 3)
+        price_transitions = round(ref['transitions'] / ref['price'], 3)
+        await message.answer(texts['link_stats'].format(ref['users'], ref['anonchat_users'], ref['female'], ref['male'],
+                                                        ref['average_age'], ref['price'], price_transitions, price_user,
+                                                        price_reg,
+                                                        ref['donaters'],
+                                                        ref['all_price'], ))
     else:
         await message.answer('Такой ссылкы не существует')
     await state.finish()
@@ -190,9 +210,10 @@ def register_admin(dp: Dispatcher):
     dp.register_message_handler(users_file, commands=["users"], state="*", is_admin=True)
     dp.register_message_handler(stats, commands=["stats"], state="*", is_admin=True)
 
-    dp.register_message_handler(add_ref, commands=["add_ref"], state="*", is_admin=True)
+    dp.register_message_handler(add_ref_start, commands=["add_ref"], state="*", is_admin=True)
+    dp.register_message_handler(add_ref, state=AddRef.price, is_admin=True)
     dp.register_message_handler(del_ref_start, commands=["del_ref"], state="*", is_admin=True)
     dp.register_message_handler(del_ref, state=DeleteRef.ref, is_admin=True)
     dp.register_message_handler(get_refs, commands=["refs"], state="*", is_admin=True)
     dp.register_message_handler(ref_stats_start, commands=["ref_stats"], state="*", is_admin=True)
-    dp.register_message_handler(ref_stats, state=AddRef.ref, is_admin=True)
+    dp.register_message_handler(ref_stats, state=StatsRef.ref, is_admin=True)
