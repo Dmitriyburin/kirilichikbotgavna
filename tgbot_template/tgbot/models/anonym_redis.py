@@ -86,15 +86,13 @@ class AnonymChat:
         return result
 
     async def get_anonchat_online(self):
-        female = 0
-        male = 0
-        users_online = 0
+        users_online_ids = []
 
         async for i in self.r.scan_iter("*"):
             if i.decode('utf-8') != 'search':
-                users_online += 1
+                users_online_ids.append(i.decode('utf-8'))
 
-        return int(users_online / 2), users_online, male, female
+        return users_online_ids
 
 
 async def main():
