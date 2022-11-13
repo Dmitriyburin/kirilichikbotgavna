@@ -138,9 +138,12 @@ async def print_about_me(message: Message, edit=None, call=None):
 
     user = await data.get_user_anonchat_profile(message.from_user.id)
     gender = 'M' if user['gender'] == 'male' else 'Ж'
-
+    vip_text = texts['no']
+    if user['premium']:
+        date: datetime.datetime = user['vip_date'] + datetime.timedelta(days=user['vip_days'])
+        vip_text = 'до '+ date.strftime('%d.%m.%y')
     text = texts['mystats'].format(message.from_user.first_name, gender, user['age'],
-                                   user['likes'], user['dislikes'])
+                                   user['likes'], user['dislikes'], vip_text)
 
     if edit:
         await message.edit_caption(text, reply_markup=inline.set_profile(buttons))

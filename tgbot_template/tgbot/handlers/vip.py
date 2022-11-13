@@ -26,8 +26,9 @@ async def vip(message: Message, state: FSMContext, back_to_profile=None):
         else:
             markup = None
 
-        vip_days = user['vip_days'] - (datetime.datetime.now() - user['vip_date']).days
-        await message.edit_caption(f'У вас уже есть подписка, она заканчивается через {vip_days} дней',
+        date: datetime.datetime = user['vip_date'] + datetime.timedelta(days=user['vip_days'])
+        vip_text = 'до ' + date.strftime('%d.%m.%y')
+        await message.edit_caption(f'🏆 У вас уже есть подписка, она заканчивается {vip_text}',
                                    reply_markup=markup)
 
         return
