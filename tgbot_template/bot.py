@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import asyncio
 import logging
 from apscheduler.schedulers.asyncio import AsyncIOScheduler

@@ -15,7 +15,7 @@ class DbConfig:
 @dataclass
 class TgBot:
     token: str
-    admin_ids: list[int]
+    admin_ids: list
     use_redis: bool
     name: str
 
@@ -31,7 +31,7 @@ class Decoration:
     buttons: dict
     prices: dict
     model_anonym_chat: dict
-    mailings_posts: list[dict]
+    mailings_posts: list
 
 
 @dataclass
