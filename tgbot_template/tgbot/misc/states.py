@@ -29,10 +29,14 @@ class DeleteChannel(StatesGroup):
 
 
 class AddRef(StatesGroup):
-    ref = State()
+    price = State()
 
 
 class DeleteRef(StatesGroup):
+    ref = State()
+
+
+class StatsRef(StatesGroup):
     ref = State()
 
 

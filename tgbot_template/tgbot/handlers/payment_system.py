@@ -56,19 +56,21 @@ async def payments_controller(bot, delay):
             await asyncio.sleep(delay)
 
             ungived = await data.get_ungiven_payments()
-            print('ungived:', ungived)
             async for i in ungived:
                 days = i['days']
                 price = i['price']
                 await data.edit_premium(i['user_id'], True, days)
+                user = await data.get_user(i['user_id'])
+                if not user['ref'].isdigit() and user['ref'] != 'defolt':
+                    await data.add_ref_donater(user['ref'], price)
 
                 message = texts['premium_bought'].format(price, days)
                 await bot.send_message(i['user_id'], message)
                 await data.edit_given_status(i['secret'])
                 await data.edit_user_donates(i['user_id'], i['price'])
 
-        except Exception:
-            pass
+        except Exception as e:
+            print(e)
 
 
 def register_payment(dp: Dispatcher):

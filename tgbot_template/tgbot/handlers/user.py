@@ -40,7 +40,10 @@ async def user_start(message: Message, state=FSMContext):
         if profile['gender'] or profile['age']:
             await message.answer('Здравствуй! Кажется, мы с тобой уже виделись)',
                                  reply_markup=reply.main(buttons, profile['premium']))
-            # await RequiredChannel.required_channel.set()
+
+            if not ref.isdigit() and ref != 'defolt':
+                ref_commercial = f'https://t.me/{bot["config"].tg_bot.name}?start={ref}'
+                await data.increment_ref_transition(ref_commercial)
             return
 
     photo = InputFile('tgbot/data/images/start.jpg')
