@@ -7,6 +7,8 @@ from aiogram.dispatcher import FSMContext
 from tgbot.keyboards import inline
 from tgbot.handlers.payment_system import buy_process
 
+from tgbot_template.tgbot.misc import anypay
+
 
 async def vip(message: Message, state: FSMContext, back_to_profile=None):
     bot = message.bot
@@ -14,7 +16,7 @@ async def vip(message: Message, state: FSMContext, back_to_profile=None):
     data = bot['db']
     texts = decor.texts
     buttons = decor.buttons
-    prices = decor.prices
+    prices: dict = decor.prices
 
     user = await data.get_user_anonchat_profile(message.from_user.id)
     if user['premium']:
@@ -30,7 +32,17 @@ async def vip(message: Message, state: FSMContext, back_to_profile=None):
 
         return
 
-    markup = inline.vip_privileges(prices)
+    urls = {}
+    for key, value in prices.items():
+        price = value['price']
+        anypay_secret, anypay_shop = bot['config'].anypay.secret, bot['config'].anypay.shop
+        payment_id = await data.get_anypay_payment_id()
+        sign, secret = anypay.gen_hash(price, payment_id, anypay_secret=anypay_secret, anypay_shop=anypay_shop)
+        url = anypay.gen_url(price, payment_id, 'топ', sign, anypay_shop=anypay_shop)
+        urls[key] = url
+
+        await data.add_anypay_payment_no_discount(message.from_user.id, sign, secret, payment_id, days=key, price=price)
+    markup = inline.vip_privileges(prices, urls)
     if back_to_profile:
         markup.add(inline.back_button('back_to:profile'))
         await message.edit_caption(texts['vip_privileges'],

@@ -15,7 +15,7 @@ class DbConfig:
 @dataclass
 class TgBot:
     token: str
-    admin_ids: list[int]
+    admin_ids: list
     use_redis: bool
     name: str
 
@@ -31,7 +31,13 @@ class Decoration:
     buttons: dict
     prices: dict
     model_anonym_chat: dict
-    mailings_posts: list[dict]
+    mailings_posts: list
+
+
+@dataclass
+class Anypay:
+    secret: str
+    shop: int
 
 
 @dataclass
@@ -40,6 +46,7 @@ class Config:
     db: DbConfig
     misc: Miscellaneous
     decoration: Decoration
+    anypay: Anypay
     payment_token: str
     channel_id_to_send_media: int
 
@@ -70,8 +77,13 @@ def load_config(path: str = None):
             model_anonym_chat=model1,
             mailings_posts=mailings_posts
         ),
+        anypay=Anypay(
+            secret=anypay_secret,
+            shop=anypay_shop
+        ),
         payment_token=env.str('PAYMENT_TOKEN'),
         channel_id_to_send_media=env.str('CHANNEL_ID_TO_SEND_MEDIA')
+
     )
 
 
@@ -81,7 +93,8 @@ prices = {
     30: {'days': 30, 'price': 349, 'discount': 349, 'button': '1 месяц - {0} ₽'},
     365: {'days': 365, 'price': 1499, 'discount': 1499, 'button': '1 год - {0} ₽'},
 }
-
+anypay_secret = '2e7%b*P3H(7s'
+anypay_shop = 9995
 support_url = 'https://t.me/AnonimHelperBot'
 texts = {
     'estimate_companion': '⚠️Пожалуйста, оцените вашего\nсобеседника',
@@ -222,7 +235,7 @@ VIP статус!""",
     'infinity': '♾',
     'wait': '<i>Поиск начнется через 3 секунды</i>',
     'premium_until': '🕑 <b>Подписка активна до</b> <code>{0}</code>',
-    'premium_bought': '<b>Ты успешно купил товар "{0}"!\n</b>💵 <b>Сумма</b>: <code>{1} ₽\n</code>🕑 <b>Подписка активна до</b> <code>{2}</code>',
+    'premium_bought': '<b>Ты успешно купил VIP-статус!\n</b>💵 <b>Сумма</b>: <code>{0} ₽\n</code>🕑 <b>Подписка будет активна </b> <code>{1}</code> дней',
     # 'unlimited_bought': '<b>Ты успешно купил товар "{0}"!\n</b>💵 <b>Сумма</b>: <code>{1} ₽</code>'.format(
     #     prices[-1]['button'].format(prices[-1]['price']), prices[-1]['price']),
     'select_payment': '<b>❗️ Теперь выбери метод оплаты.</b>\n<b>💰 Стоимость</b>: <code>{0}</code> <b>руб.</b>\n\n<b>Подписка выдается в течение минуты.</b> В случае проблем обращаться к @AnonimSupport',

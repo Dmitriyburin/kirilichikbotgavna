@@ -79,16 +79,12 @@ def estimate_companion_short_only_react(btns):
     return markup
 
 
-def vip_privileges(prices):
+def vip_privileges(prices, urls):
     markup = InlineKeyboardMarkup()
-    markup.add(InlineKeyboardButton(prices[1]['button'].format(prices[1]['price']),
-                                    callback_data=f"buy_vip:{prices[1]['days']}"))
-    markup.add(InlineKeyboardButton(prices[7]['button'].format(prices[7]['price']),
-                                    callback_data=f"buy_vip:{prices[7]['days']}"))
-    markup.add(InlineKeyboardButton(prices[30]['button'].format(prices[30]['price']),
-                                    callback_data=f"buy_vip:{prices[30]['days']}"))
-    markup.add(InlineKeyboardButton(prices[365]['button'].format(prices[365]['price']),
-                                    callback_data=f"buy_vip:{prices[365]['days']}"))
+    markup.add(InlineKeyboardButton(prices[1]['button'].format(prices[1]['price']), url=urls[1]))
+    markup.add(InlineKeyboardButton(prices[7]['button'].format(prices[7]['price']), url=urls[7]))
+    markup.add(InlineKeyboardButton(prices[30]['button'].format(prices[30]['price']), url=urls[30]))
+    markup.add(InlineKeyboardButton(prices[365]['button'].format(prices[365]['price']), url=urls[365]))
     return markup
 
 

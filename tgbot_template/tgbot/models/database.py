@@ -1,5 +1,6 @@
 import datetime
 import random
+import time
 
 from motor import motor_asyncio
 import asyncio
@@ -21,6 +22,7 @@ class Database:
         self.mailing = self.db.mailing
         self.mailing_users = self.db.mailing_users
         self.banned_users = self.db.banned_users
+        self.payments = self.db.payments
 
     async def add_user(self, user_id, ref, lang='ru', ref_commercial=False):
         if ref_commercial:
@@ -264,6 +266,30 @@ class Database:
         await self.anonchat_users.update_one({'user_id': user_id},
                                              {'$set': {'last_companion_gender': gender}},
                                              upsert=False)
+
+    async def get_anypay_payment_id(self):
+        return int(time.time() * 10000)
+
+    async def add_anypay_payment_no_discount(self, user_id, sign, secret, payment_id, days, price):
+        await self.payments.insert_one(
+            {'type': 'anypay', 'user_id': user_id, 'sign': sign, 'secret': secret, 'payment_id': payment_id,
+             'days': days, 'price': price, 'paid': False, 'gived': False, 'discount': None})
+
+    async def get_payment_by_secret(self, secret):
+        return await self.payments.find_one({'secret': secret})
+
+    async def edit_paid_status(self, secret):
+        await self.payments.update_one({'secret': secret}, {'$set': {'paid': True, 'discount': None}}, upsert=False)
+
+    async def edit_given_status(self, secret):
+        await self.payments.update_one({'secret': secret}, {'$set': {'gived': True}}, upsert=False)
+
+    async def get_ungiven_payments(self):
+        await self.payments.delete_many({'gived': True, 'paid': True})
+        return self.payments.find({'gived': False, 'paid': True})
+
+    async def edit_user_donates(self, user_id, count):
+        await self.anonchat_users.update_one({'user_id': user_id}, {'$inc': {'total_donated': count}}, upsert=False)
 
 
 async def main():
