@@ -9,7 +9,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.utils.deep_linking import get_start_link, decode_payload
 from tgbot.misc.states import AddChannel, DeleteChannel, AddRef, DeleteRef
 
-from tgbot_template.tgbot.misc.states import StatsRef
+from tgbot.misc.states import StatsRef
 
 
 async def admin_main(message: Message):
@@ -176,7 +176,7 @@ async def ref_stats(message: Message, state: FSMContext):
                                                         ref['donaters'],
                                                         ref['all_price'], ))
     else:
-        await message.answer('Такой ссылкы не существует')
+        await message.answer('Такой ссылки не существует')
     await state.finish()
 
 

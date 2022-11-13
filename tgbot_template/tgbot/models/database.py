@@ -261,7 +261,7 @@ class Database:
 
     async def add_ref(self, link, price):
         await self.ref_links.insert_one({'link': link, 'users': 0, 'anonchat_users': 0, 'male': 0, 'female': 0,
-                                         'average_age': 0, 'transitions': 0,
+            'average_age': 0, 'transitions': 0, 'price': price,
                                          'donaters': 0, 'all_price': 0})
 
     async def increment_ref_transition(self, link):
