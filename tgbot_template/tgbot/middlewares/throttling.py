@@ -68,7 +68,7 @@ class ThrottlingMiddleware(BaseMiddleware):
                 await message.answer('Вы разблокированы!')
                 bot[message.from_user.id] = {}
             else:
-                await message.answer('Неверно!')
+                await generate_captcha(bot, message)
             raise CancelHandler()
 
         # Проверка на регистрацию
@@ -160,19 +160,16 @@ def wrap_media(bytesio, **kwargs):
 
 
 async def generate_captcha(bot, message, edit=False):
+    print('asdfas')
     image = ImageCaptcha(width=280, height=90)
-    letters = list(string.ascii_lowercase)
-    random.shuffle(letters)
-    captcha_text = letters[:5]
+    nums = list([str(i) for i in range(0, 10)])
+    random.shuffle(nums)
+    captcha_text = ''.join(nums[:4])
     data = image.generate(captcha_text)
     bot[message.from_user.id] = {'captcha_text': ''.join(captcha_text)}
 
-    if edit:
-        await message.delete()
-        await message.answer_photo(data, reply_markup=inline.generate_captcha())
-    else:
-        await message.answer('Введите текст с картинки')
-        await message.answer_photo(data, reply_markup=inline.generate_captcha())
+    await message.answer('Введите текст с картинки')
+    await message.answer_photo(data)
 
 
 async def reset_reports(data):

@@ -73,7 +73,6 @@ def main():
     storage = RedisStorage2() if config.tg_bot.use_redis else MemoryStorage()
     bot = Bot(token=config.tg_bot.token, parse_mode='HTML')
     dp = Dispatcher(bot, storage=storage, loop=loop)
-
     bot['config'] = config
     bot['db'] = create_database(config.db)
     bot['chat'] = AnonymChat()
@@ -97,4 +96,4 @@ if __name__ == '__main__':
     except (KeyboardInterrupt, SystemExit):
         logger.error("Bot stopped!")
     except Exception as e:
-        logger.exception(e)
+        logger.error(e, exc_info=True)
