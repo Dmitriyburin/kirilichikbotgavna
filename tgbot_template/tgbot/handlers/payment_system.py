@@ -1,10 +1,10 @@
+import asyncio
+import datetime
+import time
+
 from aiogram import Dispatcher
 from aiogram.types import Message, PreCheckoutQuery, LabeledPrice, ContentTypes
 from aiogram.dispatcher import FSMContext
-
-PRICES = [
-    LabeledPrice(label='Ноутбук', amount=1000),
-]
 
 
 async def checkout_process(pre_checkout_query: PreCheckoutQuery):
@@ -44,6 +44,31 @@ async def successful_payment(message: Message):
 
     success_payment = bot[message.from_user.id]['success_payment_message']
     await message.answer(success_payment)
+
+
+async def payments_controller(bot, delay):
+    data = bot['db']
+    decor = bot['decor']
+    texts = decor.texts
+
+    while True:
+        try:
+            await asyncio.sleep(delay)
+
+            ungived = await data.get_ungiven_payments()
+            print('ungived:', ungived)
+            async for i in ungived:
+                days = i['days']
+                price = i['price']
+                await data.edit_premium(i['user_id'], True, days)
+
+                message = texts['premium_bought'].format(price, days)
+                await bot.send_message(i['user_id'], message)
+                await data.edit_given_status(i['secret'])
+                await data.edit_user_donates(i['user_id'], i['price'])
+
+        except Exception:
+            pass
 
 
 def register_payment(dp: Dispatcher):

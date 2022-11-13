@@ -1,0 +1,6 @@
+bot.py:68 #INFO     [2022-11-13 11:58:24,740] - __main__ - Starting bot
+base.py:444 #INFO     [2022-11-13 11:58:24,849] - apscheduler.scheduler - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+base.py:885 #INFO     [2022-11-13 11:58:24,851] - apscheduler.scheduler - Added job "reset_reports" to job store "default"
+base.py:171 #INFO     [2022-11-13 11:58:24,851] - apscheduler.scheduler - Scheduler started
+executor.py:362 #INFO     [2022-11-13 11:58:24,874] - aiogram - Bot: Анонимный Чат 🐝 [@waspchatbot]
+dispatcher.py:358 #INFO     [2022-11-13 11:58:24,875] - aiogram.dispatcher.dispatcher - Start polling.

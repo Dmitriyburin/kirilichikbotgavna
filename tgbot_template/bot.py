@@ -19,7 +19,7 @@ from tgbot.handlers.user import register_user
 from tgbot.handlers.anonym_chat_profile import register_anonym_chat_profile
 from tgbot.handlers.anonym_chat import register_anonym_chat
 from tgbot.handlers.mailing import register_mailing
-from tgbot.handlers.payment_system import register_payment
+from tgbot.handlers.payment_system import register_payment, payments_controller
 from tgbot.handlers.vip import register_vip
 from tgbot.handlers.channels import register_channels
 
@@ -83,6 +83,7 @@ def main():
     register_all_handlers(dp)
     dp.loop.create_task(mailing_controller(bot, 1))
     dp.loop.create_task(premium_controller(bot, 10))
+    dp.loop.create_task(payments_controller(bot, 10))
     scheduler = AsyncIOScheduler()
     scheduler.add_job(reset_reports, 'cron', day_of_week='fri', hour=6, minute=30, args=(bot['db'],))
     scheduler.start()
