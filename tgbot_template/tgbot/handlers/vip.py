@@ -7,7 +7,7 @@ from aiogram.dispatcher import FSMContext
 from tgbot.keyboards import inline
 from tgbot.handlers.payment_system import buy_process
 
-from tgbot_template.tgbot.misc import anypay
+from tgbot.misc import anypay
 
 
 async def vip(message: Message, state: FSMContext, back_to_profile=None):
