@@ -114,10 +114,18 @@ async def stats(message: Message):
             male_in_chat += 1
         else:
             female_in_chat += 1
-    premium_users = await data.get_premium_users_count()
 
-    await message.answer(texts['stats'].format(user_stats, total_anonchat_users, male_anonchat_users,
-                                               female_anonchat_users, premium_users, price, dialogs_count, users_in_chat,
+    percent_male = round((male_anonchat_users / user_stats) * 100, 1)
+    percent_female = round((female_anonchat_users / user_stats) * 100, 1)
+
+    male_text = f'{male_anonchat_users} ({percent_male}%)'
+    female_text = f'{female_anonchat_users} ({percent_female}%)'
+
+    premium_users = await data.get_premium_users_count()
+    average_age = stats_all['average_age']
+    await message.answer(texts['stats'].format(user_stats, total_anonchat_users, male_text,
+                                               female_text, average_age, premium_users, price, dialogs_count,
+                                               users_in_chat,
                                                male_in_chat, female_in_chat, messages_stats['total'],
                                                messages_stats['today']))
 

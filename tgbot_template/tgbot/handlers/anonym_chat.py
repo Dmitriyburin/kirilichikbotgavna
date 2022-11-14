@@ -1,3 +1,4 @@
+import asyncio
 import datetime
 
 from aiogram import Dispatcher
@@ -116,11 +117,11 @@ async def stop_chat(message: Message, state: FSMContext, skip=False):
     photo = InputFile('tgbot/data/images/end_dialog.jpg')
     await message.answer_photo(photo, caption=texts['dialog_stopped'].format(str(time_dialog)))
     photo = InputFile('tgbot/data/images/end_dialog.jpg')
+
     await bot.send_photo(companion_id, photo, caption=texts['companion_stopped_dialog'].format(time_dialog))
 
     await message.answer(texts['estimate_companion'],
                          reply_markup=inline.estimate_companion(buttons, is_admin=is_admin))
-
     await bot.send_message(companion_id, texts['estimate_companion'],
                            reply_markup=inline.estimate_companion(buttons, is_admin=is_companion_admin))
 
@@ -234,7 +235,7 @@ async def estimate_companion(call: CallbackQuery, state: FSMContext):
 
     if detail == 'like':
         bot[message.from_user.id]['is_react_companion'] = True
-        await data.increment_dislikes(companion['user_id'], companion['dislikes'] + 1)
+        await data.increment_likes(companion['user_id'], companion['likes'] + 1)
         print(bot[message.from_user.id])
         if bot[message.from_user.id]['is_report_companion']:
             await message.delete()
