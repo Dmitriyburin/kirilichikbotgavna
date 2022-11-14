@@ -7,7 +7,7 @@ from tgbot.misc.states import Profile, SetAge, RequiredChannel
 from tgbot.keyboards import inline
 from tgbot.keyboards import reply
 from tgbot.handlers.payment_system import buy_process
-from tgbot.handlers.vip import vip
+from tgbot.handlers.vip import vip, only_vip
 
 
 async def start_registration(message: Message):
@@ -37,8 +37,9 @@ async def registration_step2_age(message: Message, state: FSMContext):
         ref_commercial = None
         if not user['ref'].isdigit() and user['ref'] != 'defolt':
             ref_commercial = user['ref']
+
         profile = await data.get_user_anonchat_profile(message.from_user.id)
-        await data.edit_user_anonchat_profile(message.from_user.id, gender, age, ref_commercial)
+        await data.edit_user_anonchat_profile(message.from_user.id, gender, age, ref_commercial, first=True)
         await message.answer(texts['profile_updated'] + '\nВыберите действие из меню:',
                              reply_markup=reply.main(buttons, profile['premium']))
 
@@ -141,7 +142,7 @@ async def print_about_me(message: Message, edit=None, call=None):
     vip_text = texts['no']
     if user['premium']:
         date: datetime.datetime = user['vip_date'] + datetime.timedelta(days=user['vip_days'])
-        vip_text = 'до '+ date.strftime('%d.%m.%y')
+        vip_text = 'до ' + date.strftime('%d.%m.%y')
     text = texts['mystats'].format(message.from_user.first_name, gender, user['age'],
                                    user['likes'], user['dislikes'], vip_text)
 
@@ -197,6 +198,9 @@ async def back_to(call: CallbackQuery, state: FSMContext):
 
     elif detail == 'profile':
         await print_information(message, edit=True)
+
+    elif detail == 'search':
+        await only_vip(message, state, edit=True)
 
     await bot.answer_callback_query(call.id)
 

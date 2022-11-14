@@ -28,6 +28,8 @@ class Database:
     async def add_user(self, user_id, ref, lang='ru', ref_commercial=False):
         if ref_commercial:
             await self.ref_links.update_one({'link': ref_commercial}, {'$inc': {'users': 1, 'transitions': 1}})
+
+        await self.stats.update_one({'stat': 'all'}, {'$inc': {'users': 1}}, upsert=False)
         await self.users.insert_one({'user_id': user_id, 'ref': ref, 'lang': lang})
 
     async def get_user(self, user_id):
@@ -51,11 +53,10 @@ class Database:
              'date_registration': datetime.datetime.now(), 'premium': None,
              'saw_discount_minute': False, 'ref': ref, 'total_donated': 0})
 
-    async def edit_user_anonchat_profile(self, user_id, gender, age, ref_commercial=None):
-        if ref_commercial:
+    async def edit_user_anonchat_profile(self, user_id, gender, age, ref_commercial=None, first=None):
+        if ref_commercial and first:
             ref = await self.get_ref(ref_commercial)
             average_age = (ref['anonchat_users'] * ref['average_age'] + age) // (ref['anonchat_users'] + 1)
-            print(ref['anonchat_users'], ref['average_age'])
             if gender == 'male':
                 await self.ref_links.update_one({'link': ref_commercial}, {'$inc': {'male': 1}}, upsert=False)
                 await self.ref_links.update_one({'link': ref_commercial}, {'$set': {'average_age': average_age}},
@@ -68,6 +69,12 @@ class Database:
                                                 upsert=False)
 
             await self.ref_links.update_one({'link': ref_commercial}, {'$inc': {'anonchat_users': 1}}, upsert=False)
+
+        if first:
+            stats = await self.get_stats()
+            average_age = (stats['anonchat_users'] * stats['average_age'] + age) // (stats['anonchat_users'] + 1)
+            await self.stats.update_one({'stat': 'all'}, {'$set': {'average_age': average_age}}, upsert=False)
+            await self.stats.update_one({'stat': 'all'}, {'$inc': {'anonchat_users': 1}}, upsert=False)
 
         await self.anonchat_users.update_one({'user_id': user_id}, {'$set': {'gender': gender, 'age': int(age)}},
                                              upsert=False)
