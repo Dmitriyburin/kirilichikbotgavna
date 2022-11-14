@@ -14,6 +14,7 @@ from aiogram.utils.exceptions import Throttled
 from tgbot.keyboards import inline
 from tgbot.handlers.channels import check_sub, required_channel
 from tgbot.handlers.anonym_chat_profile import start_registration
+from tgbot.handlers.anonym_chat import estimate_companion
 
 
 class ThrottlingMiddleware(BaseMiddleware):
@@ -28,13 +29,15 @@ class ThrottlingMiddleware(BaseMiddleware):
 
     async def on_pre_process_update(self, update: types.Update, data: dict):
         bot = update.bot
-
         if update.message:
             message = update.message
         elif update.callback_query:
             message = update.callback_query.message
             message.from_user.id = update.callback_query['from']['id']
-
+            call_data = update['callback_query']['data']
+            if 'estimate_companion:' in call_data:
+                await estimate_companion(update.callback_query, None, call_data.split(':')[1])
+                raise CancelHandler()
         else:
             return
 
