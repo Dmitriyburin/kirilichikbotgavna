@@ -2,7 +2,7 @@ import asyncio
 import datetime
 
 from aiogram import Dispatcher
-from aiogram.types import Message, CallbackQuery
+from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup
 from aiogram.dispatcher import FSMContext
 from tgbot.keyboards import inline
 from tgbot.handlers.payment_system import buy_process
@@ -10,7 +10,7 @@ from tgbot.handlers.payment_system import buy_process
 from tgbot.misc import anypay
 
 
-async def vip(message: Message, state: FSMContext, back_to_profile=None):
+async def vip(message: Message, state: FSMContext, back_to_profile=None, back_to_search=False, edit=False):
     bot = message.bot
     decor = bot['decor']
     data = bot['db']
@@ -48,6 +48,10 @@ async def vip(message: Message, state: FSMContext, back_to_profile=None):
         markup.add(inline.back_button('back_to:profile'))
         await message.edit_caption(texts['vip_privileges'],
                                    reply_markup=markup)
+    elif back_to_search:
+        markup.add(inline.back_button('back_to:search'))
+        await message.edit_text(texts['vip_privileges'],
+                                reply_markup=markup)
     else:
         await message.answer(texts['vip_privileges'], reply_markup=markup)
 
@@ -68,13 +72,22 @@ async def buy_vip(call: CallbackQuery, state: FSMContext):
     await bot.answer_callback_query(call.id)
 
 
-async def free_vip(message: Message):
+async def free_vip(message: Message, back_to_search=False, edit=False):
     bot = message.bot
     decor = bot['decor']
     texts = decor.texts
 
-    await message.answer(texts['free_vip'].format(f'https://t.me/{bot["config"].tg_bot.name}'
-                                                  f'?start={message.from_user.id}'))
+    if edit:
+        await message.edit_text(texts['free_vip'].format(f'https://t.me/{bot["config"].tg_bot.name}'
+                                                         f'?start={message.from_user.id}'))
+    elif back_to_search:
+        markup = InlineKeyboardMarkup()
+        markup.add(inline.back_button('back_to:search'))
+        await message.edit_text(texts['free_vip'].format(f'https://t.me/{bot["config"].tg_bot.name}'
+                                                         f'?start={message.from_user.id}'), reply_markup=markup)
+    else:
+        await message.answer(texts['free_vip'].format(f'https://t.me/{bot["config"].tg_bot.name}'
+                                                      f'?start={message.from_user.id}'))
 
 
 async def premium_controller(bot, delay):
@@ -114,8 +127,33 @@ async def extend_vip(call: CallbackQuery, state):
     await bot.answer_callback_query(call.id)
 
 
+async def vip_callback(call: CallbackQuery, state):
+    message = call.message
+    bot = message.bot
+    message.from_user.id = call['from']['id']
+
+    detail = call.data.split(':')[1]
+    if detail == 'vip':
+        await vip(message, state, back_to_search=True)
+    elif detail == 'freevip':
+        await free_vip(message, back_to_search=True)
+    await bot.answer_callback_query(call.id)
+
+
+async def only_vip(message: Message, call: FSMContext, edit=False):
+    bot = message.bot
+    data = bot['db']
+    decor = bot['decor']
+    texts = decor.texts
+    buttons = decor.buttons
+
+    if edit:
+        await message.edit_text(texts['vip_required'], reply_markup=inline.vip(buttons))
+    else:
+        await message.answer(texts['vip_required'], reply_markup=inline.vip(buttons))
+
+
 def register_vip(dp: Dispatcher):
     dp.register_callback_query_handler(buy_vip, text_contains='buy_vip:')
     dp.register_callback_query_handler(extend_vip, text_contains='extend_vip')
-    dp.register_message_handler(vip, commands=['vip'])
-    dp.register_message_handler(free_vip, commands=["freevip"], state='*')
+    dp.register_callback_query_handler(vip_callback, text_contains='vip:')

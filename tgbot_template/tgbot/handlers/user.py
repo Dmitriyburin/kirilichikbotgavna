@@ -52,15 +52,6 @@ async def user_start(message: Message, state=FSMContext):
     await start_registration(message)
 
 
-async def only_vip(message: Message, call: FSMContext):
-    bot = message.bot
-    data = bot['db']
-    decor = bot['decor']
-    texts = decor.texts
-
-    await message.answer(texts['vip_required'])
-
-
 async def captcha_generate(call: CallbackQuery, state: FSMContext):
     message = call.message
     bot = message.bot

@@ -2,7 +2,7 @@ from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
 from aiogram.utils.markdown import hcode
 from tgbot.handlers.anonym_chat import search
-from tgbot.handlers.user import only_vip
+from tgbot.handlers.vip import only_vip
 from tgbot.handlers.anonym_chat_profile import print_information
 
 from tgbot.keyboards import inline
