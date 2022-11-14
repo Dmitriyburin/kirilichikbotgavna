@@ -213,7 +213,7 @@ async def select_vip_search(call: CallbackQuery, state: FSMContext):
     await bot.answer_callback_query(call.id)
 
 
-async def estimate_companion(call: CallbackQuery, state: FSMContext):
+async def estimate_companion(call: CallbackQuery, state: FSMContext, detail):
     message = call.message
     bot = message.bot
     decor = bot['decor']
@@ -221,7 +221,7 @@ async def estimate_companion(call: CallbackQuery, state: FSMContext):
     texts = decor.texts
     buttons = decor.buttons
 
-    detail = call.data.split(':')[1]
+    # detail = call.data.split(':')[1]
     message.from_user.id = call['from']['id']
 
     user = await data.get_user_anonchat_profile(call['from']['id'])
