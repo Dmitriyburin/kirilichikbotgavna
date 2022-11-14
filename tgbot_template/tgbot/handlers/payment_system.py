@@ -61,8 +61,10 @@ async def payments_controller(bot, delay):
                 price = i['price']
                 await data.edit_premium(i['user_id'], True, days)
                 user = await data.get_user(i['user_id'])
+
                 if not user['ref'].isdigit() and user['ref'] != 'defolt':
                     await data.add_ref_donater(user['ref'], price)
+                await data.increment_price_all_stats(price)
 
                 message = texts['premium_bought'].format(price, days)
                 await bot.send_message(i['user_id'], message)

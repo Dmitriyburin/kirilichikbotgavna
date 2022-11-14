@@ -23,6 +23,7 @@ class Database:
         self.mailing_users = self.db.mailing_users
         self.banned_users = self.db.banned_users
         self.payments = self.db.payments
+        self.stats = self.db.stats
 
     async def add_user(self, user_id, ref, lang='ru', ref_commercial=False):
         if ref_commercial:
@@ -316,6 +317,12 @@ class Database:
 
     async def edit_user_donates(self, user_id, count):
         await self.anonchat_users.update_one({'user_id': user_id}, {'$inc': {'total_donated': count}}, upsert=False)
+
+    async def increment_price_all_stats(self, price):
+        await self.stats.update_one({'stat': 'all'}, {'$inc': {'all_price': price}}, upsert=False)
+
+    async def get_stats(self):
+        return await self.stats.find_one({'stat': 'all'})
 
 
 async def main():

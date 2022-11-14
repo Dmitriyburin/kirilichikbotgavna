@@ -1,6 +1,75 @@
-bot.py:68 #INFO     [2022-11-13 14:25:48,696] - __main__ - Starting bot
-base.py:444 #INFO     [2022-11-13 14:25:48,812] - apscheduler.scheduler - Adding job tentatively -- it will be properly scheduled when the scheduler starts
-base.py:885 #INFO     [2022-11-13 14:25:48,814] - apscheduler.scheduler - Added job "reset_reports" to job store "default"
-base.py:171 #INFO     [2022-11-13 14:25:48,814] - apscheduler.scheduler - Scheduler started
-executor.py:362 #INFO     [2022-11-13 14:25:48,836] - aiogram - Bot: Анонимный Чат 🐝 [@waspchatbot]
-dispatcher.py:358 #INFO     [2022-11-13 14:25:48,836] - aiogram.dispatcher.dispatcher - Start polling.
+bot.py:68 #INFO     [2022-11-13 16:54:57,794] - __main__ - Starting bot
+base.py:444 #INFO     [2022-11-13 16:54:57,903] - apscheduler.scheduler - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+base.py:885 #INFO     [2022-11-13 16:54:57,905] - apscheduler.scheduler - Added job "reset_reports" to job store "default"
+base.py:171 #INFO     [2022-11-13 16:54:57,905] - apscheduler.scheduler - Scheduler started
+executor.py:362 #INFO     [2022-11-13 16:54:57,927] - aiogram - Bot: Анонимный Чат 🐝 [@waspchatbot]
+dispatcher.py:358 #INFO     [2022-11-13 16:54:57,927] - aiogram.dispatcher.dispatcher - Start polling.
+dispatcher.py:390 #ERROR    [2022-11-13 23:27:29,258] - aiogram.dispatcher.dispatcher - Cause exception while getting updates.
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 381, in start_polling
+    updates = await self.bot.get_updates(
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 110, in get_updates
+    result = await self.request(api.Methods.GET_UPDATES, payload)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 128, in check_result
+    raise exceptions.TelegramAPIError(description)
+aiogram.utils.exceptions.TelegramAPIError: Bad Gateway
+base_events.py:1707 #ERROR    [2022-11-14 17:32:24,477] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-5470' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=BotBlocked('Forbidden: bot was blocked by the user')>
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/echo.py", line 38, in bot_echo
+    await search(message, state)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/anonym_chat.py", line 58, in search
+    await bot.send_message(companion['user_id'], texts['dialog_found'].format(
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 341, in send_message
+    result = await self.request(api.Methods.SEND_MESSAGE, payload)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 121, in check_result
+    exceptions.Unauthorized.detect(description)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.BotBlocked: Forbidden: bot was blocked by the user
+base_events.py:1707 #ERROR    [2022-11-14 17:32:33,726] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-5483' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=BotBlocked('Forbidden: bot was blocked by the user')>
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/anonym_chat.py", line 150, in stop
+    await stop_chat(message, state)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/anonym_chat.py", line 119, in stop_chat
+    await bot.send_photo(companion_id, photo, caption=texts['companion_stopped_dialog'].format(time_dialog))
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 540, in send_photo
+    result = await self.request(api.Methods.SEND_PHOTO, payload, files)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 121, in check_result
+    exceptions.Unauthorized.detect(description)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.BotBlocked: Forbidden: bot was blocked by the user

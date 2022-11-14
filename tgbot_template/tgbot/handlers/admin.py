@@ -102,9 +102,12 @@ async def stats(message: Message):
     messages_stats = await data.get_messages_stats()
     total_anonchat_users, male_anonchat_users, female_anonchat_users = await data.get_anonchat_users_stats()
     users_online_ids = await chat.get_anonchat_online()
+    stats_all = await data.get_stats()
+    price = stats_all['all_price']
     male_in_chat, female_in_chat = 0, 0
     users_in_chat = len(users_online_ids)
     dialogs_count = users_in_chat // 2
+
     for user_id in users_online_ids:
         user = await data.get_user_anonchat_profile(int(user_id))
         if user['gender'] == 'male':
@@ -114,7 +117,7 @@ async def stats(message: Message):
     premium_users = await data.get_premium_users_count()
 
     await message.answer(texts['stats'].format(user_stats, total_anonchat_users, male_anonchat_users,
-                                               female_anonchat_users, premium_users, dialogs_count, users_in_chat,
+                                               female_anonchat_users, premium_users, price, dialogs_count, users_in_chat,
                                                male_in_chat, female_in_chat, messages_stats['total'],
                                                messages_stats['today']))
 

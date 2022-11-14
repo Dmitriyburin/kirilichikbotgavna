@@ -234,7 +234,7 @@ async def estimate_companion(call: CallbackQuery, state: FSMContext):
 
     if detail == 'like':
         bot[message.from_user.id]['is_react_companion'] = True
-        await data.increment_dislikes(companion['user_id'], companion['dislikes'] + 1)
+        await data.increment_likes(companion['user_id'], companion['likes'] + 1)
         print(bot[message.from_user.id])
         if bot[message.from_user.id]['is_report_companion']:
             await message.delete()
@@ -261,9 +261,9 @@ async def estimate_companion(call: CallbackQuery, state: FSMContext):
 
         bot[message.from_user.id]['is_report_companion'] = True
         await data.increment_reports_count(companion['user_id'], companion['reports_count'] + 1)
-        if companion['reports_count'] + 1 == 5:
+        if companion['reports_count'] + 1 == 30:
             await data.ban_user(companion['user_id'], hours=2, time_mute=datetime.datetime.now())
-        elif companion['reports_count'] + 1 >= 20:
+        elif companion['reports_count'] + 1 >= 50:
             await data.ban_user(companion['user_id'])
         if bot[message.from_user.id]['is_react_companion']:
             await message.delete()
