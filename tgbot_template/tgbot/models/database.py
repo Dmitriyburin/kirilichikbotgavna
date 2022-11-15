@@ -52,6 +52,7 @@ class Database:
         await self.anonchat_users.insert_one(
             {'user_id': user_id, 'gender': gender, 'age': age, 'dialogs': 0, 'messages': 0, 'likes': 0,
              'dislikes': 0, 'reports_count': 0, 'last_companion_id': None, 'time': 0, 'vip_days': None,
+             'vip_hours': None,
              'vip_date': None, 'last_dialogs': [0], 'last_companion_gender': None, 'last_companion_age': None,
              'date_registration': datetime.datetime.now(), 'premium': None,
              'saw_discount_minute': False, 'ref': ref, 'total_donated': 0})
@@ -111,10 +112,11 @@ class Database:
         await self.anonchat_users.update_one({'user_id': user_id}, {'$set': {'last_companion_id': companion_id}},
                                              upsert=False)
 
-    async def edit_premium(self, user_id, premium, days=None):
+    async def edit_premium(self, user_id, premium, days=None, hours=None):
         if premium:
             await self.anonchat_users.update_one({'user_id': user_id},
                                                  {'$set': {'premium': premium, 'vip_days': int(days),
+                                                           'vip_hours': hours,
                                                            'vip_date': datetime.datetime.now()}}, upsert=False)
         else:
             await self.anonchat_users.update_one({'user_id': user_id},
@@ -332,14 +334,18 @@ class Database:
 
 
 async def main():
-    database = Database('mongodb://45.153.184.233:38128')
-    users = await database.get_anonchat_users()
+    database = Database('mongodb://45.153.184.233:27017')
+    # database = Database('mongodb://127.0.0.1:27017')
+    users = await database.get_users()
     sum_age = 0
     count = 0
     async for user in users:
-        if user['age']:
-            sum_age += user['age']
-            count += 1
+        if user['ref'] == 'https://t.me/waspchatbot?start=MzI2MTk2MQ':
+            anonchat_user = await database.get_user_anonchat_profile(user['user_id'])
+            if anonchat_user['age']:
+                count += 1
+                sum_age += anonchat_user['age']
+
     print(sum_age)
     print(sum_age // count)
 

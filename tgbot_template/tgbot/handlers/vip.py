@@ -104,8 +104,13 @@ async def premium_controller(bot, delay):
             for i in premium_users:
                 profile = await data.get_user_anonchat_profile(i)
 
-                if profile['premium'] and (
-                        profile['vip_date'] + datetime.timedelta(days=profile['vip_days'])) < cur_time:
+                if profile['premium']:
+                    if profile['vip_date']:
+                        if not (profile['vip_date'] + datetime.timedelta(days=profile['vip_days'])) < cur_time:
+                            continue
+                    if profile.get('vip_hours', False):
+                        if not (profile['vip_date'] + datetime.timedelta(hours=profile['vip_hours'])) < cur_time:
+                            continue
                     try:
                         await bot.send_message(i, texts['bell'])
                         await bot.send_message(i, texts['premium_ended'], reply_markup=inline.extend_vip(buttons))
