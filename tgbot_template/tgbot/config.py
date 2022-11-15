@@ -88,10 +88,10 @@ def load_config(path: str = None):
 
 
 prices = {
-    1: {'days': 1, 'price': 29, 'discount': 29, 'button': '1 день - {0} ₽'},
-    7: {'days': 7, 'price': 99, 'discount': 99, 'button': '7 день - {0} ₽'},
-    30: {'days': 30, 'price': 349, 'discount': 349, 'button': '1 месяц - {0} ₽'},
-    365: {'days': 365, 'price': 1499, 'discount': 1499, 'button': '1 год - {0} ₽'},
+    1: {'days': 1, 'price': 39, 'discount': 29, 'button': '1 день - {0} ₽'},
+    7: {'days': 7, 'price': 69, 'discount': 99, 'button': '7 день - {0} ₽'},
+    30: {'days': 30, 'price': 99, 'discount': 349, 'button': '1 месяц - {0} ₽'},
+    365: {'days': 365, 'price': 299, 'discount': 1499, 'button': '1 год - {0} ₽'},
 }
 anypay_secret = '2e7%b*P3H(7s'
 anypay_shop = 9995
