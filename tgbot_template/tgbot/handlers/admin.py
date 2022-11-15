@@ -122,7 +122,8 @@ async def stats(message: Message):
     female_text = f'{female_anonchat_users} ({percent_female}%)'
 
     premium_users = await data.get_premium_users_count()
-    average_age = stats_all['average_age']
+    average_age = stats_all['sum_average_age'] // total_anonchat_users
+
     await message.answer(texts['stats'].format(user_stats, total_anonchat_users, male_text,
                                                female_text, average_age, premium_users, price, dialogs_count,
                                                users_in_chat,
@@ -178,11 +179,26 @@ async def ref_stats(message: Message, state: FSMContext):
 
     ref = await data.get_ref(message.text)
     if ref:
-        price_user = round(ref['users'] / ref['price'], 3)
-        price_reg = round(ref['anonchat_users'] / ref['price'], 3)
-        price_transitions = round(ref['transitions'] / ref['price'], 3)
+        if ref['transitions'] != 0:
+            price_transitions = round(ref['price'] / ref['transitions'], 3)
+        else:
+            price_transitions = 0
+
+        if ref['users'] != 0:
+            price_user = round(ref['price'] / ref['users'], 3)
+        else:
+            price_user = 0
+
+        if ref['anonchat_users'] != 0:
+            price_reg = round(ref['price'] / ref['anonchat_users'], 3)
+        else:
+            price_reg = 0
+
+        average_age = ref['sum_average_age'] // ref['anonchat_users']
+
         await message.answer(texts['link_stats'].format(ref['users'], ref['anonchat_users'], ref['female'], ref['male'],
-                                                        ref['average_age'], ref['price'], price_transitions, price_user,
+                                                        average_age, ref['transitions'], ref['price'],
+                                                        price_transitions, price_user,
                                                         price_reg,
                                                         ref['donaters'],
                                                         ref['all_price'], ))
