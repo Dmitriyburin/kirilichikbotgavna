@@ -44,6 +44,9 @@ class Database:
     async def get_user_anonchat_profile(self, user_id):
         return await self.anonchat_users.find_one({'user_id': user_id})
 
+    async def get_anonchat_users(self):
+        return self.anonchat_users.find({})
+
     async def add_user_anonchat_profile(self, user_id, gender, age, ref, ref_commercial=None):
 
         await self.anonchat_users.insert_one(
@@ -71,9 +74,7 @@ class Database:
             await self.ref_links.update_one({'link': ref_commercial}, {'$inc': {'anonchat_users': 1}}, upsert=False)
 
         if first:
-            stats = await self.get_stats()
-            average_age = (stats['anonchat_users'] * stats['average_age'] + age) // (stats['anonchat_users'] + 1)
-            await self.stats.update_one({'stat': 'all'}, {'$set': {'average_age': average_age}}, upsert=False)
+            await self.stats.update_one({'stat': 'all'}, {'$inc': {'sum_average_age': age}}, upsert=False)
             await self.stats.update_one({'stat': 'all'}, {'$inc': {'anonchat_users': 1}}, upsert=False)
 
         await self.anonchat_users.update_one({'user_id': user_id}, {'$set': {'gender': gender, 'age': int(age)}},
@@ -307,13 +308,15 @@ class Database:
     async def add_anypay_payment_no_discount(self, user_id, sign, secret, payment_id, days, price):
         await self.payments.insert_one(
             {'type': 'anypay', 'user_id': user_id, 'sign': sign, 'secret': secret, 'payment_id': payment_id,
-             'days': days, 'price': price, 'paid': False, 'gived': False, 'discount': None})
+             'days': days, 'price': float(price), 'paid': False, 'gived': False, 'discount': None})
 
     async def get_payment_by_secret(self, secret):
         return await self.payments.find_one({'secret': secret})
 
     async def edit_paid_status(self, secret):
-        await self.payments.update_one({'secret': secret}, {'$set': {'paid': True, 'discount': None}}, upsert=False)
+        payment = self.payments.find_one({'secret': secret})
+        if payment:
+            await self.payments.update_one({'secret': secret}, {'$set': {'paid': True, 'discount': None}}, upsert=False)
 
     async def edit_given_status(self, secret):
         await self.payments.update_one({'secret': secret}, {'$set': {'gived': True}}, upsert=False)
@@ -333,9 +336,16 @@ class Database:
 
 
 async def main():
-    database = Database('mongodb://localhost:27017')
-    ref = await database.get_ref('https://t.me/verymuchsimplebot?start=MjkzNjc5Mw')
-    print(ref['users'])
+    database = Database('mongodb://45.153.184.233:38128')
+    users = await database.get_anonchat_users()
+    sum_age = 0
+    count = 0
+    async for user in users:
+        if user['age']:
+            sum_age += user['age']
+            count += 1
+    print(sum_age)
+    print(sum_age // count)
 
 
 if __name__ == '__main__':
