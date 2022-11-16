@@ -71,9 +71,7 @@ class Database:
             await self.ref_links.update_one({'link': ref_commercial}, {'$inc': {'anonchat_users': 1}}, upsert=False)
 
         if first:
-            stats = await self.get_stats()
-            average_age = (stats['anonchat_users'] * stats['average_age'] + age) // (stats['anonchat_users'] + 1)
-            await self.stats.update_one({'stat': 'all'}, {'$set': {'average_age': average_age}}, upsert=False)
+            await self.stats.update_one({'stat': 'all'}, {'$inc': {'sum_average_age': age}}, upsert=False)
             await self.stats.update_one({'stat': 'all'}, {'$inc': {'anonchat_users': 1}}, upsert=False)
 
         await self.anonchat_users.update_one({'user_id': user_id}, {'$set': {'gender': gender, 'age': int(age)}},
