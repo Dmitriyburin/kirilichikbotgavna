@@ -26,7 +26,8 @@ async def user_start(message: Message, state=FSMContext):
         ref_commercial = None
         if ref.isdigit() and int(ref) != message.from_user.id:
             ref_user_id = int(ref)
-            await data.edit_premium(ref_user_id, True, hours=1, days=0)
+
+            await data.edit_premium(ref_user_id, True, days=0, hours=1)
             await bot.send_message(ref_user_id, texts['get_free_vip'])
         elif not ref.isdigit() and ref != 'defolt':
             ref_commercial = f'https://t.me/{bot["config"].tg_bot.name}?start={ref}'
