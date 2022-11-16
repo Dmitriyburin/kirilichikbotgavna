@@ -27,7 +27,7 @@ async def registration_step2_age(message: Message, state: FSMContext):
     texts = decor.texts
     buttons = decor.buttons
 
-    if message.text.isdigit() and int(message.text) in range(7, 99):
+    if message.text.isdigit() and int(message.text) in range(10, 100):
         state_data = await state.get_data()
         await state.finish()
         gender = state_data['gender']
