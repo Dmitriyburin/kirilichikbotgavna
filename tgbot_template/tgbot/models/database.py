@@ -55,12 +55,9 @@ class Database:
 
     async def edit_user_anonchat_profile(self, user_id, gender, age, ref_commercial=None, first=None):
         if ref_commercial and first:
-            ref = await self.get_ref(ref_commercial)
-            average_age = (ref['anonchat_users'] * ref['average_age'] + age) // (ref['anonchat_users'] + 1)
+            await self.ref_links.update_one({'link': ref_commercial}, {'$inc': {'sum_average_age': age}}, upsert=False)
             if gender == 'male':
                 await self.ref_links.update_one({'link': ref_commercial}, {'$inc': {'male': 1}}, upsert=False)
-                await self.ref_links.update_one({'link': ref_commercial}, {'$set': {'average_age': average_age}},
-                                                upsert=False)
 
             elif gender == 'female':
                 await self.ref_links.update_one({'link': ref_commercial},
@@ -267,7 +264,7 @@ class Database:
 
     async def add_ref(self, link, price):
         await self.ref_links.insert_one({'link': link, 'users': 0, 'anonchat_users': 0, 'male': 0, 'female': 0,
-            'average_age': 0, 'transitions': 0, 'price': price,
+            'sum_average_age': 0, 'transitions': 0, 'price': price,
                                          'donaters': 0, 'all_price': 0})
 
     async def increment_ref_transition(self, link):

@@ -9360,3 +9360,21 @@ Traceback (most recent call last):
   File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/models/database.py", line 59, in edit_user_anonchat_profile
     average_age = (ref['anonchat_users'] * ref['average_age'] + age) // (ref['anonchat_users'] + 1)
 KeyError: 'average_age'
+base_events.py:1707 #ERROR    [2022-11-16 03:05:31,909] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-14827' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=KeyError('average_age')>
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/anonym_chat_profile.py", line 42, in registration_step2_age
+    await data.edit_user_anonchat_profile(message.from_user.id, gender, age, ref_commercial, first=True)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/models/database.py", line 59, in edit_user_anonchat_profile
+    average_age = (ref['anonchat_users'] * ref['average_age'] + age) // (ref['anonchat_users'] + 1)
+KeyError: 'average_age'
