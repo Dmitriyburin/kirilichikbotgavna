@@ -1,11 +1,11 @@
-bot.py:68 #INFO     [2022-11-16 03:45:42,520] - __main__ - Starting bot
-base.py:444 #INFO     [2022-11-16 03:45:42,631] - apscheduler.scheduler - Adding job tentatively -- it will be properly scheduled when the scheduler starts
-base.py:885 #INFO     [2022-11-16 03:45:42,632] - apscheduler.scheduler - Added job "reset_reports" to job store "default"
-base.py:171 #INFO     [2022-11-16 03:45:42,632] - apscheduler.scheduler - Scheduler started
-executor.py:362 #INFO     [2022-11-16 03:45:42,656] - aiogram - Bot: Анонимный Чат 🐝 [@waspchatbot]
-dispatcher.py:358 #INFO     [2022-11-16 03:45:42,657] - aiogram.dispatcher.dispatcher - Start polling.
-base_events.py:1707 #ERROR    [2022-11-16 04:20:28,675] - asyncio - Task exception was never retrieved
-future: <Task finished name='Task-377' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=NameError("name 'average_age' is not defined")>
+bot.py:68 #INFO     [2022-11-16 04:31:29,207] - __main__ - Starting bot
+base.py:444 #INFO     [2022-11-16 04:31:29,316] - apscheduler.scheduler - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+base.py:885 #INFO     [2022-11-16 04:31:29,317] - apscheduler.scheduler - Added job "reset_reports" to job store "default"
+base.py:171 #INFO     [2022-11-16 04:31:29,318] - apscheduler.scheduler - Scheduler started
+executor.py:362 #INFO     [2022-11-16 04:31:29,341] - aiogram - Bot: Анонимный Чат 🐝 [@waspchatbot]
+dispatcher.py:358 #INFO     [2022-11-16 04:31:29,341] - aiogram.dispatcher.dispatcher - Start polling.
+base_events.py:1707 #ERROR    [2022-11-16 04:33:55,383] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-98' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=ZeroDivisionError('integer division or modulo by zero')>
 Traceback (most recent call last):
   File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
     for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
@@ -17,8 +17,6 @@ Traceback (most recent call last):
     return await self.message_handlers.notify(update.message)
   File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
     response = await handler_obj.handler(*args, **partial_data)
-  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/anonym_chat_profile.py", line 42, in registration_step2_age
-    await data.edit_user_anonchat_profile(message.from_user.id, gender, age, ref_commercial, first=True)
-  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/models/database.py", line 66, in edit_user_anonchat_profile
-    await self.ref_links.update_one({'link': ref_commercial}, {'$set': {'average_age': average_age}},
-NameError: name 'average_age' is not defined
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/admin.py", line 195, in ref_stats
+    average_age = ref['sum_average_age'] // ref['anonchat_users']
+ZeroDivisionError: integer division or modulo by zero
