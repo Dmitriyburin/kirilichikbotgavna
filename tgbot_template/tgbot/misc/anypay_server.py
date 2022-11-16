@@ -16,9 +16,8 @@ def main_handler():
 @app.route('/pay/anypay', methods=['POST'])
 def anypay_handler():
     form_data = request.form
-    print(form_data)
     sign = (form_data['sign'])
-    print(sign)
+
     loop.run_until_complete(data.edit_paid_status(sign))
     return 'Paid!'
 

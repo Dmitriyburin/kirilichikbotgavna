@@ -28,6 +28,7 @@ from tgbot.handlers.vip import premium_controller
 from tgbot.middlewares.environment import EnvironmentMiddleware
 from tgbot.middlewares.throttling import ThrottlingMiddleware, reset_reports
 from tgbot.keyboards import keyboards
+from tgbot.misc.anypay_server import app
 
 logger = logging.getLogger(__name__)
 
@@ -86,13 +87,16 @@ def main():
     scheduler = AsyncIOScheduler()
     scheduler.add_job(reset_reports, 'cron', day_of_week='fri', hour=6, minute=30, args=(bot['db'],))
     scheduler.start()
+
+    # app.run('0.0.0.0', 8080)
     executor.start_polling(dp)
+
     return bot
 
 
 if __name__ == '__main__':
     try:
-        bot = main()
+        main()
     except (KeyboardInterrupt, SystemExit):
         logger.error("Bot stopped!")
     except Exception as e:

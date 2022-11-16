@@ -1,10 +1,10 @@
 [Unit]
-Description=Course Bot
+Description=Anonymchat Telegram Bot
 After=network.target
 
 [Service]
-User=tgbot
-Group=tgbot
+User=root
+Group=root
 Type=simple
 WorkingDirectory=/opt/tgbot
 ExecStart=/opt/tgbot/venv/bin/python bot.py

@@ -1,6 +1,55 @@
-bot.py:67 #INFO     [2022-11-12 17:25:06,840] - __main__ - Starting bot
-base.py:444 #INFO     [2022-11-12 17:25:06,938] - apscheduler.scheduler - Adding job tentatively -- it will be properly scheduled when the scheduler starts
-base.py:885 #INFO     [2022-11-12 17:25:06,941] - apscheduler.scheduler - Added job "reset_reports" to job store "default"
-base.py:171 #INFO     [2022-11-12 17:25:06,941] - apscheduler.scheduler - Scheduler started
-executor.py:362 #INFO     [2022-11-12 17:25:07,114] - aiogram - Bot: EzTestBot [@VeryMuchSimpleBot]
-dispatcher.py:358 #INFO     [2022-11-12 17:25:07,114] - aiogram.dispatcher.dispatcher - Start polling.
+bot.py:67 #INFO     [2022-11-13 09:58:18,839] - __main__ - Starting bot
+base.py:444 #INFO     [2022-11-13 09:58:18,925] - apscheduler.scheduler - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+base.py:885 #INFO     [2022-11-13 09:58:18,927] - apscheduler.scheduler - Added job "reset_reports" to job store "default"
+base.py:171 #INFO     [2022-11-13 09:58:18,927] - apscheduler.scheduler - Scheduler started
+executor.py:362 #INFO     [2022-11-13 09:58:19,106] - aiogram - Bot: EzTestBot [@VeryMuchSimpleBot]
+dispatcher.py:358 #INFO     [2022-11-13 09:58:19,106] - aiogram.dispatcher.dispatcher - Start polling.
+base_events.py:1744 #ERROR    [2022-11-13 09:58:29,081] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-9' coro=<Dispatcher._process_polling_updates() done, defined at D:\Programming\Langs\Python\Bots\learning\kirilichikbotgavna\venv\lib\site-packages\aiogram\dispatcher\dispatcher.py:407> exception=ConnectionError('Error 22 connecting to localhost:6379. 22.')>
+Traceback (most recent call last):
+  File "D:\Programming\Langs\Python\Bots\learning\kirilichikbotgavna\venv\lib\site-packages\aioredis\connection.py", line 692, in connect
+    await self._connect()
+  File "D:\Programming\Langs\Python\Bots\learning\kirilichikbotgavna\venv\lib\site-packages\aioredis\connection.py", line 719, in _connect
+    reader, writer = await asyncio.open_connection(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.1520.0_x64__qbz5n2kfra8p0\lib\asyncio\streams.py", line 47, in open_connection
+    transport, _ = await loop.create_connection(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.1520.0_x64__qbz5n2kfra8p0\lib\asyncio\base_events.py", line 1069, in create_connection
+    raise exceptions[0]
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.1520.0_x64__qbz5n2kfra8p0\lib\asyncio\base_events.py", line 1049, in create_connection
+    sock = await self._connect_sock(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.1520.0_x64__qbz5n2kfra8p0\lib\asyncio\base_events.py", line 960, in _connect_sock
+    await self.sock_connect(sock, address)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.1520.0_x64__qbz5n2kfra8p0\lib\asyncio\proactor_events.py", line 705, in sock_connect
+    return await self._proactor.connect(sock, address)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.1520.0_x64__qbz5n2kfra8p0\lib\asyncio\windows_events.py", line 817, in _poll
+    value = callback(transferred, key, ov)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.1520.0_x64__qbz5n2kfra8p0\lib\asyncio\windows_events.py", line 604, in finish_connect
+    ov.getresult()
+ConnectionRefusedError: [WinError 1225] Удаленный компьютер отклонил это сетевое подключение
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Programming\Langs\Python\Bots\learning\kirilichikbotgavna\venv\lib\site-packages\aiogram\dispatcher\dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "D:\Programming\Langs\Python\Bots\learning\kirilichikbotgavna\venv\lib\site-packages\aiogram\dispatcher\dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "D:\Programming\Langs\Python\Bots\learning\kirilichikbotgavna\venv\lib\site-packages\aiogram\dispatcher\handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "D:\Programming\Langs\Python\Bots\learning\kirilichikbotgavna\venv\lib\site-packages\aiogram\dispatcher\dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "D:\Programming\Langs\Python\Bots\learning\kirilichikbotgavna\venv\lib\site-packages\aiogram\dispatcher\handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "D:\Programming\Langs\Python\Bots\learning\kirilichikbotgavna\tgbot_template\tgbot\handlers\echo.py", line 23, in bot_echo
+    is_search = await chat.get_search(user.get('user_id', None))
+  File "D:\Programming\Langs\Python\Bots\learning\kirilichikbotgavna\tgbot_template\tgbot\models\anonym_redis.py", line 56, in get_search
+    elements = list(await self.r.smembers('search'))
+  File "D:\Programming\Langs\Python\Bots\learning\kirilichikbotgavna\venv\lib\site-packages\aioredis\client.py", line 1082, in execute_command
+    conn = self.connection or await pool.get_connection(command_name, **options)
+  File "D:\Programming\Langs\Python\Bots\learning\kirilichikbotgavna\venv\lib\site-packages\aioredis\connection.py", line 1416, in get_connection
+    await connection.connect()
+  File "D:\Programming\Langs\Python\Bots\learning\kirilichikbotgavna\venv\lib\site-packages\aioredis\connection.py", line 698, in connect
+    raise ConnectionError(self._error_message(e))
+aioredis.exceptions.ConnectionError: Error 22 connecting to localhost:6379. 22.
+dispatcher.py:433 #INFO     [2022-11-13 09:58:40,195] - aiogram.dispatcher.dispatcher - Stop polling...
+executor.py:329 #WARNING  [2022-11-13 09:58:40,195] - aiogram - Goodbye!
