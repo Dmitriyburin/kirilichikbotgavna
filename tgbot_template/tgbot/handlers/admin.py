@@ -9,7 +9,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.utils.deep_linking import get_start_link, decode_payload
 from tgbot.misc.states import AddChannel, DeleteChannel, AddRef, DeleteRef
 
-from tgbot_template.tgbot.misc.states import StatsRef
+from tgbot.misc.states import StatsRef
 
 
 async def admin_main(message: Message):
@@ -195,10 +195,10 @@ async def ref_stats(message: Message, state: FSMContext):
             price_reg = 0
 
         average_age = ref['sum_average_age'] // ref['anonchat_users']
-
         await message.answer(texts['link_stats'].format(ref['users'], ref['anonchat_users'], ref['female'], ref['male'],
                                                         average_age, ref['transitions'], ref['price'],
                                                         price_transitions, price_user,
+
                                                         price_reg,
                                                         ref['donaters'],
                                                         ref['all_price'], ))

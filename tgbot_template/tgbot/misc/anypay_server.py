@@ -1,5 +1,5 @@
 from flask import Flask, request
-from tgbot_template.tgbot.models.database import Database
+from models.database import Database
 
 import asyncio
 

@@ -5,9 +5,10 @@ After=network.target
 [Service]
 User=root
 Group=root
+
 Type=simple
-WorkingDirectory=/opt/tgbot
-ExecStart=/opt/tgbot/venv/bin/python bot.py
+WorkingDirectory=/root/snap/work_directory/kirilichikbotgavna/tgbot_template
+ExecStart=/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/bin/python bot.py
 Restart=always
 
 [Install]
