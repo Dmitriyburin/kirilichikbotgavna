@@ -329,6 +329,10 @@ class Database:
         return await self.stats.find_one({'stat': 'all'})
 
 
+async def del_today_messages(database):
+    await database.del_today_messages()
+
+
 async def main():
     database = Database('mongodb://localhost:27017')
     ref = await database.get_ref('https://t.me/verymuchsimplebot?start=MjkzNjc5Mw')

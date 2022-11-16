@@ -7,7 +7,7 @@ from aiogram import Bot, Dispatcher
 from aiogram import executor
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.contrib.fsm_storage.redis import RedisStorage2
-from tgbot.models.database import Database
+from tgbot.models.database import Database, del_today_messages
 from tgbot.models.anonym_redis import AnonymChat
 
 from tgbot.config import load_config
@@ -86,6 +86,7 @@ def main():
     dp.loop.create_task(payments_controller(bot, 10))
     scheduler = AsyncIOScheduler()
     scheduler.add_job(reset_reports, 'cron', day_of_week='fri', hour=6, minute=30, args=(bot['db'],))
+    scheduler.add_job(del_today_messages, 'cron', hour=0, minute=1, args=(bot['db'],))
     scheduler.start()
     executor.start_polling(dp)
     return bot
