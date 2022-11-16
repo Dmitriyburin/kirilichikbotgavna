@@ -114,8 +114,8 @@ async def stats(message: Message):
         else:
             female_in_chat += 1
 
-    percent_male = round((male_anonchat_users / user_stats) * 100, 1)
-    percent_female = round((female_anonchat_users / user_stats) * 100, 1)
+    percent_male = round((male_anonchat_users / total_anonchat_users) * 100, 1)
+    percent_female = round((female_anonchat_users / total_anonchat_users) * 100, 1)
 
     male_text = f'{male_anonchat_users} ({percent_male}%)'
     female_text = f'{female_anonchat_users} ({percent_female}%)'
