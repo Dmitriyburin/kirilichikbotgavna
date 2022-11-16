@@ -21,7 +21,7 @@ async def admin_main(message: Message):
 
 
 async def add_channel_start(message: Message):
-    await message.answer('Перешлите сюда сообщение с канала, который хотите добавить')
+    await message.answer('Перешлите сюда id канала, который хотите добавить')
     await AddChannel.channel.set()
 
 
@@ -29,11 +29,10 @@ async def add_channel(message: Message, state: FSMContext):
     bot = message.bot
     data = bot['db']
     try:
-        channel_id = message.forward_from_chat.id
-        bot['channel_id'] = channel_id
+        bot['channel_id'] = int(message.text)
         await message.answer('Скиньте ссылку на канал, по которой будут переходить пользователи')
         await AddChannel.link.set()
-    except AttributeError as e:
+    except Exception as e:
         await message.answer('Cообщение неккоректное, проверьте сообщение и попробуйте еще раз: /add_sub')
         await state.finish()
 
