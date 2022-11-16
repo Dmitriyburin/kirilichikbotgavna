@@ -49,6 +49,7 @@ class Database:
         await self.anonchat_users.insert_one(
             {'user_id': user_id, 'gender': gender, 'age': age, 'dialogs': 0, 'messages': 0, 'likes': 0,
              'dislikes': 0, 'reports_count': 0, 'last_companion_id': None, 'time': 0, 'vip_days': None,
+             'vip_hours':None,
              'vip_date': None, 'last_dialogs': [0], 'last_companion_gender': None, 'last_companion_age': None,
              'date_registration': datetime.datetime.now(), 'premium': None,
              'saw_discount_minute': False, 'ref': ref, 'total_donated': 0})
@@ -109,10 +110,11 @@ class Database:
         await self.anonchat_users.update_one({'user_id': user_id}, {'$set': {'last_companion_id': companion_id}},
                                              upsert=False)
 
-    async def edit_premium(self, user_id, premium, days=None):
+    async def edit_premium(self, user_id, premium, days=None, hours=None):
         if premium:
             await self.anonchat_users.update_one({'user_id': user_id},
                                                  {'$set': {'premium': premium, 'vip_days': int(days),
+                                                            'vip_hours': hours,
                                                            'vip_date': datetime.datetime.now()}}, upsert=False)
         else:
             await self.anonchat_users.update_one({'user_id': user_id},
