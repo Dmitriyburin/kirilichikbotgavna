@@ -336,12 +336,12 @@ class Database:
         all_users = await self.users.count_documents(
             {'ref': link}
         )
-        average_age = self.anonchat_users.aggregate([{
-            '$group': {
+        average_age = self.anonchat_users.aggregate([
+            {'$match': {'ref': link}},
+            {'$group': {
                 '_id': 'age',
-                'count': {'$avg': '$age'}
-            }}])
-
+                'count': {'$avg': '$age'}}}
+            ])
         count = 0
         async for i in average_age:
             count = i['count']
