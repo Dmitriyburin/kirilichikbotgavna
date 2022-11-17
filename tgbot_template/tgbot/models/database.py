@@ -325,7 +325,18 @@ class Database:
 
     async def get_stats(self):
         return await self.stats.find_one({'stat': 'all'})
-
+    
+    async def ref_stats_online(self, link):
+        male = await self.anonchat_users.count_documents(
+            {'gender': 'male', 'age': {'$ne': None}, 'ref': link})
+        female = await self.anonchat_users.count_documents(
+            {'gender': 'female', 'age': {'$ne': None}, 'ref': link})
+        all_anonchat_users = await self.anonchat_users.count_documents(
+            {'gender': {'$ne': None}, 'age': {'$ne': None}, 'ref': link})
+        all_users = await self.users.count_documents(
+            {'ref': link}
+        )
+        return {'male': male, 'female': female, 'all_anonchat_users': all_anonchat_users, 'all_users': all_users}
 
 async def del_today_messages(database):
     await database.del_today_messages()

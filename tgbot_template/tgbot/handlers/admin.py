@@ -177,25 +177,32 @@ async def ref_stats(message: Message, state: FSMContext):
 
     ref = await data.get_ref(message.text)
     if ref:
+        ref_stat = await data.ref_stats_online(ref['link'])
+        male = ref_stat['male']
+        female = ref_stat['female']
+        anonchat_users = ref_stat['all_anonchat_users']
+        users = ref_stat['all_users']
+
         if ref['transitions'] != 0:
             price_transitions = round(ref['price'] / ref['transitions'], 3)
         else:
             price_transitions = 0
 
-        if ref['users'] != 0:
+        if users != 0:
             price_user = round(ref['price'] / ref['users'], 3)
         else:
             price_user = 0
 
-        if ref['anonchat_users'] != 0:            
-            average_age = ref['sum_average_age'] // ref['anonchat_users'] 
+        if anonchat_users != 0:
             price_reg = round(ref['price'] / ref['anonchat_users'], 3)
         else:
             price_reg = 0
-            average_age = 0
 
-        await message.answer(texts['link_stats'].format(ref['users'], ref['anonchat_users'], ref['female'], ref['male'],
-                                                        average_age, ref['transitions'], ref['price'], price_transitions, price_user,
+        average_age = ref['sum_average_age'] // ref['anonchat_users']
+        await message.answer(texts['link_stats'].format(users, anonchat_users, male, female,
+                                                        average_age, ref['transitions'], ref['price'],
+                                                        price_transitions, price_user,
+
                                                         price_reg,
                                                         ref['donaters'],
                                                         ref['all_price'], ))
