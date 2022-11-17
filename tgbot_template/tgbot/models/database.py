@@ -336,8 +336,19 @@ class Database:
         all_users = await self.users.count_documents(
             {'ref': link}
         )
-        return {'male': male, 'female': female, 'all_anonchat_users': all_anonchat_users, 'all_users': all_users}
+        average_age = self.anonchat_users.aggregate([{
+            '$group': {
+                '_id': 'age',
+                'count': {'$avg': '$age'}
+            }}])
 
+        count = 0
+        async for i in average_age:
+            count = i['count']
+
+        return {'male': male, 'female': female, 'all_anonchat_users': all_anonchat_users, 'all_users': all_users,
+
+                'average_age': count}
 async def del_today_messages(database):
     await database.del_today_messages()
 

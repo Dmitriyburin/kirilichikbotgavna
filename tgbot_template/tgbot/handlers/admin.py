@@ -182,6 +182,7 @@ async def ref_stats(message: Message, state: FSMContext):
         female = ref_stat['female']
         anonchat_users = ref_stat['all_anonchat_users']
         users = ref_stat['all_users']
+        average_age = int(ref_stat['average_age'])
 
         if ref['transitions'] != 0:
             price_transitions = round(ref['price'] / ref['transitions'], 3)
@@ -194,7 +195,6 @@ async def ref_stats(message: Message, state: FSMContext):
             price_user = 0
 
         if anonchat_users != 0:
-            average_age = ref['sum_average_age'] // anonchat_users
             price_reg = round(ref['price'] / anonchat_users, 3)
         else:
             price_reg = 0
