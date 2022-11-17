@@ -63,8 +63,6 @@ class Database:
             elif gender == 'female':
                 await self.ref_links.update_one({'link': ref_commercial},
                                                 {'$inc': {'female': 1}}, upsert=False)
-                await self.ref_links.update_one({'link': ref_commercial}, {'$set': {'average_age': average_age}},
-                                                upsert=False)
 
             await self.ref_links.update_one({'link': ref_commercial}, {'$inc': {'anonchat_users': 1}}, upsert=False)
 
