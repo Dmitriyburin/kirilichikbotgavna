@@ -14,35 +14,35 @@ async def required_channel(message: Message, state: FSMContext):
     buttons = decor.buttons
     data = bot['db']
 
-    is_sub, channels = await check_sub(message)
+    channels = await check_sub(message)
 
     await message.answer('✋ Чтобы продолжить пользоваться ботом, '
                          'вы должны подписаться на наши каналы',
                          reply_markup=inline.required_sub(buttons, channels))
-
 
 async def check_sub(message):
     bot = message.bot
     data = bot['db']
 
     channels = [item async for index, item in a.enumerate(await data.get_channels())]
-    channels_links = [item['link'] async for index, item in a.enumerate(await data.get_channels())]
+    channels_links = []
     for channel in channels:
         chat_id = channel['channel_id']
 
         try:
             user_channel = await bot.get_chat_member(chat_id=f'{chat_id}', user_id=message.from_user.id)
+            print(user_channel.status)
             if user_channel.status not in ['member', 'administrator', 'creator']:
-                return False, channels_links
+                channels_links.append(channel['link'])
 
         except BadRequest as e:
             print(chat_id, message.from_user.id, 'user not found')
-            return False, channels_links
+            channels_links.append(channel['link'])
 
     user = await data.get_user(message.from_user.id)
     if not user['ref'].isdigit() and user['ref'] != 'defolt':
         await data.increment_subs_ref_commercial(user['ref'], len(channels))
-    return True, channels_links
+    return channels_links
 
 
 async def check_sub_call(call: CallbackQuery, state: FSMContext):
@@ -52,8 +52,8 @@ async def check_sub_call(call: CallbackQuery, state: FSMContext):
     buttons = decor.buttons
     message.from_user.id = call['from']['id']
 
-    is_sub, channels = await check_sub(message)
-    if is_sub:
+    channels = await check_sub(message)
+    if not channels:
         await message.delete()
         await message.answer('Спасибо, Вы подписались на все каналы! Продолжайте пользоваться ботом')
         await state.finish()

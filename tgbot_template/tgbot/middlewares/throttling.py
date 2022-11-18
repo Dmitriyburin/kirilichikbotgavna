@@ -88,12 +88,14 @@ class ThrottlingMiddleware(BaseMiddleware):
 
         white_list = await bot_data.get_premium_users() + bot['config'].tg_bot.admin_ids
         user = await bot_data.get_user(message.from_user.id)
+        active_dialog = await bot['chat'].get_active_chat(message.from_user.id)
         if message.from_user.id not in white_list and user and user_anonchat and user_anonchat['gender'] and \
-                user_anonchat['age']:
-            is_sub, channels = await check_sub(message)
-            if not is_sub:
+                user_anonchat['age'] and (user_anonchat['dialogs'] >= 1 and not active_dialog):
+            channels = await check_sub(message)
+            if channels:
                 await required_channel(message, None)
                 raise CancelHandler()
+
 
     async def on_process_message(self, message: types.Message, data: dict):
         """
