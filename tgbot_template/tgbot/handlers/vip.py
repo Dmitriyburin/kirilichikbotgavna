@@ -145,7 +145,7 @@ async def vip_callback(call: CallbackQuery, state):
     await bot.answer_callback_query(call.id)
 
 
-async def only_vip(message: Message, call: FSMContext, edit=False):
+async def only_vip(message: Message, call: FSMContext, edit=False, image=False):
     bot = message.bot
     data = bot['db']
     decor = bot['decor']
@@ -153,9 +153,15 @@ async def only_vip(message: Message, call: FSMContext, edit=False):
     buttons = decor.buttons
 
     if edit:
-        await message.edit_text(texts['vip_required'], reply_markup=inline.vip(buttons))
+        if image:
+            await message.edit_caption(texts['vip_required'], reply_markup=inline.vip(buttons))
+        else:
+            await message.edit_text(texts['vip_required'], reply_markup=inline.vip(buttons))
     else:
-        await message.answer(texts['vip_required'], reply_markup=inline.vip(buttons))
+        if image:
+            await message.answer_photo(image, texts['vip_required'], reply_markup=inline.vip(buttons))
+        else:
+            await message.answer(texts['vip_required'], reply_markup=inline.vip(buttons))
 
 
 def register_vip(dp: Dispatcher):

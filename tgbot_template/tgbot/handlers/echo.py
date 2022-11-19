@@ -42,7 +42,8 @@ async def bot_echo(message: types.Message, state):
 
         # premium premium premium premium premium premium premium
         if not user['premium']:
-            await only_vip(message, state)
+            photo = InputFile('tgbot/data/images/premium_search.jpg')
+            await only_vip(message, state, image=photo)
             return
         # premium premium premium premium premium premium premium
 
@@ -52,7 +53,8 @@ async def bot_echo(message: types.Message, state):
 
         # premium premium premium premium premium premium premium
         if not user['premium']:
-            await only_vip(message, state)
+            photo = InputFile('tgbot/data/images/horny_chat.jpg')
+            await only_vip(message, state, image=photo)
             return
         # premium premium premium premium premium premium premium
 
