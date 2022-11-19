@@ -14942,3 +14942,647 @@ Traceback (most recent call last):
   File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
     raise err(cls.text or description)
 aiogram.utils.exceptions.ChatNotFound: Chat not found
+base_events.py:1707 #ERROR    [2022-11-19 12:28:59,984] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-255400' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=ChatNotFound('Chat not found')>
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/echo.py", line 71, in bot_echo
+    await bot.copy_message(active_chat['user_id'], message.from_user.id, message.message_id)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 467, in copy_message
+    result = await self.request(api.Methods.COPY_MESSAGE, payload)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 115, in check_result
+    exceptions.BadRequest.detect(description)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.ChatNotFound: Chat not found
+base_events.py:1707 #ERROR    [2022-11-19 12:29:12,799] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-255515' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=BotBlocked('Forbidden: bot was blocked by the user')>
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/anonym_chat.py", line 166, in next_chat
+    await stop_chat(message, state, skip=True)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/anonym_chat.py", line 111, in stop_chat
+    await bot.send_photo(companion_id, photo, caption=texts['companion_stopped_dialog'].format(time_dialog))
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 540, in send_photo
+    result = await self.request(api.Methods.SEND_PHOTO, payload, files)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 121, in check_result
+    exceptions.Unauthorized.detect(description)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.BotBlocked: Forbidden: bot was blocked by the user
+base_events.py:1707 #ERROR    [2022-11-19 12:29:27,586] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-255650' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=ChatNotFound('Chat not found')>
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/echo.py", line 71, in bot_echo
+    await bot.copy_message(active_chat['user_id'], message.from_user.id, message.message_id)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 467, in copy_message
+    result = await self.request(api.Methods.COPY_MESSAGE, payload)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 115, in check_result
+    exceptions.BadRequest.detect(description)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.ChatNotFound: Chat not found
+base_events.py:1707 #ERROR    [2022-11-19 12:29:41,197] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-255763' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=ChatNotFound('Chat not found')>
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/echo.py", line 71, in bot_echo
+    await bot.copy_message(active_chat['user_id'], message.from_user.id, message.message_id)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 467, in copy_message
+    result = await self.request(api.Methods.COPY_MESSAGE, payload)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 115, in check_result
+    exceptions.BadRequest.detect(description)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.ChatNotFound: Chat not found
+base_events.py:1707 #ERROR    [2022-11-19 12:29:50,905] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-255819' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=ChatNotFound('Chat not found')>
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/echo.py", line 71, in bot_echo
+    await bot.copy_message(active_chat['user_id'], message.from_user.id, message.message_id)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 467, in copy_message
+    result = await self.request(api.Methods.COPY_MESSAGE, payload)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 115, in check_result
+    exceptions.BadRequest.detect(description)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.ChatNotFound: Chat not found
+base_events.py:1707 #ERROR    [2022-11-19 12:29:57,361] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-255862' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=ChatNotFound('Chat not found')>
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/echo.py", line 71, in bot_echo
+    await bot.copy_message(active_chat['user_id'], message.from_user.id, message.message_id)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 467, in copy_message
+    result = await self.request(api.Methods.COPY_MESSAGE, payload)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 115, in check_result
+    exceptions.BadRequest.detect(description)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.ChatNotFound: Chat not found
+base_events.py:1707 #ERROR    [2022-11-19 12:31:30,592] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-256435' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=ChatNotFound('Chat not found')>
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/echo.py", line 71, in bot_echo
+    await bot.copy_message(active_chat['user_id'], message.from_user.id, message.message_id)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 467, in copy_message
+    result = await self.request(api.Methods.COPY_MESSAGE, payload)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 115, in check_result
+    exceptions.BadRequest.detect(description)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.ChatNotFound: Chat not found
+base_events.py:1707 #ERROR    [2022-11-19 12:33:04,946] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-257199' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=ChatNotFound('Chat not found')>
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/echo.py", line 71, in bot_echo
+    await bot.copy_message(active_chat['user_id'], message.from_user.id, message.message_id)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 467, in copy_message
+    result = await self.request(api.Methods.COPY_MESSAGE, payload)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 115, in check_result
+    exceptions.BadRequest.detect(description)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.ChatNotFound: Chat not found
+base_events.py:1707 #ERROR    [2022-11-19 12:34:11,654] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-257569' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=ChatNotFound('Chat not found')>
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/echo.py", line 71, in bot_echo
+    await bot.copy_message(active_chat['user_id'], message.from_user.id, message.message_id)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 467, in copy_message
+    result = await self.request(api.Methods.COPY_MESSAGE, payload)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 115, in check_result
+    exceptions.BadRequest.detect(description)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.ChatNotFound: Chat not found
+base_events.py:1707 #ERROR    [2022-11-19 12:34:29,563] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-257645' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=ChatNotFound('Chat not found')>
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/echo.py", line 71, in bot_echo
+    await bot.copy_message(active_chat['user_id'], message.from_user.id, message.message_id)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 467, in copy_message
+    result = await self.request(api.Methods.COPY_MESSAGE, payload)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 115, in check_result
+    exceptions.BadRequest.detect(description)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.ChatNotFound: Chat not found
+base_events.py:1707 #ERROR    [2022-11-19 12:34:46,982] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-257744' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=ChatNotFound('Chat not found')>
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/echo.py", line 71, in bot_echo
+    await bot.copy_message(active_chat['user_id'], message.from_user.id, message.message_id)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 467, in copy_message
+    result = await self.request(api.Methods.COPY_MESSAGE, payload)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 115, in check_result
+    exceptions.BadRequest.detect(description)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.ChatNotFound: Chat not found
+base_events.py:1707 #ERROR    [2022-11-19 12:35:57,145] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-258071' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=ChatNotFound('Chat not found')>
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/echo.py", line 71, in bot_echo
+    await bot.copy_message(active_chat['user_id'], message.from_user.id, message.message_id)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 467, in copy_message
+    result = await self.request(api.Methods.COPY_MESSAGE, payload)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 115, in check_result
+    exceptions.BadRequest.detect(description)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.ChatNotFound: Chat not found
+base_events.py:1707 #ERROR    [2022-11-19 12:37:08,001] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-258611' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=KeyError('is_report_companion')>
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 100, in notify
+    await self.dispatcher.middleware.trigger(f"pre_process_{self.middleware_key}", args + (data,))
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/middlewares.py", line 53, in trigger
+    await app.trigger(action, args)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/middlewares.py", line 106, in trigger
+    await handler(*args)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/middlewares/throttling.py", line 39, in on_pre_process_update
+    await estimate_companion(update.callback_query, None, call_data.split(':')[1])
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/anonym_chat.py", line 248, in estimate_companion
+    if bot[message.from_user.id]['is_report_companion']:
+KeyError: 'is_report_companion'
+base_events.py:1707 #ERROR    [2022-11-19 12:40:21,905] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-259918' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=BotBlocked('Forbidden: bot was blocked by the user')>
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/echo.py", line 69, in bot_echo
+    await data.increment_messages_count(user['user_id'], user['messages'] + 1)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 467, in copy_message
+    result = await self.request(api.Methods.COPY_MESSAGE, payload)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 121, in check_result
+    exceptions.Unauthorized.detect(description)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.BotBlocked: Forbidden: bot was blocked by the user
+base_events.py:1707 #ERROR    [2022-11-19 12:40:34,580] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-259999' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=BotBlocked('Forbidden: bot was blocked by the user')>
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/anonym_chat.py", line 151, in stop
+    await stop_chat(message, state)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/anonym_chat.py", line 121, in stop_chat
+    await bot.send_photo(companion_id, photo, caption=texts['companion_stopped_dialog'].format(time_dialog))
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 540, in send_photo
+    result = await self.request(api.Methods.SEND_PHOTO, payload, files)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 121, in check_result
+    exceptions.Unauthorized.detect(description)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.BotBlocked: Forbidden: bot was blocked by the user
+base_events.py:1707 #ERROR    [2022-11-19 12:40:34,590] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-260003' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=ChatNotFound('Chat not found')>
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/echo.py", line 71, in bot_echo
+    await bot.copy_message(active_chat['user_id'], message.from_user.id, message.message_id)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 467, in copy_message
+    result = await self.request(api.Methods.COPY_MESSAGE, payload)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 115, in check_result
+    exceptions.BadRequest.detect(description)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.ChatNotFound: Chat not found
+base_events.py:1707 #ERROR    [2022-11-19 12:46:09,838] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-261953' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=ChatNotFound('Chat not found')>
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/echo.py", line 71, in bot_echo
+    await bot.copy_message(active_chat['user_id'], message.from_user.id, message.message_id)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 467, in copy_message
+    result = await self.request(api.Methods.COPY_MESSAGE, payload)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 115, in check_result
+    exceptions.BadRequest.detect(description)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.ChatNotFound: Chat not found
+base_events.py:1707 #ERROR    [2022-11-19 12:47:20,256] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-262283' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=BotBlocked('Forbidden: bot was blocked by the user')>
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/anonym_chat.py", line 151, in stop
+    await stop_chat(message, state)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/anonym_chat.py", line 121, in stop_chat
+    await bot.send_photo(companion_id, photo, caption=texts['companion_stopped_dialog'].format(time_dialog))
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 540, in send_photo
+    result = await self.request(api.Methods.SEND_PHOTO, payload, files)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 121, in check_result
+    exceptions.Unauthorized.detect(description)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.BotBlocked: Forbidden: bot was blocked by the user
+base_events.py:1707 #ERROR    [2022-11-19 12:50:00,369] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-263000' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=ChatNotFound('Chat not found')>
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/echo.py", line 71, in bot_echo
+    await bot.copy_message(active_chat['user_id'], message.from_user.id, message.message_id)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 467, in copy_message
+    result = await self.request(api.Methods.COPY_MESSAGE, payload)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 115, in check_result
+    exceptions.BadRequest.detect(description)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.ChatNotFound: Chat not found
+base_events.py:1707 #ERROR    [2022-11-19 12:50:56,388] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-263331' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=ChatNotFound('Chat not found')>
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/echo.py", line 71, in bot_echo
+    await bot.copy_message(active_chat['user_id'], message.from_user.id, message.message_id)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 467, in copy_message
+    result = await self.request(api.Methods.COPY_MESSAGE, payload)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 115, in check_result
+    exceptions.BadRequest.detect(description)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.ChatNotFound: Chat not found
+base_events.py:1707 #ERROR    [2022-11-19 12:50:58,464] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-263348' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=ChatNotFound('Chat not found')>
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/echo.py", line 71, in bot_echo
+    await bot.copy_message(active_chat['user_id'], message.from_user.id, message.message_id)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 467, in copy_message
+    result = await self.request(api.Methods.COPY_MESSAGE, payload)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 115, in check_result
+    exceptions.BadRequest.detect(description)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.ChatNotFound: Chat not found
+base_events.py:1707 #ERROR    [2022-11-19 12:51:23,502] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-263490' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=ChatNotFound('Chat not found')>
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/echo.py", line 71, in bot_echo
+    await bot.copy_message(active_chat['user_id'], message.from_user.id, message.message_id)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 467, in copy_message
+    result = await self.request(api.Methods.COPY_MESSAGE, payload)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 115, in check_result
+    exceptions.BadRequest.detect(description)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.ChatNotFound: Chat not found
+base_events.py:1707 #ERROR    [2022-11-19 12:52:33,619] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-263867' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=ChatNotFound('Chat not found')>
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/echo.py", line 71, in bot_echo
+    await bot.copy_message(active_chat['user_id'], message.from_user.id, message.message_id)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 467, in copy_message
+    result = await self.request(api.Methods.COPY_MESSAGE, payload)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 115, in check_result
+    exceptions.BadRequest.detect(description)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.ChatNotFound: Chat not found
+base_events.py:1707 #ERROR    [2022-11-19 12:57:10,332] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-265307' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=BotBlocked('Forbidden: bot was blocked by the user')>
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/anonym_chat.py", line 151, in stop
+    await stop_chat(message, state)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/anonym_chat.py", line 121, in stop_chat
+    await bot.send_photo(companion_id, photo, caption=texts['companion_stopped_dialog'].format(time_dialog))
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 540, in send_photo
+    result = await self.request(api.Methods.SEND_PHOTO, payload, files)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 121, in check_result
+    exceptions.Unauthorized.detect(description)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.BotBlocked: Forbidden: bot was blocked by the user
+base_events.py:1707 #ERROR    [2022-11-19 12:57:15,314] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-265334' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=KeyError(5322934707)>
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 100, in notify
+    await self.dispatcher.middleware.trigger(f"pre_process_{self.middleware_key}", args + (data,))
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/middlewares.py", line 53, in trigger
+    await app.trigger(action, args)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/middlewares.py", line 106, in trigger
+    await handler(*args)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/middlewares/throttling.py", line 39, in on_pre_process_update
+    await estimate_companion(update.callback_query, None, call_data.split(':')[1])
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/anonym_chat.py", line 246, in estimate_companion
+    bot[message.from_user.id]['is_react_companion'] = True
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/utils/mixins.py", line 17, in __getitem__
+    return self.data[item]
+KeyError: 5322934707
