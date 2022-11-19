@@ -97,6 +97,8 @@ anypay_secret = '2e7%b*P3H(7s'
 anypay_shop = 9995
 support_url = 'https://t.me/AnonimHelperBot'
 texts = {
+    'share_to_companion_username': '⚠️ Вы отправили собеседнику свой @юзернейм',
+    'get_username_from_companion': '⚠️ Ваш собеседник отправил Вам свой @юзернейм.\n❗️ Данные собеседника - @{0}',
     'estimate_companion': '⚠️Пожалуйста, оцените вашего\nсобеседника',
     'vip_required': """Эта функция доступна только VIP пользователям!
 

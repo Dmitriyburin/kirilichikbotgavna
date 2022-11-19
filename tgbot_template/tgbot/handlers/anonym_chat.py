@@ -317,11 +317,24 @@ async def mailing_admins_to_ban(message: Message, companion, user, count_reports
         print(await data.get_last_dialogs(companion['user_id']))
 
 
+async def link(message: Message, state: FSMContext):
+    bot = message.bot
+    decor = bot['decor']
+    chat = bot['chat']
+    texts = decor.texts
+    active_chat = await chat.get_active_chat(message.from_user.id)
+    if active_chat:
+        companion_id = active_chat['user_id']
+        await message.answer(texts['share_to_companion_username'])
+        await bot.send_message(companion_id, texts['get_username_from_companion'].format(message.from_user.username))
+
+
 def register_anonym_chat(dp: Dispatcher):
     # dp.register_message_handler(stop_chat, commands=["stop_dialog"], state='*')
     # dp.register_message_handler(stop_search, commands=["stop_search"], state='*')
     dp.register_message_handler(stop, commands=["stop"], state='*')
     dp.register_message_handler(next_chat, commands=["next"], state='*')
+    dp.register_message_handler(link, commands=["link"], state='*')
 
     dp.register_callback_query_handler(select_companion_details, text_contains='companion_details')
     dp.register_callback_query_handler(select_vip_search, text_contains='search_by')
