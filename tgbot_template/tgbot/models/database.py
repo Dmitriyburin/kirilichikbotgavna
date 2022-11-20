@@ -262,13 +262,12 @@ class Database:
         last_dialogs = user['last_dialogs']
         return [i for i in last_dialogs[1:]]
 
-    async def add_ref(self, link, price, contact):
-        now = datetime.datetime.now()
+    async def add_ref(self, link, price, contact, date):
         await self.ref_links.insert_one(
-            {'link': link, 'users': 0, 'contact': contact, 'date': now, 'anonchat_users': 0, 'male': 0, 'female': 0,
+            {'link': link, 'users': 0, 'contact': contact, 'date': date, 'anonchat_users': 0, 'male': 0, 'female': 0,
              'sum_average_age': 0, 'transitions': 0, 'price': price,
              'donaters': 0, 'all_price': 0})
-   
+
     async def increment_ref_transition(self, link):
         await self.ref_links.update_one({'link': link},
                                         {'$inc': {'transitions': 1}},

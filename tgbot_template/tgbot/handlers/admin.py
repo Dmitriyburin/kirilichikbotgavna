@@ -1,5 +1,5 @@
 import random
-
+import datetime
 import asyncstdlib as a
 import os
 
@@ -133,8 +133,24 @@ async def add_ref_start(message: Message):
     bot = message.bot
     data = bot['db']
 
-    await message.answer(f'Введите число - цену реферальной ссылки (в рублях)')
-    await AddRef.price.set()
+    await message.answer(f'Введите дату в формате день.месяц.год (Пример: 20.11.2022)')
+    await AddRef.date.set()
+
+
+async def add_ref_date(message: Message, state: FSMContext):
+    bot = message.bot
+    data = bot['db']
+
+    try:
+        date = datetime.datetime.strptime(message.text, "%d.%m.%Y")
+
+        await message.answer(f'Введите число - цену реферальной ссылки (в рублях)')
+        await AddRef.price.set()
+        await state.update_data(date=date)
+    except Exception as e:
+        print(e)
+        await message.answer(f'Неверно заданное время, попробуйте еще раз: /add_ref')
+        await state.finish()
 
 
 async def add_ref(message: Message, state: FSMContext):
@@ -156,10 +172,11 @@ async def add_ref_contact(message: Message, state: FSMContext):
 
     contact = message.text
     link = await get_start_link(str(random.randint(10000, 10000000)), encode=True)
-    price = (await state.get_data('price'))['price']
+    price = (await state.get_data())['price']
+    date = (await state.get_data())['date']
     print(contact, price, link)
     await message.answer(f'Реферальная ссылка добавлена: <code>{link}</code>')
-    await data.add_ref(link, int(price), contact)
+    await data.add_ref(link, int(price), contact, date)
     await state.finish()
 
 async def get_refs(message: Message):
@@ -255,6 +272,7 @@ def register_admin(dp: Dispatcher):
     dp.register_message_handler(stats, commands=["stats"], state="*", is_admin=True)
 
     dp.register_message_handler(add_ref_start, commands=["add_ref"], state="*", is_admin=True)
+    dp.register_message_handler(add_ref_date, state=AddRef.date, is_admin=True)
     dp.register_message_handler(add_ref_contact, state=AddRef.contact, is_admin=True)
     dp.register_message_handler(add_ref, state=AddRef.price, is_admin=True)
     dp.register_message_handler(del_ref_start, commands=["del_ref"], state="*", is_admin=True)

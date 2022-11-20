@@ -29,6 +29,7 @@ class DeleteChannel(StatesGroup):
 
 
 class AddRef(StatesGroup):
+    date = State()
     price = State()
     contact = State()
 
