@@ -200,7 +200,7 @@ async def back_to(call: CallbackQuery, state: FSMContext):
         await print_information(message, edit=True)
 
     elif detail == 'search':
-        await only_vip(message, state, edit=True)
+        await only_vip(message, state, edit=True, image=True)
 
     await bot.answer_callback_query(call.id)
 

@@ -50,7 +50,7 @@ async def vip(message: Message, state: FSMContext, back_to_profile=None, back_to
                                    reply_markup=markup)
     elif back_to_search:
         markup.add(inline.back_button('back_to:search'))
-        await message.edit_text(texts['vip_privileges'],
+        await message.edit_caption(texts['vip_privileges'],
                                 reply_markup=markup)
     else:
         await message.answer(texts['vip_privileges'], reply_markup=markup)
@@ -83,7 +83,7 @@ async def free_vip(message: Message, back_to_search=False, edit=False):
     elif back_to_search:
         markup = InlineKeyboardMarkup()
         markup.add(inline.back_button('back_to:search'))
-        await message.edit_text(texts['free_vip'].format(f'https://t.me/{bot["config"].tg_bot.name}'
+        await message.edit_caption(texts['free_vip'].format(f'https://t.me/{bot["config"].tg_bot.name}'
                                                          f'?start={message.from_user.id}'), reply_markup=markup)
     else:
         await message.answer(texts['free_vip'].format(f'https://t.me/{bot["config"].tg_bot.name}'

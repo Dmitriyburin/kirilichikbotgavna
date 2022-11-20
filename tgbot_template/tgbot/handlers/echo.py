@@ -1,5 +1,6 @@
 from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
+from aiogram.types import InputFile
 from aiogram.utils.markdown import hcode
 from tgbot.handlers.anonym_chat import search
 from tgbot.handlers.vip import only_vip
