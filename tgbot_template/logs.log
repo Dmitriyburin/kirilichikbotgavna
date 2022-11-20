@@ -1,8 +1,8 @@
-bot.py:68 #INFO     [2022-11-20 04:35:36,097] - __main__ - Starting bot
-base.py:444 #INFO     [2022-11-20 04:35:36,208] - apscheduler.scheduler - Adding job tentatively -- it will be properly scheduled when the scheduler starts
-base.py:444 #INFO     [2022-11-20 04:35:36,208] - apscheduler.scheduler - Adding job tentatively -- it will be properly scheduled when the scheduler starts
-base.py:885 #INFO     [2022-11-20 04:35:36,210] - apscheduler.scheduler - Added job "reset_reports" to job store "default"
-base.py:885 #INFO     [2022-11-20 04:35:36,210] - apscheduler.scheduler - Added job "del_today_messages" to job store "default"
-base.py:171 #INFO     [2022-11-20 04:35:36,210] - apscheduler.scheduler - Scheduler started
-executor.py:362 #INFO     [2022-11-20 04:35:36,233] - aiogram - Bot: Анонимный Чат 🐝 [@waspchatbot]
-dispatcher.py:358 #INFO     [2022-11-20 04:35:36,236] - aiogram.dispatcher.dispatcher - Start polling.
+bot.py:68 #INFO     [2022-11-20 04:45:56,878] - __main__ - Starting bot
+base.py:444 #INFO     [2022-11-20 04:45:56,994] - apscheduler.scheduler - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+base.py:444 #INFO     [2022-11-20 04:45:56,994] - apscheduler.scheduler - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+base.py:885 #INFO     [2022-11-20 04:45:56,996] - apscheduler.scheduler - Added job "reset_reports" to job store "default"
+base.py:885 #INFO     [2022-11-20 04:45:56,996] - apscheduler.scheduler - Added job "del_today_messages" to job store "default"
+base.py:171 #INFO     [2022-11-20 04:45:56,996] - apscheduler.scheduler - Scheduler started
+executor.py:362 #INFO     [2022-11-20 04:45:57,030] - aiogram - Bot: Анонимный Чат 🐝 [@waspchatbot]
+dispatcher.py:358 #INFO     [2022-11-20 04:45:57,033] - aiogram.dispatcher.dispatcher - Start polling.

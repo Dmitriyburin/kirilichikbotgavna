@@ -166,15 +166,15 @@ async def get_refs(message: Message):
     bot = message.bot
     data = bot['db']
 
-    channels = []
-    async for index, item in a.enumerate(await data.get_refs()):
-        channels.append(
+    channels_text = []
+    channels = list(sorted([i async for i in (await data.get_refs())], key=lambda x: x['date']))
+    for index, item in enumerate(channels):
+        channels_text.append(
             f"{index + 1}) <code>{item['link']}</code>\n<b>Дата:</b> {item['date'].date()}\n<b>Цена:</b> {item['price']} руб \n<b>Контакт:</b> {item['contact']}\n")
-    if channels:
-        await message.answer('\n'.join(channels))
+    if channels_text:
+        await message.answer('\n'.join(channels_text))
     else:
         await message.answer('Реферальных ссылок нет, воспользуйтесь /add_ref, чтобы добавить новую')
-
 
 async def ref_stats_start(message: Message):
     await message.answer('Скиньте реферальную ссылку, статистику которой хотите получить')
