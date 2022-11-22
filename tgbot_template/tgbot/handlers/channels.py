@@ -6,6 +6,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.utils.exceptions import BadRequest
 from tgbot.keyboards import inline
 from tgbot.misc.states import RequiredChannel
+from tgbot.handlers.vip import vip
 
 
 async def required_channel(message: Message, state: FSMContext):
