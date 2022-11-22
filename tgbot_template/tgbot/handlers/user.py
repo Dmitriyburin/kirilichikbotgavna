@@ -28,8 +28,8 @@ async def user_start(message: Message, state=FSMContext):
         if ref.isdigit() and int(ref) != message.from_user.id:
             ref_user_id = int(ref)
             
-            ref_user = await data.get_user(ref_user_id)
-            if not ref_user['premium']:
+            ref_user = await data.get_user_anonchat_profile(ref_user_id)
+            if ref_user and not ref_user['premium']:
                 await data.edit_premium(ref_user_id, True, days=0, hours=1)
                 await bot.send_message(ref_user_id, texts['get_free_vip'])
 
