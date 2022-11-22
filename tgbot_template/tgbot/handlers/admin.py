@@ -269,6 +269,8 @@ async def ban_user(message: Message, state: FSMContext):
     user_id = message.text
     if not user_id.isdigit():
         await message.answer('Id должен быть числом, попробуйте еще раз: /ban')
+        await state.finish()
+        return
 
     await data.ban_user(int(user_id))
     await message.answer('Пользователь забанен')
