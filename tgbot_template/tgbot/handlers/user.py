@@ -9,6 +9,7 @@ from tgbot.keyboards import reply
 from tgbot.handlers.anonym_chat_profile import start_registration
 from tgbot.middlewares.throttling import generate_captcha
 from tgbot.misc.states import RequiredChannel
+from tgbot.handlers.channels import check_sub, required_channel
 
 
 async def user_start(message: Message, state=FSMContext):
@@ -46,11 +47,17 @@ async def user_start(message: Message, state=FSMContext):
                 await data.increment_ref_transition(ref_commercial)
             return
 
+    bot[message.from_user.id] = {"is_registration": False}
+
+    channels = await check_sub(message)
+    if channels:
+        await required_channel(message, None)
+        return
+
     photo = InputFile('tgbot/data/images/start.jpg')
     await message.answer_photo(photo,
                                caption='Привет, это крутой бот, для начала нужно зарегистрироваться')
     await start_registration(message)
-
 
 async def captcha_generate(call: CallbackQuery, state: FSMContext):
     message = call.message

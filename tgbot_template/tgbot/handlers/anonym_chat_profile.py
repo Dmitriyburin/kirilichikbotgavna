@@ -18,6 +18,7 @@ async def start_registration(message: Message):
 
     await message.answer(texts['select_gender'],
                          reply_markup=inline.select_gender(buttons))
+    bot[message.from_user.id] = {"is_registration": True}
 
 
 async def registration_step2_age(message: Message, state: FSMContext):
