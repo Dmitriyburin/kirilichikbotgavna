@@ -28,8 +28,13 @@ async def vip(message: Message, state: FSMContext, back_to_profile=None, back_to
 
         date: datetime.datetime = user['vip_date'] + datetime.timedelta(days=user['vip_days'])
         vip_text = 'до ' + date.strftime('%d.%m.%y')
-        await message.edit_caption(f'🏆 У вас уже есть подписка, она заканчивается {vip_text}',
-                                   reply_markup=markup)
+        
+        if back_to_profile or back_to_search:
+            await message.edit_caption(f'🏆 У вас уже есть подписка, она заканчивается {vip_text}',
+                                       reply_markup=markup)
+        else:
+            await message.answer(f'🏆 У вас уже есть подписка, она заканчивается {vip_text}',
+                                 reply_markup=markup)
 
         return
 
@@ -168,3 +173,6 @@ def register_vip(dp: Dispatcher):
     dp.register_callback_query_handler(buy_vip, text_contains='buy_vip:')
     dp.register_callback_query_handler(extend_vip, text_contains='extend_vip')
     dp.register_callback_query_handler(vip_callback, text_contains='vip:')
+
+    dp.register_message_handler(vip, commands=["vip"], state="*")
+    dp.register_message_handler(free_vip, commands=["freevip"], state="*")
