@@ -52,13 +52,17 @@ async def check_sub_call(call: CallbackQuery, state: FSMContext):
     buttons = decor.buttons
     message.from_user.id = call['from']['id']
 
-    channels = await check_sub(message)
-    if not channels:
-        await message.delete()
-        await message.answer('Спасибо, Вы подписались на все каналы! Продолжайте пользоваться ботом')
-        await state.finish()
-    else:
-        await call.answer('Вы не подписались на все каналы!')
+    detail = call.data.split(':')[1]
+    if detail == 'channel':
+        channels = await check_sub(message)
+        if not channels:
+            await message.delete()
+            await message.answer('Спасибо, Вы подписались на все каналы! Продолжайте пользоваться ботом')
+            await state.finish()
+        else:
+            await call.answer('Вы не подписались на все каналы!')
+    elif detail == 'vip':
+        await vip(message, state)
 
     await bot.answer_callback_query(call.id)
 

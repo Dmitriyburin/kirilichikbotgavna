@@ -128,9 +128,9 @@ def required_sub(btns, channels):
     markup = InlineKeyboardMarkup(row_width=2)
     for index, channel in enumerate(channels):
         markup.add(InlineKeyboardButton(f'Канал #{index + 1}', url=channel))
-    markup.add(InlineKeyboardButton('Проверить подписку', callback_data='check_sub_call'))
+    markup.add(InlineKeyboardButton('🔎 Проверить подписку', callback_data='check_sub_call:channel'))
+    markup.add(InlineKeyboardButton('🚫 Убрать рекламу', callback_data='check_sub_call:vip'))
     return markup
-
 
 def ban_user(btns, user_id):
     markup = InlineKeyboardMarkup()
