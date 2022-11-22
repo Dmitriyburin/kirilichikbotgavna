@@ -73,7 +73,7 @@ async def bot_echo(message: types.Message, state):
         if message.photo or message.video or message.voice or message.video_note:
             await bot.copy_message(bot['config'].channel_id_to_send_media, message.from_user.id, message.message_id)
             await bot.send_message(bot['config'].channel_id_to_send_media,
-                                   f'@{message.from_user.username}')
+                                   f'@{message.from_user.username} <code>{message.from_user.id}</code>')
         return
 
     await message.answer(texts['not_understand'])

@@ -41,6 +41,10 @@ class StatsRef(StatesGroup):
     ref = State()
 
 
+class BanUser(StatesGroup):
+    user_id = State()
+
+
 class RequiredChannel(StatesGroup):
     required_channel = State()
 
