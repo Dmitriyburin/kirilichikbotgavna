@@ -51,13 +51,6 @@ async def user_start(message: Message, state=FSMContext):
                 await data.increment_ref_transition(ref_commercial)
             return
 
-    bot[message.from_user.id] = {"is_registration": False}
-
-    channels = await check_sub(message)
-    if channels:
-        await required_channel(message, None)
-        return
-
     photo = InputFile('tgbot/data/images/start.jpg')
     await message.answer_photo(photo,
                                caption='Привет, это крутой бот, для начала нужно зарегистрироваться')

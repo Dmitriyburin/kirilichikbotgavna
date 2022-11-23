@@ -74,6 +74,12 @@ class ThrottlingMiddleware(BaseMiddleware):
             else:
                 await generate_captcha(bot, message)
             raise CancelHandler()
+        
+        # Проверка на регистрацию
+        user_anonchat = await bot_data.get_user_anonchat_profile(message.from_user.id)
+        if not user_anonchat and not message.text.startswith('/start'):
+            await bot_data.add_user_anonchat_profile(message.from_user.id, None, None, ref='defolt')
+            await start_registration(message)
 
         # Channels
         if update.callback_query:
@@ -82,26 +88,11 @@ class ThrottlingMiddleware(BaseMiddleware):
         white_list = await bot_data.get_premium_users() + bot['config'].tg_bot.admin_ids
         user = await bot_data.get_user(message.from_user.id)
 
-        if message.from_user.id not in white_list and user:
+        if message.from_user.id not in white_list and user and user_anonchat and user_anonchat['gender']:
             channels = await check_sub(message)
             if channels:
-                bot[message.from_user.id] = {"is_registration": False}
                 await required_channel(message, None)
                 raise CancelHandler()
-
-        # Проверка на регистрацию
-        user_anonchat = await bot_data.get_user_anonchat_profile(message.from_user.id)
-        if not user_anonchat and not message.text.startswith('/start'):
-            await bot_data.add_user_anonchat_profile(message.from_user.id, None, None, ref='defolt')
-            await start_registration(message)
-        elif user_anonchat and not user_anonchat['gender'] and bot.get(message.from_user.id) and not bot[message.from_user.id]['is_registration']:
-            photo = InputFile('tgbot/data/images/start.jpg')
-            await message.answer_photo(photo,
-                                       caption='Привет, это крутой бот, для начала нужно зарегистрироваться')
-            await start_registration(message)
-        
-
-
 
     async def on_process_message(self, message: types.Message, data: dict):
         """
