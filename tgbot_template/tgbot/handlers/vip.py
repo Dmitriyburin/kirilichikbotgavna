@@ -127,7 +127,6 @@ async def premium_controller(bot, delay):
         except Exception as e:
             print(e)
 
-
 async def extend_vip(call: CallbackQuery, state):
     message = call.message
     bot = message.bot

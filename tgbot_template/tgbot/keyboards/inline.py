@@ -149,3 +149,9 @@ def vip(btns):
     markup.add(InlineKeyboardButton('🏆 Приобрести VIP Status', callback_data=f'vip:vip'))
     markup.add(InlineKeyboardButton('💵 Получить ВИП бесплатно', callback_data=f'vip:freevip'))
     return markup
+
+
+def reset_dislikes(btns, url):
+    markup = InlineKeyboardMarkup()
+    markup.add(InlineKeyboardButton(btns['reset_dislikes_buy'], url=url))
+    return markup

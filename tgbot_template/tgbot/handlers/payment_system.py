@@ -59,21 +59,37 @@ async def payments_controller(bot, delay):
             async for i in ungived:
                 days = i['days']
                 price = i['price']
-                await data.edit_premium(i['user_id'], True, days)
-                user = await data.get_user(i['user_id'])
+                reset_react = i['reset_react']
+                companion_id = i['companion_id']
 
+                if reset_react:
+                    await data.reset_react(i['user_id'])
+                    message = texts['reset_dislikes']
+                    await bot.send_message(i['user_id'], message)
+
+                # elif companion_id and days:
+                #     await data.edit_premium(companion_id, True, days)
+                #     message_to_companion = texts[giftvip].format(price, days)
+                #     await bot.send_message(companion_id, message_to_companion)
+                # 
+                #     message = texts[giftvip].format(price, days)
+                #     await bot.send_message(i['user_id'], message)
+
+                elif days:
+                    await data.edit_premium(i['user_id'], True, days)
+                    message = texts['premium_bought'].format(price, days)
+                    await bot.send_message(i['user_id'], message)
+
+                user = await data.get_user(i['user_id'])
                 if not user['ref'].isdigit() and user['ref'] != 'defolt':
                     await data.add_ref_donater(user['ref'], price)
                 await data.increment_price_all_stats(price)
 
-                message = texts['premium_bought'].format(price, days)
-                await bot.send_message(i['user_id'], message)
                 await data.edit_given_status(i['secret'])
                 await data.edit_user_donates(i['user_id'], i['price'])
 
         except Exception as e:
             print(e)
-
 
 def register_payment(dp: Dispatcher):
     dp.register_pre_checkout_query_handler(checkout_process, lambda q: True)

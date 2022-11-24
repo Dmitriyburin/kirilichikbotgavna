@@ -78,6 +78,31 @@ async def set_profile(call: CallbackQuery, state: FSMContext):
         await message.edit_caption(texts['enter_age'])
         await SetAge.age.set()
         return
+    elif action == 'reset_react':
+        await reset_react(message, back_to_about_me=True)
+
+
+async def reset_react(message, back_to_about_me=None):
+    bot = message.bot
+    data = bot['db']
+    decor = bot['decor']
+    prices: dict = decor.prices
+    buttons = decor.buttons
+    texts = decor.texts
+
+    price = prices['reset_react']
+    anypay_secret, anypay_shop = bot['config'].anypay.secret, bot['config'].anypay.shop
+    payment_id = await data.get_anypay_payment_id()
+    sign, secret = anypay.gen_hash(price, payment_id, anypay_secret=anypay_secret, anypay_shop=anypay_shop)
+    url = anypay.gen_url(price, payment_id, 'топ', sign, anypay_shop=anypay_shop)
+    await data.add_anypay_payment_no_discount(message.from_user.id, sign, secret, payment_id, reset_react=True,
+                                              price=price)
+    if back_to_about_me:
+        markup = inline.reset_dislikes(buttons, url)
+        markup.add(inline.back_button('back_to:about_me'))
+        await message.edit_caption(texts['reset_dislikes_buy'], reply_markup=markup)
+    else:
+        await message.answer(texts['reset_dislikes_buy'], reply_markup=inline.reset_dislikes(buttons, url))
 
 
 async def set_gender(call: CallbackQuery, state: FSMContext):
@@ -202,6 +227,9 @@ async def back_to(call: CallbackQuery, state: FSMContext):
 
     elif detail == 'search':
         await only_vip(message, state, edit=True, image=True)
+
+    elif detail == 'about_me':
+        await print_about_me(message, edit=True)
 
     await bot.answer_callback_query(call.id)
 

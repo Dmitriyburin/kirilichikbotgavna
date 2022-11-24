@@ -92,11 +92,13 @@ prices = {
     7: {'days': 7, 'price': 69, 'discount': 99, 'button': '7 день - {0} ₽'},
     30: {'days': 30, 'price': 99, 'discount': 349, 'button': '1 месяц - {0} ₽'},
     365: {'days': 365, 'price': 299, 'discount': 1499, 'button': '1 год - {0} ₽'},
+    'reset_react': 19,
 }
 anypay_secret = '2e7%b*P3H(7s'
 anypay_shop = 9995
 support_url = 'https://t.me/AnonimHelperBot'
 texts = {
+    'reset_dislikes_buy': f'🚀 Обнулить свои дизлайки всего за {prices["reset_react"]} рублей!',
     'share_to_companion_username': '⚠️ Вы отправили собеседнику свой @юзернейм',
     'get_username_from_companion': '⚠️ Ваш собеседник отправил Вам свой @юзернейм.\n❗️ Данные собеседника - @{0}',
     'estimate_companion': '⚠️Пожалуйста, оцените вашего\nсобеседника',
@@ -277,6 +279,7 @@ model1 = {
 }
 
 btns = {
+    'reset_dislikes_buy': 'Обнулить',
     'companion_age_18-': 'До 18 лет',
     'companion_age_18+': '18 лет и старше',
     'like': '👍',
