@@ -40,6 +40,8 @@ async def vip(message: Message, state: FSMContext, back_to_profile=None, back_to
 
     urls = {}
     for key, value in prices.items():
+        if key == 'reset_react':
+            continue
         price = value['price']
         anypay_secret, anypay_shop = bot['config'].anypay.secret, bot['config'].anypay.shop
         payment_id = await data.get_anypay_payment_id()
