@@ -57,10 +57,12 @@ async def vip(message: Message, state: FSMContext, back_to_profile=None, back_to
             await data.add_anypay_payment_no_discount(message.from_user.id, sign, secret, payment_id, days=key,
                                                       price=price)
     markup = inline.vip_privileges(prices, urls)
+    
+    hours_midnight = 24 - datetime.datetime.now().hour
     if companion_id:
-        message_text = texts['vip_privileges_companion']
+        message_text = texts['vip_privileges_companion'].format(hours_midnight)
     else:
-        message_text = texts['vip_privileges']
+        message_text = texts['vip_privileges'].format(hours_midnight)
 
     if back_to_profile:
         markup.add(inline.back_button('back_to:profile'))
@@ -169,16 +171,18 @@ async def only_vip(message: Message, call: FSMContext, edit=False, image=False):
     texts = decor.texts
     buttons = decor.buttons
 
+    hours_midnight = 24 - datetime.datetime.now().hour
+    message_text = texts['vip_required'].format(hours_midnight)
     if edit:
         if image:
-            await message.edit_caption(texts['vip_required'], reply_markup=inline.vip(buttons))
+            await message.edit_caption(message_text, reply_markup=inline.vip(buttons))
         else:
-            await message.edit_text(texts['vip_required'], reply_markup=inline.vip(buttons))
+            await message.edit_text(message_text, reply_markup=inline.vip(buttons))
     else:
         if image:
-            await message.answer_photo(image, texts['vip_required'], reply_markup=inline.vip(buttons))
+            await message.answer_photo(image, message_text, reply_markup=inline.vip(buttons))
         else:
-            await message.answer(texts['vip_required'], reply_markup=inline.vip(buttons))
+            await message.answer(message_text, reply_markup=inline.vip(buttons))
 
 
 async def gift_vip(message: Message, state: FSMContext):
