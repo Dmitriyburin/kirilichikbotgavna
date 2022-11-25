@@ -40,6 +40,7 @@ def set_profile(btns):
     markup = InlineKeyboardMarkup()
     markup.add(InlineKeyboardButton('Изменить пол', callback_data='set_profile:gender'))
     markup.add(InlineKeyboardButton('Изменить возраст', callback_data='set_profile:age'))
+    markup.add(InlineKeyboardButton('Сбросить дизлайки', callback_data='set_profile:reset_react'))
     markup.add(InlineKeyboardButton('⬅️Назад', callback_data='back_to:profile'))
     return markup
 

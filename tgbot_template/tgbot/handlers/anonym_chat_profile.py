@@ -9,6 +9,8 @@ from tgbot.keyboards import reply
 from tgbot.handlers.payment_system import buy_process
 from tgbot.handlers.vip import vip, only_vip
 
+from tgbot.misc import anypay
+
 
 async def start_registration(message: Message):
     bot = message.bot
