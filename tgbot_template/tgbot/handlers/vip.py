@@ -10,7 +10,8 @@ from tgbot.handlers.payment_system import buy_process
 from tgbot.misc import anypay
 
 
-async def vip(message: Message, state: FSMContext, back_to_profile=None, back_to_search=False, edit=False):
+async def vip(message: Message, state: FSMContext, back_to_profile=None, back_to_search=False, edit=False,
+              companion_id=None):
     bot = message.bot
     decor = bot['decor']
     data = bot['db']
@@ -19,7 +20,7 @@ async def vip(message: Message, state: FSMContext, back_to_profile=None, back_to
     prices: dict = decor.prices
 
     user = await data.get_user_anonchat_profile(message.from_user.id)
-    if user['premium']:
+    if user['premium'] and not companion_id:
 
         if back_to_profile:
             markup = inline.back(buttons, 'back_to:profile')
@@ -28,7 +29,6 @@ async def vip(message: Message, state: FSMContext, back_to_profile=None, back_to
 
         date: datetime.datetime = user['vip_date'] + datetime.timedelta(days=user['vip_days'])
         vip_text = 'до ' + date.strftime('%d.%m.%y')
-        
         if back_to_profile or back_to_search:
             await message.edit_caption(f'🏆 У вас уже есть подписка, она заканчивается {vip_text}',
                                        reply_markup=markup)
@@ -42,6 +42,7 @@ async def vip(message: Message, state: FSMContext, back_to_profile=None, back_to
     for key, value in prices.items():
         if key == 'reset_react':
             continue
+
         price = value['price']
         anypay_secret, anypay_shop = bot['config'].anypay.secret, bot['config'].anypay.shop
         payment_id = await data.get_anypay_payment_id()
@@ -49,19 +50,29 @@ async def vip(message: Message, state: FSMContext, back_to_profile=None, back_to
         url = anypay.gen_url(price, payment_id, 'топ', sign, anypay_shop=anypay_shop)
         urls[key] = url
 
-        await data.add_anypay_payment_no_discount(message.from_user.id, sign, secret, payment_id, days=key, price=price)
+        if companion_id:
+            await data.add_anypay_payment_no_discount(message.from_user.id, sign, secret, payment_id, days=key,
+                                                      price=price, companion_id=companion_id)
+        else:
+            await data.add_anypay_payment_no_discount(message.from_user.id, sign, secret, payment_id, days=key,
+                                                      price=price)
     markup = inline.vip_privileges(prices, urls)
+    if companion_id:
+        message_text = texts['vip_privileges_companion']
+    else:
+        message_text = texts['vip_privileges']
+
     if back_to_profile:
         markup.add(inline.back_button('back_to:profile'))
-        await message.edit_caption(texts['vip_privileges'],
+        await message.edit_caption(message_text,
                                    reply_markup=markup)
     elif back_to_search:
         markup.add(inline.back_button('back_to:search'))
-        await message.edit_caption(texts['vip_privileges'],
-                                reply_markup=markup)
+        await message.edit_caption(message_text,
+                                   reply_markup=markup)
     else:
-        await message.answer(texts['vip_privileges'], reply_markup=markup)
-
+        await message.answer(message_text, reply_markup=markup)
+   
 
 async def buy_vip(call: CallbackQuery, state: FSMContext):
     message = call.message

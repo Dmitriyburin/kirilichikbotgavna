@@ -1,3 +1,4 @@
+import logging
 import asyncio
 import datetime
 import time
@@ -61,7 +62,7 @@ async def payments_controller(bot, delay):
                 price = i['price']
                 reset_react = i['reset_react']
                 companion_id = i['companion_id']
-
+                logging.info(f'{companion_id} {days} {price}')
                 if reset_react:
                     await data.reset_react(i['user_id'])
                     message = texts['reset_dislikes']
