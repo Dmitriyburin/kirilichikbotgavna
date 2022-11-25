@@ -22,6 +22,7 @@ class Database:
         self.mailing = self.db.mailing
         self.mailing_users = self.db.mailing_users
         self.banned_users = self.db.banned_users
+        self.moderators = self.db.moderators
         self.payments = self.db.payments
         self.stats = self.db.stats
 
