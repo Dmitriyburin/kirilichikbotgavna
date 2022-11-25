@@ -99,7 +99,8 @@ async def stop_chat(message: Message, state: FSMContext, skip=False):
     is_admin = False
     is_companion_admin = False
     admin_ids = bot['config'].tg_bot.admin_ids
-    for admin_id in admin_ids:
+    moderators_ids = [moder['user_id'] for moder in (await data.get_moderators())]
+    for admin_id in admin_ids + moderators_ids:
         if admin_id == message.from_user.id:
             is_admin = True
         if admin_id == companion_id:
@@ -229,7 +230,8 @@ async def estimate_companion(call: CallbackQuery, state: FSMContext, detail):
 
     is_admin = False
     admin_ids = bot['config'].tg_bot.admin_ids
-    for admin_id in admin_ids:
+    moderators_ids = [moder['user_id'] for moder in (await data.get_moderators())]
+    for admin_id in admin_ids + moderators_ids:
         if admin_id == message.from_user.id:
             is_admin = True
 

@@ -7,7 +7,7 @@ from aiogram import Dispatcher
 from aiogram.types import Message
 from aiogram.dispatcher import FSMContext
 from aiogram.utils.deep_linking import get_start_link, decode_payload
-from tgbot.misc.states import AddChannel, DeleteChannel, AddRef, DeleteRef, BanUser
+from tgbot.misc.states import AddChannel, DeleteChannel, AddRef, DeleteRef, BanUser, AddModerator, DeleteModerator
 
 from tgbot.misc.states import StatsRef
 
@@ -277,6 +277,61 @@ async def ban_user(message: Message, state: FSMContext):
     await state.finish()
 
 
+async def get_moderators(message: Message):
+    bot = message.bot
+    data = bot['db']
+
+    text = []
+    moderators = await data.get_moderators()
+    for index, item in enumerate(moderators):
+        user_id = item['user_id']
+        username = (await bot.get_chat(user_id)).username
+        text.append(
+            f"{index + 1}) <code>{user_id}</code> - @{username}")
+    if text:
+        await message.answer('\n'.join(text))
+    else:
+        await message.answer('Модераторов нет, воспользуйтесь /add_moder, чтобы добавить нового')
+
+
+async def add_moderator_start(message: Message, state: FSMContext):
+    await message.answer('Введите id пользователя, которого хотите сделать модератором')
+    await AddModerator.user_id.set()
+
+
+async def add_moderator(message: Message, state: FSMContext):
+    bot = message.bot
+    data = bot['db']
+    user_id = message.text
+    if not user_id.isdigit():
+        await message.answer('Id должен быть числом, попробуйте еще раз: /add_moder')
+        await state.finish()
+        return
+
+    await data.add_moderator(int(user_id))
+    await message.answer('Модератор добавлен')
+    await state.finish()
+
+
+async def delete_moderator_start(message: Message, state: FSMContext):
+    await message.answer('Введите id пользователя, которого хотите удалить из модераторов')
+    await DeleteModerator.user_id.set()
+
+
+async def delete_moderator(message: Message, state: FSMContext):
+    bot = message.bot
+    data = bot['db']
+    user_id = message.text
+    if not user_id.isdigit():
+        await message.answer('Id должен быть числом, попробуйте еще раз: /del_moder')
+        await state.finish()
+        return
+
+    await data.delete_moderator(int(user_id))
+    await message.answer('Модератор удален')
+    await state.finish()
+
+
 def register_admin(dp: Dispatcher):
     dp.register_message_handler(admin_main, commands=["admin"], state="*", is_admin=True)
     dp.register_message_handler(add_channel_start, commands=["add_sub"], state="*", is_admin=True)
@@ -301,4 +356,12 @@ def register_admin(dp: Dispatcher):
     dp.register_message_handler(ref_stats, state=StatsRef.ref, is_admin=True)
 
     dp.register_message_handler(ban_user_start, commands=["ban"], state="*", is_admin=True)
+    dp.register_message_handler(ban_user_start, commands=["ban"], state="*", is_moderator=True)
     dp.register_message_handler(ban_user, state=BanUser.user_id, is_admin=True)
+    dp.register_message_handler(ban_user, state=BanUser.user_id, is_moderator=True)
+
+    dp.register_message_handler(add_moderator_start, commands=["add_moder"], state="*", is_admin=True)
+    dp.register_message_handler(add_moderator, state=AddModerator.user_id, is_admin=True)
+    dp.register_message_handler(delete_moderator_start, commands=["del_moder"], state="*", is_admin=True)
+    dp.register_message_handler(delete_moderator, state=DeleteModerator.user_id, is_admin=True)
+    dp.register_message_handler(get_moderators, commands=["moders"], state="*", is_admin=True)

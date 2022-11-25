@@ -235,6 +235,15 @@ class Database:
 
     async def get_ban_user(self, user_id):
         return self.banned_users.find_one({'user_id': user_id})
+    
+    async def add_moderator(self, user_id):
+        self.moderators.insert_one({'user_id': user_id})
+
+    async def delete_moderator(self, user_id):
+        await self.moderators.delete_one({'user_id': user_id})
+
+    async def get_moderators(self):
+        return [i async for i in self.moderators.find({})]
 
     async def add_message_to_last_dialog(self, user_id, message_id):
         user = await self.get_user_anonchat_profile(user_id)

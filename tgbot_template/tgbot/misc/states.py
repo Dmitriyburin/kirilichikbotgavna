@@ -45,6 +45,14 @@ class BanUser(StatesGroup):
     user_id = State()
 
 
+class AddModerator(StatesGroup):
+    user_id = State()
+
+
+class DeleteModerator(StatesGroup):
+    user_id = State()
+
+
 class RequiredChannel(StatesGroup):
     required_channel = State()
 

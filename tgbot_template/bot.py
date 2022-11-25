@@ -12,8 +12,10 @@ from tgbot.models.anonym_redis import AnonymChat
 
 from tgbot.config import load_config
 from tgbot.filters.admin import AdminFilter
+from tgbot.filters.moderator import ModeratorFilter
 
 from tgbot.handlers.admin import register_admin
+from tgbot.handlers.moderator import register_moderator
 from tgbot.handlers.echo import register_echo
 from tgbot.handlers.user import register_user
 from tgbot.handlers.anonym_chat_profile import register_anonym_chat_profile
@@ -40,10 +42,12 @@ def register_all_middlewares(dp, config):
 
 def register_all_filters(dp):
     dp.filters_factory.bind(AdminFilter)
+    dp.filters_factory.bind(ModeratorFilter)
 
 
 def register_all_handlers(dp):
     register_admin(dp)
+    register_moderator(dp)
     register_channels(dp)
     register_mailing(dp)
     register_payment(dp)
