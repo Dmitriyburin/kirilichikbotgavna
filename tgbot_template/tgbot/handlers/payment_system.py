@@ -66,15 +66,13 @@ async def payments_controller(bot, delay):
                     await data.reset_react(i['user_id'])
                     message = texts['reset_dislikes']
                     await bot.send_message(i['user_id'], message)
+                elif companion_id and days:
+                    await data.edit_premium(companion_id, True, days)
+                    message_to_companion = texts['companion_bought_vip'].format(price, days)
+                    await bot.send_message(companion_id, message_to_companion)
 
-                # elif companion_id and days:
-                #     await data.edit_premium(companion_id, True, days)
-                #     message_to_companion = texts[giftvip].format(price, days)
-                #     await bot.send_message(companion_id, message_to_companion)
-                # 
-                #     message = texts[giftvip].format(price, days)
-                #     await bot.send_message(i['user_id'], message)
-
+                    message = texts['bought_vip_to_companion'].format(price, days)
+                    await bot.send_message(i['user_id'], message)
                 elif days:
                     await data.edit_premium(i['user_id'], True, days)
                     message = texts['premium_bought'].format(price, days)

@@ -170,6 +170,19 @@ async def only_vip(message: Message, call: FSMContext, edit=False, image=False):
             await message.answer(texts['vip_required'], reply_markup=inline.vip(buttons))
 
 
+async def gift_vip(message: Message, state: FSMContext):
+    bot = message.bot
+    decor = bot['decor']
+    texts = decor.texts
+    chat = bot['chat']
+    buttons = decor.buttons
+
+    active_chat = await chat.get_active_chat(message.from_user.id)
+    if active_chat:
+        companion_id = active_chat['user_id']
+        await vip(message, state, companion_id=companion_id)
+
+
 def register_vip(dp: Dispatcher):
     dp.register_callback_query_handler(buy_vip, text_contains='buy_vip:')
     dp.register_callback_query_handler(extend_vip, text_contains='extend_vip')
@@ -177,3 +190,4 @@ def register_vip(dp: Dispatcher):
 
     dp.register_message_handler(vip, commands=["vip"], state="*")
     dp.register_message_handler(free_vip, commands=["freevip"], state="*")
+    dp.register_message_handler(gift_vip, commands=["gift"], state="*")
