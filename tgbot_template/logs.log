@@ -953,3 +953,56 @@ Traceback (most recent call last):
   File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
     raise err(cls.text or description)
 aiogram.utils.exceptions.BotBlocked: Forbidden: bot was blocked by the user
+base_events.py:1707 #ERROR    [2022-11-25 18:25:05,180] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-75106' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=BotBlocked('Forbidden: bot was blocked by the user')>
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/echo.py", line 72, in bot_echo
+    await bot.copy_message(active_chat['user_id'], message.from_user.id, message.message_id)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 467, in copy_message
+    result = await self.request(api.Methods.COPY_MESSAGE, payload)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 121, in check_result
+    exceptions.Unauthorized.detect(description)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.BotBlocked: Forbidden: bot was blocked by the user
+base_events.py:1707 #ERROR    [2022-11-25 18:26:36,595] - asyncio - Task exception was never retrieved
+future: <Task finished name='Task-75518' coro=<Dispatcher._process_polling_updates() done, defined at /root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:407> exception=BotBlocked('Forbidden: bot was blocked by the user')>
+Traceback (most recent call last):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 415, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 235, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 116, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/anonym_chat.py", line 151, in stop
+    if active_chat:
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/tgbot/handlers/anonym_chat.py", line 121, in stop_chat
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 540, in send_photo
+    result = await self.request(api.Methods.SEND_PHOTO, payload, files)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 121, in check_result
+    exceptions.Unauthorized.detect(description)
+  File "/root/snap/work_directory/kirilichikbotgavna/tgbot_template/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.BotBlocked: Forbidden: bot was blocked by the user
