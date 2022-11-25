@@ -160,6 +160,7 @@ async def add_ref(message: Message, state: FSMContext):
     price = message.text.replace(' ', '')
     if not price.isdigit():
         await message.answer('В цене должны присутствовать только цифры, попробуйте еще раз /add_ref')
+        await state.finish()
         return
     await state.update_data(price=price)
     await message.answer(f'Введите контакт (пример: @anyone)')
