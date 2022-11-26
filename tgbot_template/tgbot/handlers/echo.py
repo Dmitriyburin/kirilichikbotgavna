@@ -6,7 +6,7 @@ from tgbot.handlers.anonym_chat import search
 from tgbot.handlers.vip import only_vip
 from tgbot.handlers.anonym_chat_profile import print_information
 
-from tgbot.keyboards import inline
+from tgbot.keyboards import inline, reply
 
 
 async def bot_echo(message: types.Message, state):
@@ -76,7 +76,7 @@ async def bot_echo(message: types.Message, state):
                                    f'@{message.from_user.username} <code>{message.from_user.id}</code>')
         return
 
-    await message.answer(texts['not_understand'])
+    await message.answer(texts['not_understand'], reply_markup=reply.main(buttons))
 
 
 async def bot_echo_all(message: types.Message, state: FSMContext):

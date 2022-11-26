@@ -127,10 +127,10 @@ class Database:
                                              upsert=False)
 
     async def get_premium_users(self):
-        return [i['user_id'] async for i in self.anonchat_users.find({'premium': {'$ne': None}})]
+        return [i['user_id'] async for i in self.anonchat_users.find({'premium': True})]
 
     async def get_premium_users_count(self):
-        return await self.anonchat_users.count_documents({'premium': {'$ne': None}})
+        return await self.anonchat_users.count_documents({'premium': True})
 
     async def get_mailing(self, message_id):
         return await self.mailing.find_one({'message_id': message_id})
