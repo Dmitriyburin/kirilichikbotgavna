@@ -33,6 +33,7 @@ class AddRef(StatesGroup):
     price = State()
     contact = State()
 
+
 class DeleteRef(StatesGroup):
     ref = State()
 
@@ -51,6 +52,14 @@ class AddModerator(StatesGroup):
 
 class DeleteModerator(StatesGroup):
     user_id = State()
+
+
+class AddBlackWord(StatesGroup):
+    word = State()
+
+
+class DeleteBlackWord(StatesGroup):
+    word = State()
 
 
 class RequiredChannel(StatesGroup):

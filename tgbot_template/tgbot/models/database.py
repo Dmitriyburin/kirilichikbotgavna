@@ -22,6 +22,7 @@ class Database:
         self.mailing = self.db.mailing
         self.mailing_users = self.db.mailing_users
         self.banned_users = self.db.banned_users
+        self.black_words = self.db.black_words
         self.moderators = self.db.moderators
         self.payments = self.db.payments
         self.stats = self.db.stats
@@ -50,7 +51,7 @@ class Database:
         await self.anonchat_users.insert_one(
             {'user_id': user_id, 'gender': gender, 'age': age, 'dialogs': 0, 'messages': 0, 'likes': 0,
              'dislikes': 0, 'reports_count': 0, 'last_companion_id': None, 'time': 0, 'vip_days': None,
-             'vip_hours':None,
+             'vip_hours': None,
              'vip_date': None, 'last_dialogs': [0], 'last_companion_gender': None, 'last_companion_age': None,
              'date_registration': datetime.datetime.now(), 'premium': None,
              'saw_discount_minute': False, 'ref': ref, 'total_donated': 0})
@@ -113,7 +114,7 @@ class Database:
         if premium:
             await self.anonchat_users.update_one({'user_id': user_id},
                                                  {'$set': {'premium': premium, 'vip_days': int(days),
-                                                            'vip_hours': hours,
+                                                           'vip_hours': hours,
                                                            'vip_date': datetime.datetime.now()}}, upsert=False)
         else:
             await self.anonchat_users.update_one({'user_id': user_id},
@@ -236,7 +237,7 @@ class Database:
 
     async def get_ban_user(self, user_id):
         return self.banned_users.find_one({'user_id': user_id})
-    
+
     async def add_moderator(self, user_id):
         self.moderators.insert_one({'user_id': user_id})
 
@@ -310,14 +311,12 @@ class Database:
     async def get_anypay_payment_id(self):
         return int(time.time() * 10000)
 
-    
     async def add_anypay_payment_no_discount(self, user_id, sign, secret, payment_id, price, days=None,
                                              companion_id=None, reset_react=None):
         await self.payments.insert_one(
             {'type': 'anypay', 'user_id': user_id, 'sign': sign, 'secret': secret, 'payment_id': payment_id,
              'days': days, 'price': float(price), 'paid': False, 'gived': False, 'discount': None,
              'reset_react': reset_react, 'companion_id': companion_id})
-
 
     async def get_payment_by_secret(self, secret):
         return await self.payments.find_one({'secret': secret})
@@ -340,7 +339,16 @@ class Database:
 
     async def get_stats(self):
         return await self.stats.find_one({'stat': 'all'})
-    
+
+    async def add_black_word(self, word):
+        self.black_words.insert_one({'word': word})
+
+    async def delete_black_word(self, word):
+        await self.black_words.delete_one({'word': word})
+
+    async def get_black_words(self):
+        return [i async for i in self.black_words.find({})]
+
     async def ref_stats_online(self, link):
         male = await self.anonchat_users.count_documents(
             {'gender': 'male', 'age': {'$ne': None}, 'ref': link})
@@ -356,7 +364,7 @@ class Database:
             {'$group': {
                 '_id': 'age',
                 'count': {'$avg': '$age'}}}
-            ])
+        ])
         count = 0
         async for i in average_age:
             count = i['count']
@@ -364,14 +372,15 @@ class Database:
         return {'male': male, 'female': female, 'all_anonchat_users': all_anonchat_users, 'all_users': all_users,
 
                 'average_age': count}
+
+
 async def del_today_messages(database):
     await database.del_today_messages()
 
 
 async def main():
     database = Database('mongodb://localhost:27017')
-    ref = await database.get_ref('https://t.me/verymuchsimplebot?start=MjkzNjc5Mw')
-    print(ref['users'])
+    await database.add_black_word('я чюшкаыа❤️')
 
 
 if __name__ == '__main__':

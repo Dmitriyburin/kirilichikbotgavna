@@ -9,7 +9,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.utils.deep_linking import get_start_link, decode_payload
 from tgbot.misc.states import AddChannel, DeleteChannel, AddRef, DeleteRef, BanUser, AddModerator, DeleteModerator
 
-from tgbot.misc.states import StatsRef
+from tgbot.misc.states import StatsRef, DeleteBlackWord, AddBlackWord
 
 
 async def admin_main(message: Message):
@@ -180,6 +180,7 @@ async def add_ref_contact(message: Message, state: FSMContext):
     await data.add_ref(link, int(price), contact, date)
     await state.finish()
 
+
 async def get_refs(message: Message):
     bot = message.bot
     data = bot['db']
@@ -193,6 +194,7 @@ async def get_refs(message: Message):
         await message.answer('\n'.join(channels_text))
     else:
         await message.answer('Реферальных ссылок нет, воспользуйтесь /add_ref, чтобы добавить новую')
+
 
 async def ref_stats_start(message: Message):
     await message.answer('Скиньте реферальную ссылку, статистику которой хотите получить')
@@ -333,6 +335,51 @@ async def delete_moderator(message: Message, state: FSMContext):
     await state.finish()
 
 
+async def get_black_words(message: Message):
+    bot = message.bot
+    data = bot['db']
+
+    text = []
+    black_words = await data.get_black_words()
+    for index, item in enumerate(black_words):
+        text.append(
+            f"{index + 1}) <code>{item['word']}</code>")
+    if text:
+        await message.answer('\n'.join(text))
+    else:
+        await message.answer('Слов в черном списке нет, воспользуйтесь /add_word, чтобы добавить нового')
+
+
+async def add_black_word_start(message: Message, state: FSMContext):
+    await message.answer('Введите слово/фразу, которую хотите добавить в черный список')
+    await AddBlackWord.word.set()
+
+
+async def add_black_word(message: Message, state: FSMContext):
+    bot = message.bot
+    data = bot['db']
+    word = message.text
+    await data.add_black_word(word)
+    await message.answer('Слово/фраза занесена в черный список')
+    await state.finish()
+
+
+async def delete_black_word_start(message: Message, state: FSMContext):
+    await message.answer('Введите слово/фразу, которую хотите удалить из черного списка')
+    await DeleteBlackWord.word.set()
+
+
+async def delete_black_word(message: Message, state: FSMContext):
+    bot = message.bot
+    data = bot['db']
+
+    word = message.text
+    await data.delete_black_word(word)
+
+    await message.answer('Слово/фраза удалена')
+    await state.finish()
+
+
 def register_admin(dp: Dispatcher):
     dp.register_message_handler(admin_main, commands=["admin"], state="*", is_admin=True)
     dp.register_message_handler(add_channel_start, commands=["add_sub"], state="*", is_admin=True)
@@ -366,3 +413,14 @@ def register_admin(dp: Dispatcher):
     dp.register_message_handler(delete_moderator_start, commands=["del_moder"], state="*", is_admin=True)
     dp.register_message_handler(delete_moderator, state=DeleteModerator.user_id, is_admin=True)
     dp.register_message_handler(get_moderators, commands=["moders"], state="*", is_admin=True)
+
+    dp.register_message_handler(add_black_word_start, commands=["add_word"], state="*", is_admin=True)
+    dp.register_message_handler(add_black_word_start, commands=["add_word"], state="*", is_moderator=True)
+    dp.register_message_handler(add_black_word, state=AddBlackWord.word, is_admin=True)
+    dp.register_message_handler(add_black_word, state=AddBlackWord.word, is_moderator=True)
+    dp.register_message_handler(delete_black_word_start, commands=["del_word"], state="*", is_admin=True)
+    dp.register_message_handler(delete_black_word_start, commands=["del_word"], state="*", is_moderator=True)
+    dp.register_message_handler(delete_black_word, state=DeleteBlackWord.word, is_admin=True)
+    dp.register_message_handler(delete_black_word, state=DeleteBlackWord.word, is_moderator=True)
+    dp.register_message_handler(get_black_words, commands=["words"], state="*", is_admin=True)
+    dp.register_message_handler(get_black_words, commands=["words"], state="*", is_moderator=True)

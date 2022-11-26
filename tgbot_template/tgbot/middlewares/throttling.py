@@ -74,7 +74,14 @@ class ThrottlingMiddleware(BaseMiddleware):
             else:
                 await generate_captcha(bot, message)
             raise CancelHandler()
-        
+
+        black_words = [word['word'] for word in await bot_data.get_black_words()]
+        moderators_ids = [moder['user_id'] for moder in (await bot_data.get_moderators())]
+        if message.text in black_words and (
+                message.from_user.id not in moderators_ids + bot['config'].tg_bot.admin_ids):
+            await generate_captcha(bot, message)
+            raise CancelHandler()
+
         # Проверка на регистрацию
         user_anonchat = await bot_data.get_user_anonchat_profile(message.from_user.id)
         if not user_anonchat and not message.text.startswith('/start'):
@@ -163,15 +170,14 @@ def wrap_media(bytesio, **kwargs):
 
 async def generate_captcha(bot, message, edit=False):
     print('asdfas')
-    image = ImageCaptcha(width=280, height=90)
+    image = ImageCaptcha(width=250, height=100)
     nums = list([str(i) for i in range(0, 10)])
     random.shuffle(nums)
     captcha_text = ''.join(nums[:4])
     data = image.generate(captcha_text)
     bot[message.from_user.id] = {'captcha_text': ''.join(captcha_text)}
 
-    await message.answer('Введите текст с картинки')
-    await message.answer_photo(data)
+    await message.answer_photo(data, caption='Введите текст с картинки')
 
 
 async def reset_reports(data):
