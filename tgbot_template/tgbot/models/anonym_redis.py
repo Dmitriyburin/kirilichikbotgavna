@@ -90,7 +90,11 @@ class AnonymChat:
 
         async for i in self.r.scan_iter("*"):
             if i.decode('utf-8') != 'search':
-                users_online_ids.append(i.decode('utf-8').split(':')[1])
+                user = i.decode('utf-8')
+                if ':' in user:
+                    users_online_ids.append(user.split(':')[1])
+                else:
+                    users_online_ids.append(user)
 
         return users_online_ids
 
