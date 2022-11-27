@@ -18,7 +18,7 @@ async def required_channel(message: Message, state: FSMContext):
     data = bot['db']
 
     channels = await check_sub(message)
-    logging.info(f'в required')
+    logging.info(f'в required {message.from_user.id}')
     await message.answer('✋ Чтобы продолжить пользоваться ботом, '
                          'вы должны подписаться на наши каналы',
                          reply_markup=inline.required_sub(buttons, channels))
