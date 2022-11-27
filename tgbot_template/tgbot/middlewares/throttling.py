@@ -1,4 +1,6 @@
 import asyncio
+import logging
+
 import aioschedule
 import datetime
 import random
@@ -96,7 +98,9 @@ class ThrottlingMiddleware(BaseMiddleware):
         user = await bot_data.get_user(message.from_user.id)
 
         if message.from_user.id not in white_list and user and user_anonchat and user_anonchat['gender']:
+            logging.info('in progress')
             channels = await check_sub(message)
+            logging.info(f'channels: {channels}')
             if channels:
                 await required_channel(message, None)
                 raise CancelHandler()
