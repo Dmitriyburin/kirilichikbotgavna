@@ -28,7 +28,7 @@ async def vip(message: Message, state: FSMContext, back_to_profile=None, back_to
             markup = None
 
         date: datetime.datetime = user['vip_date'] + datetime.timedelta(days=user['vip_days'])
-        vip_text = 'до ' + date.strftime('%d.%m.%y')
+        vip_text = date.strftime('%d.%m.%y')
         if back_to_profile or back_to_search:
             await message.edit_caption(f'🏆 У вас уже есть подписка, она заканчивается {vip_text}',
                                        reply_markup=markup)
@@ -57,12 +57,13 @@ async def vip(message: Message, state: FSMContext, back_to_profile=None, back_to
             await data.add_anypay_payment_no_discount(message.from_user.id, sign, secret, payment_id, days=key,
                                                       price=price)
     markup = inline.vip_privileges(prices, urls)
-    
-    hours_midnight = 24 - datetime.datetime.now().hour
+
+    time_mid = time_to_midnight()
     if companion_id:
-        message_text = texts['vip_privileges_companion'].format(hours_midnight)
+        message_text = texts['vip_privileges_companion'].format(time_mid['hours'], time_mid['minutes'],
+                                                                time_mid['seconds'])
     else:
-        message_text = texts['vip_privileges'].format(hours_midnight)
+        message_text = texts['vip_privileges'].format(time_mid['hours'], time_mid['minutes'], time_mid['seconds'])
 
     if back_to_profile:
         markup.add(inline.back_button('back_to:profile'))
@@ -74,7 +75,7 @@ async def vip(message: Message, state: FSMContext, back_to_profile=None, back_to
                                    reply_markup=markup)
     else:
         await message.answer(message_text, reply_markup=markup)
-   
+
 
 async def buy_vip(call: CallbackQuery, state: FSMContext):
     message = call.message
@@ -104,7 +105,7 @@ async def free_vip(message: Message, back_to_search=False, edit=False):
         markup = InlineKeyboardMarkup()
         markup.add(inline.back_button('back_to:search'))
         await message.edit_caption(texts['free_vip'].format(f'https://t.me/{bot["config"].tg_bot.name}'
-                                                         f'?start={message.from_user.id}'), reply_markup=markup)
+                                                            f'?start={message.from_user.id}'), reply_markup=markup)
     else:
         await message.answer(texts['free_vip'].format(f'https://t.me/{bot["config"].tg_bot.name}'
                                                       f'?start={message.from_user.id}'))
@@ -142,6 +143,7 @@ async def premium_controller(bot, delay):
         except Exception as e:
             print(e)
 
+
 async def extend_vip(call: CallbackQuery, state):
     message = call.message
     bot = message.bot
@@ -171,8 +173,8 @@ async def only_vip(message: Message, call: FSMContext, edit=False, image=False):
     texts = decor.texts
     buttons = decor.buttons
 
-    hours_midnight = 24 - datetime.datetime.now().hour
-    message_text = texts['vip_required'].format(hours_midnight)
+    time_mid = time_to_midnight()
+    message_text = texts['vip_required'].format(time_mid['hours'], time_mid['minutes'], time_mid['seconds'])
     if edit:
         if image:
             await message.edit_caption(message_text, reply_markup=inline.vip(buttons))
@@ -196,6 +198,19 @@ async def gift_vip(message: Message, state: FSMContext):
     if active_chat:
         companion_id = active_chat['user_id']
         await vip(message, state, companion_id=companion_id)
+
+
+def time_to_midnight():
+    datetime_now = datetime.datetime.now()
+    midnight = datetime.datetime(day=datetime_now.day, month=datetime_now.month, year=datetime_now.year, hour=0)
+
+    seconds_midnight = (midnight - datetime_now).seconds
+    hours_midnight = seconds_midnight // 3600
+    minutes_midnight = (seconds_midnight - (hours_midnight * 3600)) // 60
+    seconds = seconds_midnight - (hours_midnight * 3600) - (minutes_midnight * 60)
+    if len(str(seconds)) == 1:
+        seconds = f'0{seconds}'
+    return {'hours': hours_midnight, 'minutes': minutes_midnight, 'seconds': seconds}
 
 
 def register_vip(dp: Dispatcher):
