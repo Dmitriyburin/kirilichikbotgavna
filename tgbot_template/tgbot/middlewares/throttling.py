@@ -102,6 +102,7 @@ class ThrottlingMiddleware(BaseMiddleware):
             channels = await check_sub(message)
             logging.info(f'channels: {channels}')
             if channels:
+                logging.info(f'здесь')
                 await required_channel(message, None)
                 raise CancelHandler()
 
