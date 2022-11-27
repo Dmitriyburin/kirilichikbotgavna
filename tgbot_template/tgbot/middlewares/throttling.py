@@ -96,11 +96,11 @@ class ThrottlingMiddleware(BaseMiddleware):
 
         white_list = await bot_data.get_premium_users() + bot['config'].tg_bot.admin_ids
         user = await bot_data.get_user(message.from_user.id)
-
+        logging.info(f'{white_list}')
         if message.from_user.id not in white_list and user and user_anonchat and user_anonchat['gender']:
-            logging.info('in progress')
+            logging.info(f'in progress {message.from_user.id}')
             channels = await check_sub(message)
-            logging.info(f'channels: {channels}')
+            logging.info(f'channels: {channels} {message.from_user.id}')
             if channels:
                 logging.info(f'здесь')
                 await required_channel(message, None)
