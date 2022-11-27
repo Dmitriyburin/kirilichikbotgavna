@@ -415,12 +415,7 @@ def register_admin(dp: Dispatcher):
     dp.register_message_handler(get_moderators, commands=["moders"], state="*", is_admin=True)
 
     dp.register_message_handler(add_black_word_start, commands=["add_word"], state="*", is_admin=True)
-    dp.register_message_handler(add_black_word_start, commands=["add_word"], state="*", is_moderator=True)
     dp.register_message_handler(add_black_word, state=AddBlackWord.word, is_admin=True)
-    dp.register_message_handler(add_black_word, state=AddBlackWord.word, is_moderator=True)
     dp.register_message_handler(delete_black_word_start, commands=["del_word"], state="*", is_admin=True)
-    dp.register_message_handler(delete_black_word_start, commands=["del_word"], state="*", is_moderator=True)
     dp.register_message_handler(delete_black_word, state=DeleteBlackWord.word, is_admin=True)
-    dp.register_message_handler(delete_black_word, state=DeleteBlackWord.word, is_moderator=True)
     dp.register_message_handler(get_black_words, commands=["words"], state="*", is_admin=True)
-    dp.register_message_handler(get_black_words, commands=["words"], state="*", is_moderator=True)
