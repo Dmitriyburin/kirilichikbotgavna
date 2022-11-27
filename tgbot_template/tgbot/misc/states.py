@@ -62,6 +62,11 @@ class DeleteBlackWord(StatesGroup):
     word = State()
 
 
+class AddVip(StatesGroup):
+    user_id = State()
+    days = State()
+
+
 class RequiredChannel(StatesGroup):
     required_channel = State()
 

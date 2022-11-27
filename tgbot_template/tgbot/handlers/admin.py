@@ -9,7 +9,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.utils.deep_linking import get_start_link, decode_payload
 from tgbot.misc.states import AddChannel, DeleteChannel, AddRef, DeleteRef, BanUser, AddModerator, DeleteModerator
 
-from tgbot.misc.states import StatsRef, DeleteBlackWord, AddBlackWord
+from tgbot.misc.states import StatsRef, DeleteBlackWord, AddBlackWord, AddVip
 
 
 async def admin_main(message: Message):
@@ -380,6 +380,37 @@ async def delete_black_word(message: Message, state: FSMContext):
     await state.finish()
 
 
+async def add_vip_start(message: Message, state: FSMContext):
+    await message.answer('Введите id пользователя, которому хотите выдать VIP')
+    await AddVip.user_id.set()
+
+
+async def add_vip_days(message: Message, state: FSMContext):
+    user_id = message.text
+    if not user_id.isdigit():
+        await message.answer('Id должен быть числом, попробуйте еще раз: /give_vip')
+        await state.finish()
+        return
+    await state.update_data(user_id=user_id)
+    await message.answer('Введите количество дней')
+    await AddVip.days.set()
+
+
+async def add_vip(message: Message, state: FSMContext):
+    bot = message.bot
+    data = bot['db']
+    days = message.text
+    if not days.isdigit():
+        await message.answer('Количество дней должно быть числом, попробуйте еще раз: /give_vip')
+        await state.finish()
+        return
+
+    user_id = (await state.get_data())['user_id']
+    await data.edit_premium(int(user_id), True, days=days)
+    await message.answer('VIP выдан')
+    await state.finish()
+
+
 def register_admin(dp: Dispatcher):
     dp.register_message_handler(admin_main, commands=["admin"], state="*", is_admin=True)
     dp.register_message_handler(add_channel_start, commands=["add_sub"], state="*", is_admin=True)
@@ -419,3 +450,7 @@ def register_admin(dp: Dispatcher):
     dp.register_message_handler(delete_black_word_start, commands=["del_word"], state="*", is_admin=True)
     dp.register_message_handler(delete_black_word, state=DeleteBlackWord.word, is_admin=True)
     dp.register_message_handler(get_black_words, commands=["words"], state="*", is_admin=True)
+
+    dp.register_message_handler(add_vip_start, commands=["give_vip"], state="*", is_admin=True)
+    dp.register_message_handler(add_vip_days, state=AddVip.user_id, is_admin=True)
+    dp.register_message_handler(add_vip, state=AddVip.days, is_admin=True)
