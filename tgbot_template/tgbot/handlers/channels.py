@@ -18,7 +18,6 @@ async def required_channel(message: Message, state: FSMContext):
     data = bot['db']
 
     channels = await check_sub(message)
-    logging.info(f'в required {message.from_user.id}')
     await message.answer('✋ Чтобы продолжить пользоваться ботом, '
                          'вы должны подписаться на наши каналы',
                          reply_markup=inline.required_sub(buttons, channels))
@@ -34,7 +33,7 @@ async def check_sub(message):
 
         try:
             user_channel = await bot.get_chat_member(chat_id=f'{chat_id}', user_id=message.from_user.id)
-            print(user_channel.status)
+            logging.info(f'{user_channel.status} {message.from_user.id}')
             if user_channel.status not in ['member', 'administrator', 'creator']:
                 channels_links.append(channel['link'])
 
