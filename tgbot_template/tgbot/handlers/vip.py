@@ -210,6 +210,8 @@ def time_to_midnight():
     seconds = seconds_midnight - (hours_midnight * 3600) - (minutes_midnight * 60)
     if len(str(seconds)) == 1:
         seconds = f'0{seconds}'
+    if len(str(minutes_midnight)) == 1:
+        minutes_midnight = f'0{minutes_midnight}'
     return {'hours': hours_midnight, 'minutes': minutes_midnight, 'seconds': seconds}
 
 
