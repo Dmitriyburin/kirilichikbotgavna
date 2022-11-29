@@ -113,7 +113,7 @@ class Database:
     async def edit_premium(self, user_id, premium, days=None, hours=None):
         if premium:
             await self.anonchat_users.update_one({'user_id': user_id},
-                                                 {'$set': {'premium': premium, 'vip_days': int(days),
+                                                 {'$set': {'premium': premium, 'vip_days': days,
                                                            'vip_hours': hours,
                                                            'vip_date': datetime.datetime.now()}}, upsert=False)
         else:

@@ -85,7 +85,7 @@ def vip_privileges(prices, urls):
     markup.add(InlineKeyboardButton(prices[1]['button'].format(prices[1]['price']), url=urls[1]))
     markup.add(InlineKeyboardButton(prices[7]['button'].format(prices[7]['price']), url=urls[7]))
     markup.add(InlineKeyboardButton(prices[30]['button'].format(prices[30]['price']), url=urls[30]))
-    markup.add(InlineKeyboardButton(prices[365]['button'].format(prices[365]['price']), url=urls[365]))
+    markup.add(InlineKeyboardButton(prices['forever']['button'].format(prices['forever']['price']), url=urls['forever']))
     return markup
 
 

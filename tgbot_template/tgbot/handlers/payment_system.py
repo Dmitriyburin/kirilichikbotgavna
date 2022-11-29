@@ -53,42 +53,52 @@ async def payments_controller(bot, delay):
     texts = decor.texts
 
     while True:
-        try:
-            await asyncio.sleep(delay)
+        await asyncio.sleep(delay)
 
-            ungived = await data.get_ungiven_payments()
-            async for i in ungived:
-                days = i['days']
-                price = i['price']
-                reset_react = i['reset_react']
-                companion_id = i['companion_id']
-                logging.info(f'{companion_id} {days} {price}')
-                if reset_react:
-                    await data.reset_react(i['user_id'])
-                    message = texts['reset_dislikes']
-                    await bot.send_message(i['user_id'], message)
-                elif companion_id and days:
+        ungived = await data.get_ungiven_payments()
+        async for i in ungived:
+            days = i['days']
+            price = i['price']
+            reset_react = i['reset_react']
+            companion_id = i['companion_id']
+            logging.info(f'{companion_id} {days} {price}')
+            if reset_react:
+                await data.reset_react(i['user_id'])
+                message = texts['reset_dislikes']
+                await bot.send_message(i['user_id'], message)
+            elif companion_id and days:
+                if days == 'forever':
                     await data.edit_premium(companion_id, True, days)
+                    message_to_companion = texts['companion_bought_vip_forever'].format(price)
+                    message = texts['bought_vip_to_companion_forever'].format(price)
+                else:
+                    companion = await data.get_user_anonchat_profile(companion_id)
+                    if not companion['premium']:
+                        await data.edit_premium(companion_id, True, int(days))
                     message_to_companion = texts['companion_bought_vip'].format(price, days)
-                    await bot.send_message(companion_id, message_to_companion)
-
                     message = texts['bought_vip_to_companion'].format(price, days)
-                    await bot.send_message(i['user_id'], message)
-                elif days:
+
+                await bot.send_message(companion_id, message_to_companion)
+                await bot.send_message(i['user_id'], message)
+            elif days:
+                if days == 'forever':
                     await data.edit_premium(i['user_id'], True, days)
+                    message = texts['premium_bought_forever'].format(price)
+                else:
+                    await data.edit_premium(i['user_id'], True, int(days))
                     message = texts['premium_bought'].format(price, days)
-                    await bot.send_message(i['user_id'], message)
+                await bot.send_message(i['user_id'], message)
 
-                user = await data.get_user(i['user_id'])
-                if not user['ref'].isdigit() and user['ref'] != 'defolt':
-                    await data.add_ref_donater(user['ref'], price)
-                await data.increment_price_all_stats(price)
+            user = await data.get_user(i['user_id'])
+            if not user['ref'].isdigit() and user['ref'] != 'defolt':
+                await data.add_ref_donater(user['ref'], price)
+            await data.increment_price_all_stats(price)
 
-                await data.edit_given_status(i['secret'])
-                await data.edit_user_donates(i['user_id'], i['price'])
+            await data.edit_given_status(i['secret'])
+            await data.edit_user_donates(i['user_id'], i['price'])
 
-        except Exception as e:
-            print(e)
+
+
 
 def register_payment(dp: Dispatcher):
     dp.register_pre_checkout_query_handler(checkout_process, lambda q: True)

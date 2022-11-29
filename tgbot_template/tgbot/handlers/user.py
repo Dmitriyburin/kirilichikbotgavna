@@ -27,7 +27,7 @@ async def user_start(message: Message, state=FSMContext):
         ref_commercial = None
         if ref.isdigit() and int(ref) != message.from_user.id:
             ref_user_id = int(ref)
-            
+
             ref_user = await data.get_user_anonchat_profile(ref_user_id)
             if ref_user and not ref_user['premium']:
                 await data.edit_premium(ref_user_id, True, days=0, hours=1)
@@ -53,8 +53,9 @@ async def user_start(message: Message, state=FSMContext):
 
     photo = InputFile('tgbot/data/images/start.jpg')
     await message.answer_photo(photo,
-                               caption='Привет, это крутой бот, для начала нужно зарегистрироваться')
+                               caption=texts['start_text'])
     await start_registration(message)
+
 
 async def captcha_generate(call: CallbackQuery, state: FSMContext):
     message = call.message

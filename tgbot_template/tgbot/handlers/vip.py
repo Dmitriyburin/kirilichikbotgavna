@@ -27,13 +27,17 @@ async def vip(message: Message, state: FSMContext, back_to_profile=None, back_to
         else:
             markup = None
 
-        date: datetime.datetime = user['vip_date'] + datetime.timedelta(days=user['vip_days'])
-        vip_text = date.strftime('%d.%m.%y')
+        if user['vip_days'] == 'forever':
+            vip_text = '🏆 У вас уже есть вечная подписка'
+        else:
+            date: datetime.datetime = user['vip_date'] + datetime.timedelta(days=user['vip_days'])
+            vip_text = f'🏆 У вас уже есть подписка, она заканчивается {date.strftime("%d.%m.%y")}'
+
         if back_to_profile or back_to_search:
-            await message.edit_caption(f'🏆 У вас уже есть подписка, она заканчивается {vip_text}',
+            await message.edit_caption(vip_text,
                                        reply_markup=markup)
         else:
-            await message.answer(f'🏆 У вас уже есть подписка, она заканчивается {vip_text}',
+            await message.answer(vip_text,
                                  reply_markup=markup)
 
         return
@@ -126,6 +130,8 @@ async def premium_controller(bot, delay):
                 profile = await data.get_user_anonchat_profile(i)
 
                 if profile['premium']:
+                    if profile['vip_days'] == 'forever' or profile['vip_hours'] == 'forever':
+                        continue
                     if profile['vip_date']:
                         if not (profile['vip_date'] + datetime.timedelta(days=profile['vip_days'])) < cur_time:
                             continue
