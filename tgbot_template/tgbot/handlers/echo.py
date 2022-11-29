@@ -40,6 +40,9 @@ async def bot_echo(message: types.Message, state):
         return
 
     elif message.text == buttons['vip_search']:
+        if active_chat:
+            await message.answer(texts['dialog_is_active'])
+            return
 
         # premium premium premium premium premium premium premium
         if not user['premium']:
@@ -51,6 +54,9 @@ async def bot_echo(message: types.Message, state):
         await message.answer(texts['type_of_vip_search'], reply_markup=inline.vip_search(buttons))
         return
     elif message.text == buttons['horny_chat']:
+        if active_chat:
+            await message.answer(texts['dialog_is_active'])
+            return
 
         # premium premium premium premium premium premium premium
         if not user['premium']:
