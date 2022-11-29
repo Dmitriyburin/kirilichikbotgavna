@@ -169,8 +169,11 @@ async def print_about_me(message: Message, edit=None, call=None):
     gender = 'M' if user['gender'] == 'male' else 'Ж'
     vip_text = texts['no']
     if user['premium']:
-        date: datetime.datetime = user['vip_date'] + datetime.timedelta(days=user['vip_days'])
-        vip_text = 'до ' + date.strftime('%d.%m.%y')
+        if user['vip_days'] == 'forever':
+            vip_text = 'навсегда'
+        else:
+            date: datetime.datetime = user['vip_date'] + datetime.timedelta(days=user['vip_days'])
+            vip_text = 'до ' + date.strftime('%d.%m.%y')
     text = texts['mystats'].format(message.from_user.first_name, gender, user['age'],
                                    user['likes'], user['dislikes'], vip_text)
 
