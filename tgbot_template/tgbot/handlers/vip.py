@@ -130,7 +130,7 @@ async def premium_controller(bot, delay):
                 profile = await data.get_user_anonchat_profile(i)
 
                 if profile['premium']:
-                    if profile['vip_days'] == 'forever' or profile['vip_hours'] == 'forever':
+                    if profile.get('vip_days', False) == 'forever' or profile.get('vip_hours', False) == 'forever':
                         continue
                     if profile['vip_date']:
                         if not (profile['vip_date'] + datetime.timedelta(days=profile['vip_days'])) < cur_time:
