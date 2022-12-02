@@ -349,6 +349,9 @@ class Database:
     async def get_black_words(self):
         return [i async for i in self.black_words.find({})]
 
+    async def reset_react(self, user_id):
+        await self.anonchat_users.update_one({'user_id': user_id}, {'$set': {'dislikes': 0}}, upsert=False)
+
     async def ref_stats_online(self, link):
         male = await self.anonchat_users.count_documents(
             {'gender': 'male', 'age': {'$ne': None}, 'ref': link})

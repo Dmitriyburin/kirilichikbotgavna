@@ -51,7 +51,7 @@ async def vip(message: Message, state: FSMContext, back_to_profile=None, back_to
         anypay_secret, anypay_shop = bot['config'].anypay.secret, bot['config'].anypay.shop
         payment_id = await data.get_anypay_payment_id()
         sign, secret = anypay.gen_hash(price, payment_id, anypay_secret=anypay_secret, anypay_shop=anypay_shop)
-        url = anypay.gen_url(price, payment_id, 'топ', sign, anypay_shop=anypay_shop)
+        url = anypay.gen_url(price, payment_id, value['description'], sign, anypay_shop=anypay_shop)
         urls[key] = url
 
         if companion_id:

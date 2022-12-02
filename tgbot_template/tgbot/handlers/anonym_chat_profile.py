@@ -92,11 +92,11 @@ async def reset_react(message, back_to_about_me=None):
     buttons = decor.buttons
     texts = decor.texts
 
-    price = prices['reset_react']
+    price = prices['reset_react']['price']
     anypay_secret, anypay_shop = bot['config'].anypay.secret, bot['config'].anypay.shop
     payment_id = await data.get_anypay_payment_id()
     sign, secret = anypay.gen_hash(price, payment_id, anypay_secret=anypay_secret, anypay_shop=anypay_shop)
-    url = anypay.gen_url(price, payment_id, 'топ', sign, anypay_shop=anypay_shop)
+    url = anypay.gen_url(price, payment_id, prices['reset_react']['description'], sign, anypay_shop=anypay_shop)
     await data.add_anypay_payment_no_discount(message.from_user.id, sign, secret, payment_id, reset_react=True,
                                               price=price)
     if back_to_about_me:
