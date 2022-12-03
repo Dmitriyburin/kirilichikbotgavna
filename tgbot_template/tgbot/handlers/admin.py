@@ -1,15 +1,16 @@
+import json
 import random
 import datetime
 import asyncstdlib as a
 import os
 
 from aiogram import Dispatcher
-from aiogram.types import Message
+from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup
 from aiogram.dispatcher import FSMContext
 from aiogram.utils.deep_linking import get_start_link, decode_payload
 from tgbot.misc.states import AddChannel, DeleteChannel, AddRef, DeleteRef, BanUser, AddModerator, DeleteModerator
-
-from tgbot.misc.states import StatsRef, DeleteBlackWord, AddBlackWord, AddVip
+from tgbot.misc.states import StatsRef, DeleteBlackWord, AddBlackWord, AddVip, AddAdvertising
+from tgbot.keyboards import inline
 
 
 async def admin_main(message: Message):
@@ -411,6 +412,88 @@ async def add_vip(message: Message, state: FSMContext):
     await state.finish()
 
 
+async def add_advertising_start(message: Message, state: FSMContext):
+    await message.answer('Скиньте пост, который хотите добавить в систему показов')
+    await AddAdvertising.message_id.set()
+
+
+async def add_advertising(message: Message, state: FSMContext):
+    markup = None
+    if message.reply_markup:
+        markup = message.reply_markup.to_python()['inline_keyboard']
+    await state.update_data(message_id=message.message_id, markup=markup)
+    await message.answer('Введите количество показов (число)')
+    await AddAdvertising.views.set()
+
+
+async def add_advertising_views(message: Message, state: FSMContext):
+    bot = message.bot
+
+    views = message.text
+    if not views.isdigit():
+        await message.answer('Количество показов должно быть числом, попробуйте еще раз: /add_adv')
+        await state.finish()
+        return
+
+    await state.update_data(views=int(views))
+    await bot.copy_message(message.from_user.id, message.from_user.id, (await state.get_data())['message_id'],
+                           reply_markup=InlineKeyboardMarkup(inline_keyboard=(await state.get_data())['markup']))
+
+    await message.answer('Вы уверены, что хотите добавить данный пост в систему показов?',
+                         reply_markup=inline.yes_or_not('add_advertising_callback'))
+    await AddAdvertising.accept.set()
+
+
+async def add_advertising_callback(call: CallbackQuery, state: FSMContext):
+    bot = call.bot
+    data = bot['db']
+
+    detail = call.data.split(':')[1]
+    if detail == 'yes':
+        answer = (await state.get_data('message_id'))
+        await data.add_advertising(answer['message_id'], markup=answer['markup'],
+                                   from_chat_id=call.message.chat.id, views=answer['views'])
+        await call.message.answer('Пост добавлен в систему показов')
+    elif detail == 'no':
+        await call.message.answer('Отменено')
+    await call.message.delete()
+    await state.finish()
+    await bot.answer_callback_query(call.id)
+
+
+async def get_advertising(message: Message):
+    bot = message.bot
+    data = bot['db']
+
+    advertising = (await data.get_advertising())
+    if len(advertising):
+        await message.answer('Система показов: ')
+    else:
+        await message.answer('Ни одной рекламы не добавлено, воспользуйтесь /add_adv')
+
+    count = 0
+    for adv in advertising:
+        count += 1
+        await bot.copy_message(message.from_user.id, adv['from_chat_id'], adv['message_id'],
+                               reply_markup=InlineKeyboardMarkup(inline_keyboard=adv['markup']))
+        await message.answer(f'Количество показов: {adv["count"]}/{adv["views"]}\n\nУдалить рекламу сверху',
+                             reply_markup=inline.delete(f'advertising:{adv["message_id"]}'))
+        if count < len(advertising):
+            await message.answer('-' * 100)
+
+
+async def delete(call: CallbackQuery, state: FSMContext):
+    bot = call.bot
+    data = bot['db']
+
+    detail = call.data.split(':')[1]
+    if detail == 'advertising':
+        message_id = call.data.split(':')[2]
+        await data.delete_advertising(int(message_id))
+        await call.message.delete()
+    await bot.answer_callback_query(call.id)
+
+
 def register_admin(dp: Dispatcher):
     dp.register_message_handler(admin_main, commands=["admin"], state="*", is_admin=True)
     dp.register_message_handler(add_channel_start, commands=["add_sub"], state="*", is_admin=True)
@@ -454,3 +537,14 @@ def register_admin(dp: Dispatcher):
     dp.register_message_handler(add_vip_start, commands=["give_vip"], state="*", is_admin=True)
     dp.register_message_handler(add_vip_days, state=AddVip.user_id, is_admin=True)
     dp.register_message_handler(add_vip, state=AddVip.days, is_admin=True)
+
+    dp.register_message_handler(add_advertising_start, commands=["add_adv"], state="*", is_admin=True)
+    dp.register_message_handler(add_advertising, state=AddAdvertising.message_id, is_admin=True)
+    dp.register_message_handler(add_advertising_views, state=AddAdvertising.views, is_admin=True)
+    dp.register_callback_query_handler(add_advertising_callback, state=AddAdvertising.accept,
+                                       text_contains='add_advertising_callback:',
+                                       is_admin=True)
+    dp.register_message_handler(get_advertising, commands=["get_adv"], state="*", is_admin=True)
+    dp.register_callback_query_handler(delete,
+                                       text_contains='delete:',
+                                       is_admin=True)

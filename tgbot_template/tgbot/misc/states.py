@@ -67,6 +67,12 @@ class AddVip(StatesGroup):
     days = State()
 
 
+class AddAdvertising(StatesGroup):
+    message_id = State()
+    views = State()
+    accept = State()
+
+
 class RequiredChannel(StatesGroup):
     required_channel = State()
 

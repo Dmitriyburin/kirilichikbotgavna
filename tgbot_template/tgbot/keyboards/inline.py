@@ -85,7 +85,8 @@ def vip_privileges(prices, urls):
     markup.add(InlineKeyboardButton(prices[1]['button'].format(prices[1]['price']), url=urls[1]))
     markup.add(InlineKeyboardButton(prices[7]['button'].format(prices[7]['price']), url=urls[7]))
     markup.add(InlineKeyboardButton(prices[30]['button'].format(prices[30]['price']), url=urls[30]))
-    markup.add(InlineKeyboardButton(prices['forever']['button'].format(prices['forever']['price']), url=urls['forever']))
+    markup.add(
+        InlineKeyboardButton(prices['forever']['button'].format(prices['forever']['price']), url=urls['forever']))
     return markup
 
 
@@ -133,6 +134,7 @@ def required_sub(btns, channels):
     markup.add(InlineKeyboardButton('🚫 Убрать рекламу', callback_data='check_sub_call:vip'))
     return markup
 
+
 def ban_user(btns, user_id):
     markup = InlineKeyboardMarkup()
     markup.add(InlineKeyboardButton(btns['ban'], callback_data=f'ban_user:{user_id}'))
@@ -156,3 +158,25 @@ def reset_dislikes(btns, url):
     markup = InlineKeyboardMarkup()
     markup.add(InlineKeyboardButton(btns['reset_dislikes_buy'], url=url))
     return markup
+
+
+def yes_or_not(callback):
+    markup = InlineKeyboardMarkup(row_width=2)
+    markup.row(InlineKeyboardButton('Да', callback_data=f'{callback}:yes'),
+               InlineKeyboardButton('Нет', callback_data=f'{callback}:no'))
+    return markup
+
+
+def delete(callback):
+    markup = InlineKeyboardMarkup(row_width=2)
+    markup.add(InlineKeyboardButton('Удалить', callback_data=f'delete:{callback}'))
+    return markup
+
+
+def aa():
+    return InlineKeyboardMarkup(
+        inline_keyboard=[[{"text": "Возможности Notepost", "url": "https://t.me/notepostbot?start=info"}]])
+
+
+if __name__ == '__main__':
+    print(aa().to_python())

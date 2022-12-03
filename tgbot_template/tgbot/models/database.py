@@ -26,6 +26,7 @@ class Database:
         self.moderators = self.db.moderators
         self.payments = self.db.payments
         self.stats = self.db.stats
+        self.advertising = self.db.advertising
 
     async def add_user(self, user_id, ref, lang='ru', ref_commercial=False):
         if ref_commercial:
@@ -351,6 +352,20 @@ class Database:
 
     async def reset_react(self, user_id):
         await self.anonchat_users.update_one({'user_id': user_id}, {'$set': {'dislikes': 0}}, upsert=False)
+
+    async def add_advertising(self, message_id, from_chat_id, markup, views, between_adv=4):
+        await self.advertising.insert_one(
+            {'message_id': message_id, 'markup': markup, 'from_chat_id': from_chat_id,
+             'views': views, 'count': 0, 'between_adv': between_adv})
+
+    async def delete_advertising(self, message_id):
+        await self.advertising.delete_one({'message_id': message_id})
+
+    async def get_advertising(self):
+        return [i async for i in self.advertising.find({})]
+
+    async def increment_count_advertising(self, message_id, count):
+        await self.advertising.update_one({'message_id': message_id}, {'$inc': {'count': count}}, upsert=False)
 
     async def ref_stats_online(self, link):
         male = await self.anonchat_users.count_documents(
