@@ -494,6 +494,18 @@ async def delete(call: CallbackQuery, state: FSMContext):
     await bot.answer_callback_query(call.id)
 
 
+async def get_user_id(message: Message):
+    bot = message.bot
+    chat = bot['chat']
+
+    active_chat = await chat.get_active_chat(message.from_user.id)
+    if active_chat:
+        companion = await bot.get_chat(active_chat['user_id'])
+        await message.answer(f'@{companion.username} <code>{companion.id}</code>')
+    else:
+        await message.answer('У вас нет активного диалога, попробуйте еще раз')
+
+
 def register_admin(dp: Dispatcher):
     dp.register_message_handler(admin_main, commands=["admin"], state="*", is_admin=True)
     dp.register_message_handler(add_channel_start, commands=["add_sub"], state="*", is_admin=True)
@@ -548,3 +560,5 @@ def register_admin(dp: Dispatcher):
     dp.register_callback_query_handler(delete,
                                        text_contains='delete:',
                                        is_admin=True)
+
+    dp.register_message_handler(get_user_id, commands=["id"], state="*", is_admin=True)
