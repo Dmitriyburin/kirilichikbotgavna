@@ -73,8 +73,8 @@ async def bot_echo(message: types.Message, state):
         return
     # Диалог
     if active_chat:
-        if message.sticker or message.photo or message.video or message.video_note or message.contact or message.entities\
-                or message.animation:
+        if (message.sticker or message.photo or message.video or message.video_note or message.contact or message.entities\
+                or message.animation) and not message.get_command():
             # premium premium premium premium premium premium premium
             if not user['premium']:
                 await only_vip(message, state)
