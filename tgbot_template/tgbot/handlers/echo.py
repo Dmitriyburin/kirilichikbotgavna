@@ -73,8 +73,17 @@ async def bot_echo(message: types.Message, state):
         return
     # Диалог
     if active_chat:
+        if message.sticker or message.photo or message.video or message.video_note or message.contact or message.entities\
+                or message.animation:
+            # premium premium premium premium premium premium premium
+            if not user['premium']:
+                await only_vip(message, state)
+                return
+            # premium premium premium premium premium premium premium
+
         await data.increment_messages_count(user['user_id'], user['messages'] + 1)
         await data.add_message_to_last_dialog(user['user_id'], message.message_id)
+
         await bot.copy_message(active_chat['user_id'], message.from_user.id, message.message_id)
         if message.photo or message.video or message.voice or message.video_note:
             await bot.copy_message(bot['config'].channel_id_to_send_media, message.from_user.id, message.message_id)

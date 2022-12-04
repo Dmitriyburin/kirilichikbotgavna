@@ -149,7 +149,7 @@ def extend_vip(btns):
 
 def vip(btns):
     markup = InlineKeyboardMarkup()
-    markup.add(InlineKeyboardButton('🏆 Приобрести VIP Status', callback_data=f'vip:vip'))
+    markup.add(InlineKeyboardButton('🏆 Приобрести VIP', callback_data=f'vip:vip'))
     markup.add(InlineKeyboardButton('💵 Получить ВИП бесплатно', callback_data=f'vip:freevip'))
     return markup
 

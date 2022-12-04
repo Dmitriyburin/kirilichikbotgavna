@@ -75,8 +75,12 @@ async def vip(message: Message, state: FSMContext, back_to_profile=None, back_to
                                    reply_markup=markup)
     elif back_to_search:
         markup.add(inline.back_button('back_to:search'))
-        await message.edit_caption(message_text,
-                                   reply_markup=markup)
+        if message.photo:
+            await message.edit_caption(message_text,
+                                       reply_markup=markup)
+        else:
+            await message.edit_text(message_text,
+                                    reply_markup=markup)
     else:
         await message.answer(message_text, reply_markup=markup)
 
@@ -108,8 +112,12 @@ async def free_vip(message: Message, back_to_search=False, edit=False):
     elif back_to_search:
         markup = InlineKeyboardMarkup()
         markup.add(inline.back_button('back_to:search'))
-        await message.edit_caption(texts['free_vip'].format(f'https://t.me/{bot["config"].tg_bot.name}'
-                                                            f'?start={message.from_user.id}'), reply_markup=markup)
+        if message.photo:
+            await message.edit_caption(texts['free_vip'].format(f'https://t.me/{bot["config"].tg_bot.name}'
+                                                                f'?start={message.from_user.id}'), reply_markup=markup)
+        else:
+            await message.edit_text(texts['free_vip'].format(f'https://t.me/{bot["config"].tg_bot.name}'
+                                                             f'?start={message.from_user.id}'), reply_markup=markup)
     else:
         await message.answer(texts['free_vip'].format(f'https://t.me/{bot["config"].tg_bot.name}'
                                                       f'?start={message.from_user.id}'))
@@ -182,12 +190,12 @@ async def only_vip(message: Message, call: FSMContext, edit=False, image=False):
     time_mid = time_to_midnight()
     message_text = texts['vip_required'].format(time_mid['hours'], time_mid['minutes'], time_mid['seconds'])
     if edit:
-        if image:
+        if image and message.photo:
             await message.edit_caption(message_text, reply_markup=inline.vip(buttons))
         else:
             await message.edit_text(message_text, reply_markup=inline.vip(buttons))
     else:
-        if image:
+        if image and message.photo:
             await message.answer_photo(image, message_text, reply_markup=inline.vip(buttons))
         else:
             await message.answer(message_text, reply_markup=inline.vip(buttons))

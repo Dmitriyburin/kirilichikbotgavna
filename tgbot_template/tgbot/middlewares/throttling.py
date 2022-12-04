@@ -99,7 +99,6 @@ class ThrottlingMiddleware(BaseMiddleware):
         # Проверка на регистрацию
         user_anonchat = await bot_data.get_user_anonchat_profile(message.from_user.id)
         if not user_anonchat and not message.text.startswith('/start'):
-
             await start_registration(message)
 
     async def on_process_message(self, message: types.Message, data: dict):
