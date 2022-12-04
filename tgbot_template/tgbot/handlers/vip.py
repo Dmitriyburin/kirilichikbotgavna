@@ -64,10 +64,9 @@ async def vip(message: Message, state: FSMContext, back_to_profile=None, back_to
 
     time_mid = time_to_midnight()
     if companion_id:
-        message_text = texts['vip_privileges_companion'].format(time_mid['hours'], time_mid['minutes'],
-                                                                time_mid['seconds'])
+        message_text = texts['vip_privileges_companion']
     else:
-        message_text = texts['vip_privileges'].format(time_mid['hours'], time_mid['minutes'], time_mid['seconds'])
+        message_text = texts['vip_privileges']
 
     if back_to_profile:
         markup.add(inline.back_button('back_to:profile'))
@@ -188,14 +187,14 @@ async def only_vip(message: Message, call: FSMContext, edit=False, image=False):
     buttons = decor.buttons
 
     time_mid = time_to_midnight()
-    message_text = texts['vip_required'].format(time_mid['hours'], time_mid['minutes'], time_mid['seconds'])
+    message_text = texts['vip_required']
     if edit:
         if image and message.photo:
             await message.edit_caption(message_text, reply_markup=inline.vip(buttons))
         else:
             await message.edit_text(message_text, reply_markup=inline.vip(buttons))
     else:
-        if image and message.photo:
+        if image:
             await message.answer_photo(image, message_text, reply_markup=inline.vip(buttons))
         else:
             await message.answer(message_text, reply_markup=inline.vip(buttons))
