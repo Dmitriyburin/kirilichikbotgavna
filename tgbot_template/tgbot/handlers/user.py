@@ -39,9 +39,7 @@ async def user_start(message: Message, state=FSMContext):
 
         await data.add_user(message.chat.id, ref, ref_commercial=ref_commercial)
 
-    if not profile:
-        await data.add_user_anonchat_profile(message.from_user.id, None, None, ref)
-    else:
+    if profile:
         if profile['gender'] or profile['age']:
             await message.answer('Здравствуй! Кажется, мы с тобой уже виделись)',
                                  reply_markup=reply.main(buttons, profile['premium']))
@@ -51,9 +49,11 @@ async def user_start(message: Message, state=FSMContext):
                 await data.increment_ref_transition(ref_commercial)
             return
 
-    photo = InputFile('tgbot/data/images/start.jpg')
-    await message.answer_photo(photo,
-                               caption=texts['start_text'])
+    channels = await check_sub(message)
+    if channels:
+        await required_channel(message, None)
+        return
+
     await start_registration(message)
 
 

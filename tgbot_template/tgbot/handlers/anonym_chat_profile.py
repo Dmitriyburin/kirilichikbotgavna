@@ -15,9 +15,15 @@ from tgbot.misc import anypay
 async def start_registration(message: Message):
     bot = message.bot
     decor = bot['decor']
+    data = bot['db']
     buttons = decor.buttons
     texts = decor.texts
 
+    await data.add_user_anonchat_profile(message.from_user.id, None, None, ref='defolt')
+
+    photo = InputFile('tgbot/data/images/start.jpg')
+    await message.answer_photo(photo,
+                               caption=texts['start_text'])
     await message.answer(texts['select_gender'],
                          reply_markup=inline.select_gender(buttons))
     bot[message.from_user.id] = {"is_registration": True}
@@ -135,7 +141,7 @@ async def set_age(message: Message, state: FSMContext):
     texts = decor.texts
     buttons = decor.buttons
 
-    if message.text.isdigit() and int(message.text) in range(7, 99):
+    if message.text.isdigit() and int(message.text) in range(10, 100):
         await state.finish()
 
         user = await data.get_user_anonchat_profile(message.from_user.id)

@@ -8,6 +8,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.utils.exceptions import BadRequest
 from tgbot.keyboards import inline
 from tgbot.misc.states import RequiredChannel
+from tgbot.handlers.anonym_chat_profile import start_registration
 from tgbot.handlers.vip import vip
 
 
@@ -50,6 +51,7 @@ async def check_sub(message):
 async def check_sub_call(call: CallbackQuery, state: FSMContext):
     message = call.message
     bot = message.bot
+    data = bot['db']
     decor = bot['decor']
     buttons = decor.buttons
     message.from_user.id = call['from']['id']
@@ -61,6 +63,11 @@ async def check_sub_call(call: CallbackQuery, state: FSMContext):
             await message.delete()
             await message.answer('Спасибо, Вы подписались на все каналы! Продолжайте пользоваться ботом')
             await state.finish()
+
+            profile = await data.get_user_anonchat_profile(message.from_user.id)
+            if not profile:
+                await start_registration(message)
+
         else:
             await call.answer('Вы не подписались на все каналы!')
     elif detail == 'vip':

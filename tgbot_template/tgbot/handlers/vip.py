@@ -20,7 +20,7 @@ async def vip(message: Message, state: FSMContext, back_to_profile=None, back_to
     prices: dict = decor.prices
 
     user = await data.get_user_anonchat_profile(message.from_user.id)
-    if user['premium'] and not companion_id:
+    if user and user.get('premium') and not companion_id:
 
         if back_to_profile:
             markup = inline.back(buttons, 'back_to:profile')
