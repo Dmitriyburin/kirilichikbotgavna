@@ -140,10 +140,10 @@ async def premium_controller(bot, delay):
                     if profile.get('vip_days', False) == 'forever' or profile.get('vip_hours', False) == 'forever':
                         continue
                     if profile['vip_date']:
-                        if not (profile['vip_date'] + datetime.timedelta(days=profile['vip_days'])) < cur_time:
+                        if not (profile['vip_date'] + datetime.timedelta(days=int(profile['vip_days']))) < cur_time:
                             continue
                     if profile.get('vip_hours', False):
-                        if not (profile['vip_date'] + datetime.timedelta(hours=profile['vip_hours'])) < cur_time:
+                        if not (profile['vip_date'] + datetime.timedelta(hours=int(profile['vip_hours']))) < cur_time:
                             continue
                     try:
                         await bot.send_message(i, texts['bell'])
