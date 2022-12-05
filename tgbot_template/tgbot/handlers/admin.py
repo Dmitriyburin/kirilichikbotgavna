@@ -200,7 +200,10 @@ async def get_refs(message: Message):
             f" {item['date'].date()}\n<b>Цена:</b> {item['price']} руб \n<b>Контакт:</b> {item['contact']}\n"
             f"<b>Цена перехода:</b> {price_transitions}\n")
     if channels_text:
-        await message.answer('\n'.join(channels_text))
+        n = 10
+        answer = [channels_text[i:i + n] for i in range(0, len(channels_text), n)]
+        for text in answer:
+            await message.answer('\n'.join(text))
     else:
         await message.answer('Реферальных ссылок нет, воспользуйтесь /add_ref, чтобы добавить новую')
 
