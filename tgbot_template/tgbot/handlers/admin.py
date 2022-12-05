@@ -216,13 +216,13 @@ async def get_refs(message: Message, state: FSMContext, month=-1, edit=False):
                 is_last = True if month != 0 else None
                 await RefsMonth.month_callback.set()
                 await state.update_data(messages_ids=messages_ids)
-                print(messages_ids)
                 markup = inline.next_or_last(month, is_next, is_last)
 
             if count == 1 and edit:
                 message = await message.edit_text('\n'.join(text), reply_markup=markup)
             else:
-                messages_ids.append(message.message_id)
+                if not message.get_command():
+                    messages_ids.append(message.message_id)
                 message = await message.answer('\n'.join(text), reply_markup=markup)
 
     else:
@@ -234,7 +234,6 @@ async def month_callback(call: CallbackQuery, state: FSMContext):
 
     delete_messages_ids = (await state.get_data())['messages_ids']
     for message_id in delete_messages_ids:
-        print((await state.get_data()))
         await call.bot.delete_message(call['from']['id'], int(message_id))
     await state.finish()
     await get_refs(call.message, state, int(month), edit=True)
