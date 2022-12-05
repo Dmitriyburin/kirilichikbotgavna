@@ -73,6 +73,10 @@ class AddAdvertising(StatesGroup):
     accept = State()
 
 
+class RefsMonth(StatesGroup):
+    month_callback = State()
+
+
 class RequiredChannel(StatesGroup):
     required_channel = State()
 

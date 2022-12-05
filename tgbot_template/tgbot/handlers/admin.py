@@ -1,5 +1,5 @@
-import json
 import random
+import itertools
 import datetime
 import asyncstdlib as a
 import os
@@ -9,7 +9,7 @@ from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup
 from aiogram.dispatcher import FSMContext
 from aiogram.utils.deep_linking import get_start_link, decode_payload
 from tgbot.misc.states import AddChannel, DeleteChannel, AddRef, DeleteRef, BanUser, AddModerator, DeleteModerator
-from tgbot.misc.states import StatsRef, DeleteBlackWord, AddBlackWord, AddVip, AddAdvertising
+from tgbot.misc.states import StatsRef, DeleteBlackWord, AddBlackWord, AddVip, AddAdvertising, RefsMonth
 from tgbot.keyboards import inline
 
 
@@ -182,13 +182,16 @@ async def add_ref_contact(message: Message, state: FSMContext):
     await state.finish()
 
 
-async def get_refs(message: Message):
+async def get_refs(message: Message, state: FSMContext, month=-1, edit=False):
     bot = message.bot
     data = bot['db']
 
     channels_text = []
     channels = list(sorted([i async for i in (await data.get_refs())], key=lambda x: x['date']))
-    for index, item in enumerate(channels):
+    channels_per_month = [list(v) for k, v in itertools.groupby(channels, lambda e: e['date'].month)]
+    if month == -1:
+        month = len(channels_per_month) - 1
+    for index, item in enumerate(channels_per_month[month]):
 
         if item['transitions'] != 0:
             price_transitions = round(item['price'] / item['transitions'], 3)
@@ -202,10 +205,40 @@ async def get_refs(message: Message):
     if channels_text:
         n = 10
         answer = [channels_text[i:i + n] for i in range(0, len(channels_text), n)]
+        count = 0
+        messages_ids = []
         for text in answer:
-            await message.answer('\n'.join(text))
+            count += 1
+
+            markup = None
+            if count == len(answer):
+                is_next = True if (month + 1) <= (len(channels_per_month) - 1) else None
+                is_last = True if month != 0 else None
+                await RefsMonth.month_callback.set()
+                await state.update_data(messages_ids=messages_ids)
+                print(messages_ids)
+                markup = inline.next_or_last(month, is_next, is_last)
+
+            if count == 1 and edit:
+                message = await message.edit_text('\n'.join(text), reply_markup=markup)
+            else:
+                messages_ids.append(message.message_id)
+                message = await message.answer('\n'.join(text), reply_markup=markup)
+
     else:
         await message.answer('Реферальных ссылок нет, воспользуйтесь /add_ref, чтобы добавить новую')
+
+
+async def month_callback(call: CallbackQuery, state: FSMContext):
+    month = call.data.split(':')[1]
+
+    delete_messages_ids = (await state.get_data())['messages_ids']
+    for message_id in delete_messages_ids:
+        print((await state.get_data()))
+        await call.bot.delete_message(call['from']['id'], int(message_id))
+    await state.finish()
+    await get_refs(call.message, state, int(month), edit=True)
+    await call.bot.answer_callback_query(call.id)
 
 
 async def ref_stats_start(message: Message):
@@ -537,6 +570,9 @@ def register_admin(dp: Dispatcher):
     dp.register_message_handler(del_ref_start, commands=["del_ref"], state="*", is_admin=True)
     dp.register_message_handler(del_ref, state=DeleteRef.ref, is_admin=True)
     dp.register_message_handler(get_refs, commands=["refs"], state="*", is_admin=True)
+    dp.register_callback_query_handler(month_callback, state=RefsMonth.month_callback,
+                                       text_contains='month:',
+                                       is_admin=True)
     dp.register_message_handler(ref_stats_start, commands=["ref_stats"], state="*", is_admin=True)
     dp.register_message_handler(ref_stats, state=StatsRef.ref, is_admin=True)
 

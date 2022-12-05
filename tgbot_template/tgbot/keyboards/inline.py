@@ -173,6 +173,28 @@ def delete(callback):
     return markup
 
 
+def next_or_last(month, is_next=True, is_last=True):
+    markup = InlineKeyboardMarkup(row_width=2)
+
+    next_button = None
+    if is_next:
+        next_button = InlineKeyboardButton('Следующий месяц', callback_data=f'month:{month + 1}')
+
+    last_button = None
+    if is_last:
+        last_button = InlineKeyboardButton('Прошлый месяц', callback_data=f'month:{month - 1}')
+
+    if is_next and is_last:
+        markup.row(last_button, next_button)
+    elif is_next:
+        markup.row(next_button)
+    elif is_last:
+        markup.row(last_button)
+    else:
+        return None
+    return markup
+
+
 def aa():
     return InlineKeyboardMarkup(
         inline_keyboard=[[{"text": "Возможности Notepost", "url": "https://t.me/notepostbot?start=info"}]])
