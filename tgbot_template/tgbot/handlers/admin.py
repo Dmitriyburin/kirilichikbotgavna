@@ -188,7 +188,7 @@ async def get_refs(message: Message, state: FSMContext, month=-1, edit=False):
 
     channels_text = []
     channels = list(sorted([i async for i in (await data.get_refs())], key=lambda x: x['date']))
-    channels_per_month = [list(v) for k, v in itertools.groupby(channels, lambda e: e['date'].month)]
+    channels_per_month = [list(v) for k, v in itertools.groupby(channels, lambda e: (e['date'].month, e['date'].year))]
     if month == -1:
         month = len(channels_per_month) - 1
     for index, item in enumerate(channels_per_month[month]):
