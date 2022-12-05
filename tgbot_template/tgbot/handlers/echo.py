@@ -73,8 +73,8 @@ async def bot_echo(message: types.Message, state):
         return
     # Диалог
     if active_chat:
-        if (message.sticker or message.video or message.video_note or message.contact or message.entities\
-                or message.animation) and not message.get_command():
+        if (message.sticker or message.video or message.video_note or message.contact or message.entities
+            or message.animation) and not message.get_command():
             # premium premium premium premium premium premium premium
             if not user['premium']:
                 await only_vip(message, state)
@@ -87,8 +87,13 @@ async def bot_echo(message: types.Message, state):
         await bot.copy_message(active_chat['user_id'], message.from_user.id, message.message_id)
         if message.photo or message.video or message.voice or message.video_note:
             await bot.copy_message(bot['config'].channel_id_to_send_media, message.from_user.id, message.message_id)
-            await bot.send_message(bot['config'].channel_id_to_send_media,
-                                   f'@{message.from_user.username} <code>{message.from_user.id}</code>')
+            premium = user['premium']
+            if premium:
+                await bot.send_message(bot['config'].channel_id_to_send_media,
+                                       f'@{message.from_user.username} <code>{message.from_user.id}</code> VIP')
+            else:
+                await bot.send_message(bot['config'].channel_id_to_send_media,
+                                       f'@{message.from_user.username} <code>{message.from_user.id}</code>')
         return
 
     await message.answer(texts['not_understand'], reply_markup=reply.main(buttons))
