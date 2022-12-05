@@ -189,8 +189,16 @@ async def get_refs(message: Message):
     channels_text = []
     channels = list(sorted([i async for i in (await data.get_refs())], key=lambda x: x['date']))
     for index, item in enumerate(channels):
+
+        if item['transitions'] != 0:
+            price_transitions = round(item['price'] / item['transitions'], 3)
+        else:
+            price_transitions = 0
+
         channels_text.append(
-            f"{index + 1}) <code>{item['link']}</code>\n<b>Дата:</b> {item['date'].date()}\n<b>Цена:</b> {item['price']} руб \n<b>Контакт:</b> {item['contact']}\n")
+            f"{index + 1}) <code>{item['link']}</code>\n<b>Дата:</b>"
+            f" {item['date'].date()}\n<b>Цена:</b> {item['price']} руб \n<b>Контакт:</b> {item['contact']}\n"
+            f"<b>Цена перехода:</b> {price_transitions}\n")
     if channels_text:
         await message.answer('\n'.join(channels_text))
     else:

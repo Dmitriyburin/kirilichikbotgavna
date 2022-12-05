@@ -73,9 +73,13 @@ class Database:
             await self.stats.update_one({'stat': 'all'}, {'$inc': {'sum_average_age': age}}, upsert=False)
             await self.stats.update_one({'stat': 'all'}, {'$inc': {'anonchat_users': 1}}, upsert=False)
 
-        await self.anonchat_users.update_one({'user_id': user_id}, {'$set': {'gender': gender, 'age': int(age),
-                                                                             'ref': ref_commercial}},
-                                             upsert=False)
+        if ref_commercial:
+            await self.anonchat_users.update_one({'user_id': user_id}, {'$set': {'gender': gender, 'age': int(age),
+                                                                                 'ref': ref_commercial}},
+                                                 upsert=False)
+        else:
+            await self.anonchat_users.update_one({'user_id': user_id}, {'$set': {'gender': gender, 'age': int(age)}},
+                                                 upsert=False)
 
     async def increment_dialogs_count(self, user_id, dialogs):
         await self.anonchat_users.update_one({'user_id': user_id}, {'$set': {'dialogs': dialogs}},
