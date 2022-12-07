@@ -247,6 +247,7 @@ async def back_to(call: CallbackQuery, state: FSMContext):
 
 def register_anonym_chat_profile(dp: Dispatcher):
     dp.register_message_handler(start_registration, commands=["registration"], state='*')
+    dp.register_message_handler(print_information, commands=["profile"], state='*')
     dp.register_callback_query_handler(registration_step1_gender, text_contains='registration')
     dp.register_message_handler(registration_step2_age, state=Profile.age)
 
