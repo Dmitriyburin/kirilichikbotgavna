@@ -318,11 +318,11 @@ class Database:
         return int(time.time() * 10000)
 
     async def add_anypay_payment_no_discount(self, user_id, sign, secret, payment_id, price, days=None,
-                                             companion_id=None, reset_react=None):
+                                             companion_id=None, reset_react=None, unban=None):
         await self.payments.insert_one(
             {'type': 'anypay', 'user_id': user_id, 'sign': sign, 'secret': secret, 'payment_id': payment_id,
              'days': days, 'price': float(price), 'paid': False, 'gived': False, 'discount': None,
-             'reset_react': reset_react, 'companion_id': companion_id})
+             'reset_react': reset_react, 'unban': unban, 'companion_id': companion_id})
 
     async def get_payment_by_secret(self, secret):
         return await self.payments.find_one({'secret': secret})

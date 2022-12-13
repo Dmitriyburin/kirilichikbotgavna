@@ -57,11 +57,12 @@ async def payments_controller(bot, delay):
 
         ungived = await data.get_ungiven_payments()
         async for i in ungived:
-            days = i['days']
+            days = i.get('days')
             price = i['price']
-            reset_react = i['reset_react']
-            companion_id = i['companion_id']
-            logging.info(f'{companion_id} {days} {price}')
+            reset_react = i.get('reset_react')
+            companion_id = i.get('companion_id')
+            unban = i.get('unban')
+
             if reset_react:
                 await data.reset_react(i['user_id'])
                 message = texts['reset_dislikes']
@@ -89,6 +90,10 @@ async def payments_controller(bot, delay):
                     message = texts['premium_bought'].format(price, days)
                 await bot.send_message(i['user_id'], message)
 
+            elif unban:
+                await data.unban_user(i['user_id'])
+                await bot.send_message(i['user_id'], texts['unbanned'])
+
             user = await data.get_user(i['user_id'])
             if not user['ref'].isdigit() and user['ref'] != 'defolt':
                 await data.add_ref_donater(user['ref'], price)
@@ -96,8 +101,6 @@ async def payments_controller(bot, delay):
 
             await data.edit_given_status(i['secret'])
             await data.edit_user_donates(i['user_id'], i['price'])
-
-
 
 
 def register_payment(dp: Dispatcher):

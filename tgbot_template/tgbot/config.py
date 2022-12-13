@@ -94,7 +94,8 @@ prices = {
     30: {'days': 30, 'price': 179, 'discount': 349, 'button': 'Месяц - {0} ₽', 'description': 'vip_30_day'},
     'forever': {'days': 'forever', 'price': 459, 'discount': 1499, 'button': 'Навсегда - {0} ₽',
                 'description': 'vip_forever'},
-    'reset_react': {'price': 19, 'description': 'vip_reset_react'}
+    'reset_react': {'price': 19, 'description': 'reset_react'},
+    'unban': {'price': 29, 'description': 'unban'}
 }
 anypay_secret = '2e7%b*P3H(7s'
 anypay_shop = 9995

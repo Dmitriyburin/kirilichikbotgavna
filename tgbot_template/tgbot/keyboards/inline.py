@@ -195,6 +195,12 @@ def next_or_last(month, is_next=True, is_last=True):
     return markup
 
 
+def unban(url):
+    markup = InlineKeyboardMarkup()
+    markup.add(InlineKeyboardButton('Разбанить', url=url))
+    return markup
+
+
 def aa():
     return InlineKeyboardMarkup(
         inline_keyboard=[[{"text": "Возможности Notepost", "url": "https://t.me/notepostbot?start=info"}]])

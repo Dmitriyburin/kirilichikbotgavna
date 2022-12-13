@@ -44,7 +44,7 @@ async def vip(message: Message, state: FSMContext, back_to_profile=None, back_to
 
     urls = {}
     for key, value in prices.items():
-        if key == 'reset_react':
+        if key == 'reset_react' or key == 'unban':
             continue
 
         price = value['price']

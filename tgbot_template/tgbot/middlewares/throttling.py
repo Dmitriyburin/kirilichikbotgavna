@@ -15,6 +15,7 @@ from aiogram.dispatcher.handler import CancelHandler, current_handler
 from aiogram.dispatcher.middlewares import BaseMiddleware
 from aiogram.utils.exceptions import Throttled
 from tgbot.keyboards import inline
+from tgbot.misc import anypay
 from tgbot.handlers.channels import check_sub, required_channel
 from tgbot.handlers.anonym_chat_profile import start_registration
 from tgbot.handlers.anonym_chat import estimate_companion
@@ -65,7 +66,21 @@ class ThrottlingMiddleware(BaseMiddleware):
                         await message.answer(texts['you_are_banned_time'].format(remained_hours, remained_minutes))
                         raise CancelHandler()
                 else:
-                    await message.answer(texts['you_are_banned'])
+                    decor = bot['decor']
+                    prices: dict = decor.prices
+                    value = prices['unban']
+
+                    price = value['price']
+                    anypay_secret, anypay_shop = bot['config'].anypay.secret, bot['config'].anypay.shop
+                    payment_id = await bot_data.get_anypay_payment_id()
+                    sign, secret = anypay.gen_hash(price, payment_id, anypay_secret=anypay_secret,
+                                                   anypay_shop=anypay_shop)
+                    url = anypay.gen_url(price, payment_id, value['description'], sign, anypay_shop=anypay_shop)
+
+                    await bot_data.add_anypay_payment_no_discount(message.from_user.id, sign, secret, payment_id,
+                                                                  price=price, unban=True)
+
+                    await message.answer(texts['you_are_banned'], reply_markup=inline.unban(url))
                     raise CancelHandler()
 
         # Captcha
