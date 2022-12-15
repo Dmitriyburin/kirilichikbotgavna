@@ -89,10 +89,10 @@ def load_config(path: str = None):
 
 
 prices = {
-    1: {'days': 1, 'price': 49, 'discount': 29, 'button': '24 часа - {0} ₽', 'description': 'vip_1_day'},
-    7: {'days': 7, 'price': 99, 'discount': 99, 'button': '7 дней - {0} ₽', 'description': 'vip_7_day'},
+    1: {'days': 1, 'price': 79, 'discount': 29, 'button': '24 часа - {0} ₽', 'description': 'vip_1_day'},
+    7: {'days': 7, 'price': 149, 'discount': 99, 'button': '7 дней - {0} ₽', 'description': 'vip_7_day'},
     30: {'days': 30, 'price': 179, 'discount': 349, 'button': 'Месяц - {0} ₽', 'description': 'vip_30_day'},
-    'forever': {'days': 'forever', 'price': 459, 'discount': 1499, 'button': 'Навсегда - {0} ₽',
+    'forever': {'days': 'forever', 'price': 499, 'discount': 1499, 'button': 'Навсегда - {0} ₽',
                 'description': 'vip_forever'},
     'reset_react': {'price': 19, 'description': 'reset_react'},
     'unban': {'price': 29, 'description': 'unban'}
