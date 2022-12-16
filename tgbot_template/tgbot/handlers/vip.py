@@ -102,7 +102,7 @@ async def discount_create(message, scheduler):
         if job.name == str(message.from_user.id):
             return
 
-    scheduler.add_job(vip, 'date', run_date=datetime.datetime.now() + datetime.timedelta(minutes=1),
+    scheduler.add_job(vip, 'date', run_date=datetime.datetime.now() + datetime.timedelta(minutes=10),
                       args=[message, None, None, None, None, None, True], name=str(message.from_user.id))
 
     # scheduler.start()
