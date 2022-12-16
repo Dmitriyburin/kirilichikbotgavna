@@ -92,6 +92,7 @@ def main():
     scheduler.add_job(reset_reports, 'cron', day_of_week='fri', hour=6, minute=30, args=(bot['db'],))
     scheduler.add_job(del_today_messages, 'cron', hour=0, minute=1, args=(bot['db'],))
     scheduler.start()
+    bot['scheduler'] = scheduler
     executor.start_polling(dp)
     return bot
 

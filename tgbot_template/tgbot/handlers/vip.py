@@ -1,5 +1,6 @@
 import asyncio
 import datetime
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from aiogram import Dispatcher
 from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup
@@ -11,7 +12,7 @@ from tgbot.misc import anypay
 
 
 async def vip(message: Message, state: FSMContext, back_to_profile=None, back_to_search=False, edit=False,
-              companion_id=None):
+              companion_id=None, discount=None):
     bot = message.bot
     decor = bot['decor']
     data = bot['db']
@@ -20,6 +21,9 @@ async def vip(message: Message, state: FSMContext, back_to_profile=None, back_to
     prices: dict = decor.prices
 
     user = await data.get_user_anonchat_profile(message.from_user.id)
+    if discount and user and user.get('premium'):
+        return
+
     if user and user.get('premium') and not companion_id:
 
         if back_to_profile:
@@ -48,6 +52,9 @@ async def vip(message: Message, state: FSMContext, back_to_profile=None, back_to
             continue
 
         price = value['price']
+        if discount:
+            price = value['discount']
+
         anypay_secret, anypay_shop = bot['config'].anypay.secret, bot['config'].anypay.shop
         payment_id = await data.get_anypay_payment_id()
         sign, secret = anypay.gen_hash(price, payment_id, anypay_secret=anypay_secret, anypay_shop=anypay_shop)
@@ -60,13 +67,18 @@ async def vip(message: Message, state: FSMContext, back_to_profile=None, back_to
         else:
             await data.add_anypay_payment_no_discount(message.from_user.id, sign, secret, payment_id, days=key,
                                                       price=price)
-    markup = inline.vip_privileges(prices, urls)
 
+    if not discount and not companion_id:
+        await discount_create(message, bot['scheduler'])
+
+    markup = inline.vip_privileges(prices, urls, discount=discount)
     time_mid = time_to_midnight()
     if companion_id:
         message_text = texts['vip_privileges_companion']
     else:
         message_text = texts['vip_privileges']
+        if discount:
+            message_text = texts['sale_vip']
 
     if back_to_profile:
         markup.add(inline.back_button('back_to:profile'))
@@ -82,6 +94,18 @@ async def vip(message: Message, state: FSMContext, back_to_profile=None, back_to
                                     reply_markup=markup)
     else:
         await message.answer(message_text, reply_markup=markup)
+
+
+async def discount_create(message, scheduler):
+    jobs = scheduler.get_jobs()
+    for job in jobs:
+        if job.name == str(message.from_user.id):
+            return
+
+    scheduler.add_job(vip, 'date', run_date=datetime.datetime.now() + datetime.timedelta(minutes=1),
+                      args=[message, None, None, None, None, None, True], name=str(message.from_user.id))
+
+    # scheduler.start()
 
 
 async def buy_vip(call: CallbackQuery, state: FSMContext):

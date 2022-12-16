@@ -80,13 +80,20 @@ def estimate_companion_short_only_react(btns):
     return markup
 
 
-def vip_privileges(prices, urls):
+def vip_privileges(prices, urls, discount=None):
     markup = InlineKeyboardMarkup()
-    markup.add(InlineKeyboardButton(prices[1]['button'].format(prices[1]['price']), url=urls[1]))
-    markup.add(InlineKeyboardButton(prices[7]['button'].format(prices[7]['price']), url=urls[7]))
-    markup.add(InlineKeyboardButton(prices[30]['button'].format(prices[30]['price']), url=urls[30]))
-    markup.add(
-        InlineKeyboardButton(prices['forever']['button'].format(prices['forever']['price']), url=urls['forever']))
+    if not discount:
+        markup.add(InlineKeyboardButton(prices[1]['button'].format(prices[1]['price']), url=urls[1]))
+        markup.add(InlineKeyboardButton(prices[7]['button'].format(prices[7]['price']), url=urls[7]))
+        markup.add(InlineKeyboardButton(prices[30]['button'].format(prices[30]['price']), url=urls[30]))
+        markup.add(
+            InlineKeyboardButton(prices['forever']['button'].format(prices['forever']['price']), url=urls['forever']))
+    else:
+        markup.add(InlineKeyboardButton('🎗' + prices[1]['button'].format(prices[1]['discount']), url=urls[1]))
+        markup.add(InlineKeyboardButton('🥉' + prices[7]['button'].format(prices[7]['discount']), url=urls[7]))
+        markup.add(InlineKeyboardButton('🥈' + prices[30]['button'].format(prices[30]['discount']), url=urls[30]))
+        markup.add(
+            InlineKeyboardButton('🥇' + prices['forever']['button'].format(prices['forever']['discount']), url=urls['forever']))
     return markup
 
 
