@@ -302,7 +302,7 @@ async def estimate_companion(call: CallbackQuery, state: FSMContext, detail):
 
         bot[message.from_user.id]['is_report_companion'] = True
         await data.increment_reports_count(companion['user_id'], companion['reports_count'] + 1)
-        await send_report_file(bot, user, bot['config'].channel_id_to_send_ban)
+        await send_report_file(bot, user, companion['user_id'], bot['config'].channel_id_to_send_ban)
         # if companion['reports_count'] + 1 == 30:
         #     await data.ban_user(companion['user_id'], hours=2, time_mute=datetime.datetime.now())
         # elif companion['reports_count'] + 1 >= 50:
@@ -315,11 +315,11 @@ async def estimate_companion(call: CallbackQuery, state: FSMContext, detail):
     await bot.answer_callback_query(call.id)
 
 
-async def send_report_file(bot, user, channel_id):
+async def send_report_file(bot, user, companion_id, channel_id):
     if not len(user['last_dialogs'][-1]):
         return
 
-    fname = f'dialogue_{user["user_id"]}.txt'
+    fname = f'dialogue_{companion_id}.txt'
     with open(fname, 'w', encoding="utf-8") as file:
         for message in user['last_dialogs'][-1]:
             file.write(f'{message}\n')
