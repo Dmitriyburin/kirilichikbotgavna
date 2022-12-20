@@ -82,7 +82,13 @@ async def bot_echo(message: types.Message, state):
             # premium premium premium premium premium premium premium
 
         await data.increment_messages_count(user['user_id'], user['messages'] + 1)
-        await data.add_message_to_last_dialog(user['user_id'], message.message_id)
+
+        last_message = message.text
+        if not last_message:
+            last_message = '[НЕ ТЕКСТ]'
+
+        await data.add_message_to_last_dialog(user['user_id'], last_message, message.from_user.id)
+        await data.add_message_to_last_dialog(active_chat['user_id'], last_message, message.from_user.id)
 
         await bot.copy_message(active_chat['user_id'], message.from_user.id, message.message_id)
         if message.photo or message.video or message.voice or message.video_note:

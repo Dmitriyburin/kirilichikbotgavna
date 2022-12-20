@@ -253,10 +253,10 @@ class Database:
     async def get_moderators(self):
         return [i async for i in self.moderators.find({})]
 
-    async def add_message_to_last_dialog(self, user_id, message_id):
+    async def add_message_to_last_dialog(self, user_id, message_id, user_id_sent):
         user = await self.get_user_anonchat_profile(user_id)
         last_dialog_messages = user['last_dialogs'][-1]
-        last_dialog_messages.append(message_id)
+        last_dialog_messages.append(f'{user_id_sent}: {message_id}')
         last_dialogs_without_current = user['last_dialogs'][1:-1]
         await self.anonchat_users.update_one({'user_id': user_id},
                                              {'$set': {

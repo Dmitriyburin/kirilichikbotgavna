@@ -1,5 +1,6 @@
 import asyncio
 import datetime
+import os
 
 from aiogram import Dispatcher
 from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton, InputFile
@@ -7,6 +8,7 @@ from aiogram.dispatcher import FSMContext
 
 from tgbot.keyboards import inline
 from tgbot.misc.states import Search
+from tgbot.handlers.admin import sent_ban_to_channel
 
 
 async def search(message: Message, state: FSMContext, companion_gender=None, companion_age=None):
@@ -257,6 +259,7 @@ async def estimate_companion(call: CallbackQuery, state: FSMContext, detail):
 
     # detail = call.data.split(':')[1]
     message.from_user.id = call['from']['id']
+    message.from_user.username = call['from']['username']
 
     user = await data.get_user_anonchat_profile(call['from']['id'])
     companion = await data.get_user_anonchat_profile(user['last_companion_id'])
@@ -290,6 +293,8 @@ async def estimate_companion(call: CallbackQuery, state: FSMContext, detail):
             await data.ban_user(companion['user_id'])
             await bot.answer_callback_query(call.id)
             await message.answer(texts['user_banned'])
+            await sent_ban_to_channel(bot, message, companion['user_id'])
+
             return
 
         await message.answer(texts['report_sent'])
@@ -297,6 +302,7 @@ async def estimate_companion(call: CallbackQuery, state: FSMContext, detail):
 
         bot[message.from_user.id]['is_report_companion'] = True
         await data.increment_reports_count(companion['user_id'], companion['reports_count'] + 1)
+        await send_report_file(bot, user, bot['config'].channel_id_to_send_ban)
         # if companion['reports_count'] + 1 == 30:
         #     await data.ban_user(companion['user_id'], hours=2, time_mute=datetime.datetime.now())
         # elif companion['reports_count'] + 1 >= 50:
@@ -309,11 +315,25 @@ async def estimate_companion(call: CallbackQuery, state: FSMContext, detail):
     await bot.answer_callback_query(call.id)
 
 
+async def send_report_file(bot, user, channel_id):
+    if not len(user['last_dialogs'][-1]):
+        return
+
+    fname = f'dialogue_{user["user_id"]}.txt'
+    with open(fname, 'w', encoding="utf-8") as file:
+        for message in user['last_dialogs'][-1]:
+            file.write(f'{message}\n')
+
+    await bot.send_document(channel_id, open(fname, 'rb'))
+    os.remove(fname)
+
+
 async def ban_user(call: CallbackQuery, state: FSMContext):
     message = call.message
     bot = message.bot
     data = bot['db']
 
+    message.from_user.id = call['from']['id']
     user_id = call.data.split(':')[1]
     await data.ban_user(user_id)
     await bot.answer_callback_query(call.id)

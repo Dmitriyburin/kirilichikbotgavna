@@ -9,7 +9,7 @@ from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup
 from aiogram.dispatcher import FSMContext
 from aiogram.utils.deep_linking import get_start_link, decode_payload
 from tgbot.misc.states import AddChannel, DeleteChannel, AddRef, DeleteRef, BanUser, AddModerator, DeleteModerator
-from tgbot.misc.states import StatsRef, DeleteBlackWord, AddBlackWord, AddVip, AddAdvertising, RefsMonth
+from tgbot.misc.states import StatsRef, DeleteBlackWord, AddBlackWord, AddVip, AddAdvertising, RefsMonth, UnbanUser
 from tgbot.keyboards import inline
 
 
@@ -321,6 +321,35 @@ async def ban_user(message: Message, state: FSMContext):
 
     await data.ban_user(int(user_id))
     await message.answer('Пользователь забанен')
+    await sent_ban_to_channel(bot, message, user_id)
+    await state.finish()
+
+
+async def sent_ban_to_channel(bot, message: Message, banned_user_id, is_unban=False):
+    sent_message = f'<code>{message.from_user.id}</code> @{message.from_user.username} забанил <code>{banned_user_id}</code>'
+    if is_unban:
+        sent_message = f'<code>{message.from_user.id}</code> @{message.from_user.username} разбанил <code>{banned_user_id}</code>'
+
+    await bot.send_message(bot['config'].channel_id_to_send_ban, sent_message)
+
+
+async def unban_user_start(message: Message, state: FSMContext):
+    await message.answer('Введите id пользователя, которого хотите разбанить')
+    await UnbanUser.user_id.set()
+
+
+async def unban_user(message: Message, state: FSMContext):
+    bot = message.bot
+    data = bot['db']
+    user_id = message.text
+    if not user_id.isdigit():
+        await message.answer('Id должен быть числом, попробуйте еще раз: /unban')
+        await state.finish()
+        return
+
+    await data.unban_user(int(user_id))
+    await message.answer('Пользователь разбанен')
+    await sent_ban_to_channel(bot, message, user_id, is_unban=True)
     await state.finish()
 
 
@@ -579,6 +608,11 @@ def register_admin(dp: Dispatcher):
     dp.register_message_handler(ban_user_start, commands=["ban"], state="*", is_moderator=True)
     dp.register_message_handler(ban_user, state=BanUser.user_id, is_admin=True)
     dp.register_message_handler(ban_user, state=BanUser.user_id, is_moderator=True)
+
+    dp.register_message_handler(unban_user_start, commands=["unban"], state="*", is_admin=True)
+    dp.register_message_handler(unban_user_start, commands=["unban"], state="*", is_moderator=True)
+    dp.register_message_handler(unban_user, state=UnbanUser.user_id, is_admin=True)
+    dp.register_message_handler(unban_user, state=UnbanUser.user_id, is_moderator=True)
 
     dp.register_message_handler(add_moderator_start, commands=["add_moder"], state="*", is_admin=True)
     dp.register_message_handler(add_moderator, state=AddModerator.user_id, is_admin=True)

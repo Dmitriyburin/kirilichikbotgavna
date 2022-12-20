@@ -49,6 +49,7 @@ class Config:
     anypay: Anypay
     payment_token: str
     channel_id_to_send_media: int
+    channel_id_to_send_ban: int
 
 
 def load_config(path: str = None):
@@ -84,7 +85,8 @@ def load_config(path: str = None):
                 shop=anypay_shop
             ),
             payment_token=env.str('PAYMENT_TOKEN'),
-            channel_id_to_send_media=env.str('CHANNEL_ID_TO_SEND_MEDIA')
+            channel_id_to_send_media=env.str('CHANNEL_ID_TO_SEND_MEDIA'),
+            channel_id_to_send_ban=env.str('CHANNEL_ID_TO_SEND_BAN')
         )
 
 

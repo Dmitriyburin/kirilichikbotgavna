@@ -46,6 +46,10 @@ class BanUser(StatesGroup):
     user_id = State()
 
 
+class UnbanUser(StatesGroup):
+    user_id = State()
+
+
 class AddModerator(StatesGroup):
     user_id = State()
 
