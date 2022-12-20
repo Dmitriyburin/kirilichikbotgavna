@@ -297,10 +297,10 @@ async def estimate_companion(call: CallbackQuery, state: FSMContext, detail):
 
         bot[message.from_user.id]['is_report_companion'] = True
         await data.increment_reports_count(companion['user_id'], companion['reports_count'] + 1)
-        if companion['reports_count'] + 1 == 30:
-            await data.ban_user(companion['user_id'], hours=2, time_mute=datetime.datetime.now())
-        elif companion['reports_count'] + 1 >= 50:
-            await data.ban_user(companion['user_id'])
+        # if companion['reports_count'] + 1 == 30:
+        #     await data.ban_user(companion['user_id'], hours=2, time_mute=datetime.datetime.now())
+        # elif companion['reports_count'] + 1 >= 50:
+        #     await data.ban_user(companion['user_id'])
         if bot[message.from_user.id]['is_react_companion']:
             await message.delete()
         else:
