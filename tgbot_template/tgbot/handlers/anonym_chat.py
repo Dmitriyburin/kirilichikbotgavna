@@ -380,6 +380,9 @@ async def link(message: Message, state: FSMContext):
     active_chat = await chat.get_active_chat(message.from_user.id)
     if active_chat:
         companion_id = active_chat['user_id']
+        if not message.from_user.username:
+            await message.answer(texts['not_username'])
+            return
         await message.answer(texts['share_to_companion_username'])
         await bot.send_message(companion_id, texts['get_username_from_companion'].format(message.from_user.username))
 
