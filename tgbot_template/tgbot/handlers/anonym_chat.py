@@ -324,7 +324,8 @@ async def send_report_file(bot, user, companion_id, channel_id):
         for message in user['last_dialogs'][-1]:
             file.write(f'{message}\n')
 
-    await bot.send_document(channel_id, open(fname, 'rb'))
+    await bot.send_document(channel_id, open(fname, 'rb'), reply_markup=inline.report_message(companion_id, user['user_id']),
+                            caption=f'<code>{companion_id}</code>')
     os.remove(fname)
 
 
@@ -335,7 +336,27 @@ async def ban_user(call: CallbackQuery, state: FSMContext):
 
     message.from_user.id = call['from']['id']
     user_id = call.data.split(':')[1]
+
     await data.ban_user(user_id)
+    await bot.answer_callback_query(call.id)
+
+
+async def report_message_call(call: CallbackQuery, state: FSMContext):
+    message = call.message
+    bot = message.bot
+    data = bot['db']
+
+    banned_user_id = int(call.data.split(':')[2])
+    user_id = int(call.data.split(':')[3])
+    detail = call.data.split(':')[1]
+    print(call.from_user)
+    if detail == 'ban':
+        await data.ban_user(banned_user_id)
+        await sent_ban_to_channel(bot, call, banned_user_id)
+        await message.delete()
+    elif detail == 'ignore':
+        await message.delete()
+
     await bot.answer_callback_query(call.id)
 
 
@@ -398,3 +419,4 @@ def register_anonym_chat(dp: Dispatcher):
     dp.register_callback_query_handler(select_vip_search, text_contains='search_by')
     dp.register_callback_query_handler(estimate_companion, text_contains='estimate_companion:')
     dp.register_callback_query_handler(ban_user, text_contains='ban_user:')
+    dp.register_callback_query_handler(report_message_call, text_contains='report_message:')

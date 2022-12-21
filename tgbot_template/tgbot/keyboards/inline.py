@@ -93,7 +93,8 @@ def vip_privileges(prices, urls, discount=None):
         markup.add(InlineKeyboardButton('🥉' + prices[7]['button'].format(prices[7]['discount']), url=urls[7]))
         markup.add(InlineKeyboardButton('🥈' + prices[30]['button'].format(prices[30]['discount']), url=urls[30]))
         markup.add(
-            InlineKeyboardButton('🥇' + prices['forever']['button'].format(prices['forever']['discount']), url=urls['forever']))
+            InlineKeyboardButton('🥇' + prices['forever']['button'].format(prices['forever']['discount']),
+                                 url=urls['forever']))
     return markup
 
 
@@ -205,6 +206,13 @@ def next_or_last(month, is_next=True, is_last=True):
 def unban(url):
     markup = InlineKeyboardMarkup()
     markup.add(InlineKeyboardButton('Разбанить', url=url))
+    return markup
+
+
+def report_message(banned_user_id, user_id):
+    markup = InlineKeyboardMarkup(row_width=2)
+    markup.add(InlineKeyboardButton('🚫 Бан', callback_data=f'report_message:ban:{banned_user_id}:{user_id}'))
+    markup.add(InlineKeyboardButton('🐽 Игнор', callback_data=f'report_message:ignore:{banned_user_id}:{user_id}'))
     return markup
 
 

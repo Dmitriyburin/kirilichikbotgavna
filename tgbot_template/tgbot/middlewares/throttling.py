@@ -37,11 +37,14 @@ class ThrottlingMiddleware(BaseMiddleware):
             message = update.message
         elif update.callback_query:
             message = update.callback_query.message
-            message.from_user.id = update.callback_query['from']['id']
-            call_data = update['callback_query']['data']
-            if 'estimate_companion:' in call_data:
-                await estimate_companion(update.callback_query, None, call_data.split(':')[1])
-                raise CancelHandler()
+            if message.from_user:
+                message.from_user.id = update.callback_query['from']['id']
+                call_data = update['callback_query']['data']
+                if 'estimate_companion:' in call_data:
+                    await estimate_companion(update.callback_query, None, call_data.split(':')[1])
+                    raise CancelHandler()
+            else:
+                return
         else:
             return
 
