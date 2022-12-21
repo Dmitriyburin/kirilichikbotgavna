@@ -302,7 +302,8 @@ async def estimate_companion(call: CallbackQuery, state: FSMContext, detail):
 
         bot[message.from_user.id]['is_report_companion'] = True
         await data.increment_reports_count(companion['user_id'], companion['reports_count'] + 1)
-        await send_report_file(bot, user, companion['user_id'], bot['config'].channel_id_to_send_ban)
+        await send_report_file(bot, user, companion['user_id'], bot['config'].channel_id_to_send_ban,
+                               is_companion_vip=companion['premium'])
         # if companion['reports_count'] + 1 == 30:
         #     await data.ban_user(companion['user_id'], hours=2, time_mute=datetime.datetime.now())
         # elif companion['reports_count'] + 1 >= 50:
@@ -315,7 +316,7 @@ async def estimate_companion(call: CallbackQuery, state: FSMContext, detail):
     await bot.answer_callback_query(call.id)
 
 
-async def send_report_file(bot, user, companion_id, channel_id):
+async def send_report_file(bot, user, companion_id, channel_id, is_companion_vip=False):
     if not len(user['last_dialogs'][-1]):
         return
 
@@ -323,9 +324,14 @@ async def send_report_file(bot, user, companion_id, channel_id):
     with open(fname, 'w', encoding="utf-8") as file:
         for message in user['last_dialogs'][-1]:
             file.write(f'{message}\n')
-
-    await bot.send_document(channel_id, open(fname, 'rb'), reply_markup=inline.report_message(companion_id, user['user_id']),
-                            caption=f'<code>{companion_id}</code>')
+    if not is_companion_vip:
+        await bot.send_document(channel_id, open(fname, 'rb'),
+                                reply_markup=inline.report_message(companion_id, user['user_id']),
+                                caption=f'<code>{companion_id}</code>')
+    else:
+        await bot.send_document(channel_id, open(fname, 'rb'),
+                                reply_markup=inline.report_message(companion_id, user['user_id']),
+                                caption=f'VIP <code>{companion_id}</code>')
     os.remove(fname)
 
 
