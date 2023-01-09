@@ -38,9 +38,9 @@ async def check_sub(message):
             if user_channel.status not in ['member', 'administrator', 'creator']:
                 channels_links.append(channel['link'])
 
-        except BadRequest as e:
-            print(chat_id, message.from_user.id, 'user not found')
-            channels_links.append(channel['link'])
+        except Exception as e:
+            logging.error(e)
+            continue
 
     user = await data.get_user(message.from_user.id)
     if not user['ref'].isdigit() and user['ref'] != 'defolt':
