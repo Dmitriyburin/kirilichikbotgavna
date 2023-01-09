@@ -650,8 +650,8 @@ def register_admin(dp: Dispatcher):
     dp.register_message_handler(add_ref, state=AddRef.price, is_admin=True)
     dp.register_message_handler(del_ref_start, commands=["del_ref"], state="*", is_admin=True)
     dp.register_message_handler(del_ref, state=DeleteRef.ref, is_admin=True)
-    dp.register_message_handler(get_refs, commands=["refs"], state="*", is_admin=True)
-    dp.register_message_handler(get_refs_all, commands=["refs_all"], state="*", is_admin=True)
+    dp.register_message_handler(get_refs_all, commands=["refs"], state="*", is_admin=True)
+    dp.register_message_handler(get_refs, commands=["refs_all"], state="*", is_admin=True)
     dp.register_callback_query_handler(month_callback, state=RefsMonth.month_callback,
                                        text_contains='month:',
                                        is_admin=True)
