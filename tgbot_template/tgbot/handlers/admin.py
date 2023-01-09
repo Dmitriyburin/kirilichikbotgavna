@@ -192,16 +192,23 @@ async def get_refs(message: Message, state: FSMContext, month=-1, edit=False):
     if month == -1:
         month = len(channels_per_month) - 1
     for index, item in enumerate(channels_per_month[month]):
+        ref_stat = await data.ref_stats_online(item['link'])
+        anonchat_users = ref_stat['all_anonchat_users']
 
         if item['transitions'] != 0:
             price_transitions = round(item['price'] / item['transitions'], 3)
         else:
             price_transitions = 0
 
+        if anonchat_users != 0:
+            price_reg = round(item['price'] / anonchat_users, 3)
+        else:
+            price_reg = 0
+
         channels_text.append(
             f"{index + 1}) <code>{item['link']}</code>\n<b>Дата:</b>"
             f" {item['date'].date()}\n<b>Цена:</b> {item['price']} руб \n<b>Контакт:</b> {item['contact']}\n"
-            f"<b>Цена перехода:</b> {price_transitions}\n")
+            f"<b>Цена перехода:</b> {price_transitions}\n<b>Цена регистрации:</b> {price_reg}\n")
     if channels_text:
         n = 10
         answer = [channels_text[i:i + n] for i in range(0, len(channels_text), n)]

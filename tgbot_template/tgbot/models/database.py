@@ -393,7 +393,6 @@ class Database:
             count = i['count']
 
         return {'male': male, 'female': female, 'all_anonchat_users': all_anonchat_users, 'all_users': all_users,
-
                 'average_age': count}
 
 
