@@ -201,7 +201,7 @@ async def get_refs(message: Message, state: FSMContext, month=-1, edit=False):
             price_transitions = 0
 
         if anonchat_users != 0:
-            price_reg = round(anonchat_users / users_all, 3) * 100
+            price_reg = round((anonchat_users / users_all) * 100, 2)
         else:
             price_reg = 0
 
