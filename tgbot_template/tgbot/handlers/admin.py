@@ -182,7 +182,7 @@ async def add_ref_contact(message: Message, state: FSMContext):
     await state.finish()
 
 
-async def get_refs(message: Message, state: FSMContext, month=-1, edit=False):
+async def get_refs_all(message: Message, state: FSMContext, month=-1, edit=False):
     bot = message.bot
     data = bot['db']
 
@@ -209,6 +209,53 @@ async def get_refs(message: Message, state: FSMContext, month=-1, edit=False):
             f"{index + 1}) <code>{item['link']}</code>\n<b>Дата:</b>"
             f" {item['date'].date()}\n<b>Цена:</b> {item['price']} руб \n<b>Контакт:</b> {item['contact']}\n"
             f"<b>Цена перехода:</b> {price_transitions}\n<b>Цена регистрации:</b> {price_reg}\n")
+    if channels_text:
+        n = 10
+        answer = [channels_text[i:i + n] for i in range(0, len(channels_text), n)]
+        count = 0
+        messages_ids = []
+        for text in answer:
+            count += 1
+
+            markup = None
+            if count == len(answer):
+                is_next = True if (month + 1) <= (len(channels_per_month) - 1) else None
+                is_last = True if month != 0 else None
+                await RefsMonth.month_callback.set()
+                await state.update_data(messages_ids=messages_ids)
+                markup = inline.next_or_last(month, is_next, is_last)
+
+            if count == 1 and edit:
+                message = await message.edit_text('\n'.join(text), reply_markup=markup)
+            else:
+                if not message.get_command():
+                    messages_ids.append(message.message_id)
+                message = await message.answer('\n'.join(text), reply_markup=markup)
+
+    else:
+        await message.answer('Реферальных ссылок нет, воспользуйтесь /add_ref, чтобы добавить новую')
+
+
+async def get_refs(message: Message, state: FSMContext, month=-1, edit=False):
+    bot = message.bot
+    data = bot['db']
+
+    channels_text = []
+    channels = list(sorted([i async for i in (await data.get_refs())], key=lambda x: x['date']))
+    channels_per_month = [list(v) for k, v in itertools.groupby(channels, lambda e: (e['date'].month, e['date'].year))]
+    if month == -1:
+        month = len(channels_per_month) - 1
+    for index, item in enumerate(channels_per_month[month]):
+
+        if item['transitions'] != 0:
+            price_transitions = round(item['price'] / item['transitions'], 3)
+        else:
+            price_transitions = 0
+
+        channels_text.append(
+            f"{index + 1}) <code>{item['link']}</code>\n<b>Дата:</b>"
+            f" {item['date'].date()}\n<b>Цена:</b> {item['price']} руб \n<b>Контакт:</b> {item['contact']}\n"
+            f"<b>Цена перехода:</b> {price_transitions}\n")
     if channels_text:
         n = 10
         answer = [channels_text[i:i + n] for i in range(0, len(channels_text), n)]
@@ -605,6 +652,7 @@ def register_admin(dp: Dispatcher):
     dp.register_message_handler(del_ref_start, commands=["del_ref"], state="*", is_admin=True)
     dp.register_message_handler(del_ref, state=DeleteRef.ref, is_admin=True)
     dp.register_message_handler(get_refs, commands=["refs"], state="*", is_admin=True)
+    dp.register_message_handler(get_refs_all, commands=["refs_all"], state="*", is_admin=True)
     dp.register_callback_query_handler(month_callback, state=RefsMonth.month_callback,
                                        text_contains='month:',
                                        is_admin=True)
