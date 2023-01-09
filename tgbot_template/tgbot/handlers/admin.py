@@ -192,8 +192,7 @@ async def get_refs_all(message: Message, state: FSMContext, month=-1, edit=False
     if month == -1:
         month = len(channels_per_month) - 1
     for index, item in enumerate(channels_per_month[month]):
-        ref_stat = await data.ref_stats_online(item['link'])
-        anonchat_users = ref_stat['all_anonchat_users']
+        anonchat_users = item['anonchat_users']
 
         if item['transitions'] != 0:
             price_transitions = round(item['price'] / item['transitions'], 3)
