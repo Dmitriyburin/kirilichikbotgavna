@@ -361,7 +361,15 @@ class Database:
     async def add_advertising(self, message_id, from_chat_id, markup, views, between_adv=4):
         await self.advertising.insert_one(
             {'message_id': message_id, 'markup': markup, 'from_chat_id': from_chat_id,
-             'views': views, 'count': 0, 'between_adv': between_adv})
+             'views': views, 'count': 0, 'between_adv': between_adv, 'user_ids': []})
+
+    async def add_user_to_advertising(self, message_id, user_id):
+        await self.advertising.update_one({'message_id': message_id}, {'$push': {'user_ids': user_id}})
+
+    async def is_show_advertising(self, message_id, user_id):
+        if await self.advertising.find_one({'message_id': message_id, 'user_ids': user_id}):
+            return True
+        return False
 
     async def delete_advertising(self, message_id):
         await self.advertising.delete_one({'message_id': message_id})
@@ -402,7 +410,8 @@ async def del_today_messages(database):
 
 async def main():
     database = Database('mongodb://localhost:27017')
-    await database.add_black_word('я чюшкаыа❤️')
+    # await database.add_advertising(123, 123, None, 12)
+    print(await database.is_show_advertising(123, 123))
 
 
 if __name__ == '__main__':

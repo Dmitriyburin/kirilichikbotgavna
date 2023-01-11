@@ -140,26 +140,30 @@ async def send_advertising(message, companion_id):
 
     user = await data.get_user_anonchat_profile(message.from_user.id)
     companion = await data.get_user_anonchat_profile(companion_id)
-    white_list = await data.get_premium_users() + bot['config'].tg_bot.admin_ids
+    white_list = await data.get_premium_users()
     advertising = await data.get_advertising()
     for adv in advertising:
         count = 0
         if adv['count'] >= adv['views']:
             continue
 
-        if user['user_id'] not in white_list and user['dialogs'] % adv['between_adv'] == 0:
+        if user['user_id'] not in white_list and (not await data.is_show_advertising(adv['message_id'],
+                                                                                     message.from_user.id)):
             await bot.copy_message(message.from_user.id, adv['from_chat_id'], adv['message_id'],
                                    reply_markup=InlineKeyboardMarkup(inline_keyboard=adv['markup']))
             await data.increment_count_advertising(adv['message_id'], 1)
             count += 1
+            await data.add_user_to_advertising(adv['message_id'], message.from_user.id)
 
         if adv['count'] + count >= adv['views']:
             continue
 
-        if companion['user_id'] not in white_list and companion['dialogs'] % adv['between_adv'] == 0:
+        if companion['user_id'] not in white_list and (not await data.is_show_advertising(adv['message_id'],
+                                                                                          companion['user_id'])):
             await bot.copy_message(companion_id, adv['from_chat_id'], adv['message_id'],
                                    reply_markup=InlineKeyboardMarkup(inline_keyboard=adv['markup']))
             await data.increment_count_advertising(adv['message_id'], 1)
+            await data.add_user_to_advertising(adv['message_id'], companion['user_id'])
 
 
 async def stop_search(message: Message, state: FSMContext):
