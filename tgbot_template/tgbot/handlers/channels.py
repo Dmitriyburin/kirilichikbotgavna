@@ -64,9 +64,9 @@ async def check_sub_call(call: CallbackQuery, state: FSMContext):
             await message.answer('Спасибо, Вы подписались на все каналы! Продолжайте пользоваться ботом')
             await state.finish()
 
-            profile = await data.get_user_anonchat_profile(message.from_user.id)
-            if not profile:
-                await start_registration(message)
+            # profile = await data.get_user_anonchat_profile(message.from_user.id)
+            # if not profile:
+            #     await start_registration(message)
 
         else:
             await call.answer('Вы не подписались на все каналы!')

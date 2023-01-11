@@ -102,22 +102,23 @@ class ThrottlingMiddleware(BaseMiddleware):
             await generate_captcha(bot, message)
             raise CancelHandler()
 
+        # Проверка на регистрацию
+        user_anonchat = await bot_data.get_user_anonchat_profile(message.from_user.id)
+        if not user_anonchat and not message.text.startswith('/start'):
+            await start_registration(message)
+            return
+
         # Channels
         if update.callback_query:
             return
 
         white_list = await bot_data.get_premium_users() + bot['config'].tg_bot.admin_ids
         user = await bot_data.get_user(message.from_user.id)
-        if message.from_user.id not in white_list and user:
+        if message.from_user.id not in white_list and user and user_anonchat and user_anonchat['gender']:
             channels = await check_sub(message)
             if channels:
                 await required_channel(message, None)
                 raise CancelHandler()
-
-        # Проверка на регистрацию
-        user_anonchat = await bot_data.get_user_anonchat_profile(message.from_user.id)
-        if not user_anonchat and not message.text.startswith('/start'):
-            await start_registration(message)
 
     async def on_process_message(self, message: types.Message, data: dict):
         """

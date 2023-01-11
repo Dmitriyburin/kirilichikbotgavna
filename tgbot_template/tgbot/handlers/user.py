@@ -49,10 +49,10 @@ async def user_start(message: Message, state=FSMContext):
                 await data.increment_ref_transition(ref_commercial)
             return
 
-    channels = await check_sub(message)
-    if channels:
-        await required_channel(message, None)
-        return
+    # channels = await check_sub(message)
+    # if channels:
+    #     await required_channel(message, None)
+    #     return
 
     await start_registration(message)
 
