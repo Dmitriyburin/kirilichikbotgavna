@@ -93,7 +93,7 @@ def main():
     scheduler.add_job(del_today_messages, 'cron', hour=0, minute=1, args=(bot['db'],))
     scheduler.start()
     bot['scheduler'] = scheduler
-    executor.start_polling(dp)
+    executor.start_polling(dp, skip_updates=True)
     return bot
 
 
